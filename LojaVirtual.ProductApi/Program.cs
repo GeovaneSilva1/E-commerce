@@ -13,6 +13,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
 
+builder.Services.AddDbContext<AppDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -33,7 +33,7 @@ namespace LojaVirtual.ProductApi.Context
                 .HasForeignKey(vi => vi.TabelaPrecoId);
 
 
-            modelBuilder.Entity<Produto>()
+           /* modelBuilder.Entity<Produto>()
                 .HasMany(p => p.VendaItems)
                 .WithOne()
                 .HasForeignKey(vi => vi.ProdutoId);
@@ -46,7 +46,7 @@ namespace LojaVirtual.ProductApi.Context
             modelBuilder.Entity<Produto>()
                 .HasMany(p => p.Notificacoes)
                 .WithOne()
-                .HasForeignKey(n => n.ProdutoId);
+                .HasForeignKey(n => n.ProdutoId);*/
 
            /* modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.Vendas)
@@ -63,10 +63,10 @@ namespace LojaVirtual.ProductApi.Context
                 .WithOne()
                 .HasForeignKey(n => n.ClienteId); */
 
-            modelBuilder.Entity<CondicaoPagamento>()
+            /*modelBuilder.Entity<CondicaoPagamento>()
                 .HasMany(cp => cp.Vendas)
                 .WithOne()
-                .HasForeignKey(v => v.CondicaoPagamentoId);
+                .HasForeignKey(v => v.CondicaoPagamentoId);*/
         }
 
     }
