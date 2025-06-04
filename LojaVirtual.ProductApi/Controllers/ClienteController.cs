@@ -1,4 +1,5 @@
-﻿using LojaVirtual.ProductApi.Models;
+﻿using LojaVirtual.ProductApi.Infraestrutura;
+using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaVirtual.ProductApi.Controllers

@@ -1,9 +1,11 @@
-﻿namespace LojaVirtual.ProductApi.Models
+﻿using LojaVirtual.ProductApi.Models;
+
+namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface IClienteRepository
     {
-         void Add(Cliente cliente);
-         
+        void Add(Cliente cliente);
+
         List<Cliente> Get();
 
         Cliente GetById(int id);
