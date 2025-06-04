@@ -5,11 +5,6 @@ namespace LojaVirtual.ProductApi.Context
 {
     public class AppDbContext: DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-
-        }
-
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<CondicaoPagamento> CondicaoPagamentos { get; set; }
@@ -18,6 +13,13 @@ namespace LojaVirtual.ProductApi.Context
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<VendaItem> VendaItens { get; set; }
         public DbSet<Notificacao> Notificacoes { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var mySqlConnection = "Server=localhost;Port=3306;Database=HavanDB;Uid=root;Pwd=masterkey";
+            optionsBuilder.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection));
+        }
+           
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Venda>()
@@ -46,7 +48,7 @@ namespace LojaVirtual.ProductApi.Context
                 .WithOne()
                 .HasForeignKey(n => n.ProdutoId);
 
-            modelBuilder.Entity<Cliente>()
+           /* modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.Vendas)
                 .WithOne()
                 .HasForeignKey(v => v.ClienteId);
@@ -59,7 +61,7 @@ namespace LojaVirtual.ProductApi.Context
             modelBuilder.Entity<Cliente>()
                 .HasMany(c => c.Notificacoes)
                 .WithOne()
-                .HasForeignKey(n => n.ClienteId);
+                .HasForeignKey(n => n.ClienteId); */
 
             modelBuilder.Entity<CondicaoPagamento>()
                 .HasMany(cp => cp.Vendas)
