@@ -61,8 +61,11 @@ namespace LojaVirtual.ProductApi.Controllers
 
             //tabela vendaitens
             CriaVendaItens(produtos, venda);
+            decimal valorTotalVenda = _vendaItemRepository.GetValorTotalVenda(venda.Id);
+            
+            CompraResponse compraResponse = new CompraResponse(compra,valorTotalVenda);
 
-            return Ok(compra);
+            return Ok(compraResponse);
         }
 
         private void CriaVendaItens(Dictionary<Produto, int> produtos, Venda venda)
