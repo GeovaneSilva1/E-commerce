@@ -32,27 +32,16 @@ namespace LojaVirtual.ProductApi.Controllers
         [HttpPost]
         public IActionResult RealizarCompra([FromBody] Compra compra)
         {
-            Cliente cliente = _clienteRepository.GetByCNPJ(compra.CpfCnpj);
-            if (cliente is null)
-            {
-                cliente = new Cliente(compra.CpfCnpj, compra.NomeRazao);
-                _clienteRepository.Add(cliente);
-            }
+            Cliente cliente = RetornaCliente(compra);
+            CondicaoPagamento condicaoPagamento = RetornaCondicaoPagamento(compra);
 
-            CondicaoPagamento condicaoPagamento = _condicaoPagamentoRepository.GetByByDescAndDias(compra.CondicaoPagamento.Descricao, compra.CondicaoPagamento.Dias);
-            if (condicaoPagamento is null)
-            {
-                condicaoPagamento = new CondicaoPagamento(compra.CondicaoPagamento.Descricao, compra.CondicaoPagamento.Dias);
-                _condicaoPagamentoRepository.Add(condicaoPagamento);
-            }
-
-            Dictionary<Produto,int> produtos = new Dictionary<Produto,int>();
+            Dictionary<Produto, int> produtos = new Dictionary<Produto, int>();
             foreach (var itemcompra in compra.Itens)
             {
                 string SKU = ProdutoController.MontaSKUByNome(itemcompra.NomeProduto);
                 if (SKU.Equals(""))
                 {
-                    return BadRequest($"Nome do produto {itemcompra.NomeProduto} inválido!");
+                    return BadRequest($"Nome do produto {itemcompra.NomeProduto} inválido! Ex: nome cor tamanho");
                 }
 
                 if (itemcompra.Quantidade <= 0)
@@ -65,24 +54,56 @@ namespace LojaVirtual.ProductApi.Controllers
                     return BadRequest($"Produto {itemcompra.NomeProduto} não encontrado!");
                 }
 
-                produtos.Add(_produtoRepository.GetBySKU(SKU),itemcompra.Quantidade);
+                produtos.Add(_produtoRepository.GetBySKU(SKU), itemcompra.Quantidade);
             }
 
-            //Começa a persistir nas tabelas
-            //tabela venda:
-            var venda = new Venda(cliente.Id,condicaoPagamento.Id);
-            _vendaRepository.Add(venda);
-            
+            Venda venda = CriaVenda(cliente, condicaoPagamento);
+
             //tabela vendaitens
-            foreach (var prod in produtos)
-            {
-                decimal valorUnProduto = _produtoRepository.GetPrecoUnitarioById(prod.Key.Id);
-                var vendaitem = new VendaItem(venda.Id,prod.Key.Id,prod.Value,(prod.Value * valorUnProduto));
-                _vendaItemRepository.Add(vendaitem);
-            }
+            CriaVendaItens(produtos, venda);
 
             return Ok(compra);
         }
 
+        private void CriaVendaItens(Dictionary<Produto, int> produtos, Venda venda)
+        {
+            foreach (var prod in produtos)
+            {
+                decimal valorUnProduto = _produtoRepository.GetPrecoUnitarioById(prod.Key.Id);
+                var vendaitem = new VendaItem(venda.Id, prod.Key.Id, prod.Value, (prod.Value * valorUnProduto));
+                _vendaItemRepository.Add(vendaitem);
+            }
+        }
+
+        private Venda CriaVenda(Cliente cliente, CondicaoPagamento condicaoPagamento)
+        {
+            var venda = new Venda(cliente.Id, condicaoPagamento.Id);
+            _vendaRepository.Add(venda);
+            return venda;
+        }
+
+        private CondicaoPagamento RetornaCondicaoPagamento(Compra compra)
+        {
+            CondicaoPagamento condicaoPagamento = _condicaoPagamentoRepository.GetByByDescAndDias(compra.CondicaoPagamento.Descricao, compra.CondicaoPagamento.Dias);
+            if (condicaoPagamento is null)
+            {
+                condicaoPagamento = new CondicaoPagamento(compra.CondicaoPagamento.Descricao, compra.CondicaoPagamento.Dias);
+                _condicaoPagamentoRepository.Add(condicaoPagamento);
+            }
+
+            return condicaoPagamento;
+        }
+
+        private Cliente RetornaCliente(Compra compra)
+        {
+            Cliente cliente = _clienteRepository.GetByCNPJ(compra.CpfCnpj);
+            if (cliente is null)
+            {
+                cliente = new Cliente(compra.CpfCnpj, compra.NomeRazao);
+                _clienteRepository.Add(cliente);
+            }
+
+            return cliente;
+        }
     }
 }
