@@ -26,13 +26,20 @@ namespace LojaVirtual.ProductApi.Controllers
                 return BadRequest("Produto já cadastrado!");
             }
 
-            string SKU = MontaSKUByNome(nome);
-            if (SKU is null)
+            if (preco <= 0)
             {
-                return BadRequest("Nome do produto inválido");
+                return BadRequest("Preço do produto deve ser maior que zero!");
+            }
+
+            string SKU = MontaSKUByNome(nome);
+            if (SKU.Equals(""))
+            {
+                return BadRequest("Nome do produto inválido!");
             }
 
             var produto = new Produto(id, SKU, nome, preco);
+            _produtoRepository.Add(produto);
+
             return Ok(produto);
         }
 
