@@ -13,14 +13,17 @@ namespace LojaVirtual.ProductApi.Controllers
         private readonly IClienteRepository _clienteRepository;
         private readonly IProdutoRepository _produtoRepository;
         private readonly ICondicaoPagamentoRepository _condicaoPagamentoRepository;
+        private readonly IVendaRepository _vendendaRepository;
 
         public CompraController(IClienteRepository clienteRepository,
                                IProdutoRepository produtoRepository,
-                               ICondicaoPagamentoRepository condicaoPagamentoRepository)
+                               ICondicaoPagamentoRepository condicaoPagamentoRepository,
+                               IVendaRepository vendendaRepository)
         {
             _clienteRepository = clienteRepository;
             _produtoRepository = produtoRepository;
             _condicaoPagamentoRepository = condicaoPagamentoRepository;
+            _vendendaRepository = vendendaRepository;
         }
 
         [HttpPost]
@@ -53,7 +56,8 @@ namespace LojaVirtual.ProductApi.Controllers
 
             //Começa a persistir nas tabelas
             //tabela venda:
-            
+            var venda = new Venda(cliente.Id,condicaoPagamento.Id);
+            _vendendaRepository.Add(venda);
 
             return Ok(compra);
         }
