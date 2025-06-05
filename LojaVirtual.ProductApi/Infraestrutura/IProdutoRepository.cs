@@ -9,6 +9,8 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         Produto GetBySKU(string SKU);
         bool ExistById(int id);
         bool ExistBySKU(string SKU);
-        
+        decimal GetPrecoUnitarioById(int id);
+
+
     }
 }

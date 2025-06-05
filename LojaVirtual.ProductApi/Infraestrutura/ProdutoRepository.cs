@@ -37,5 +37,10 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         {
             return _appDbContext.Produtos.Where(p => p.SKU == SKU).FirstOrDefault();
         }
+
+        public decimal GetPrecoUnitarioById(int id)
+        {
+            return _appDbContext.Produtos.Where(p => p.Id == id).Select(pc => pc.Preco).FirstOrDefault();
+        }
     }
 }

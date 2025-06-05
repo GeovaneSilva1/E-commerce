@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
 builder.Services.AddTransient<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddTransient<ICondicaoPagamentoRepository, CondicaoPagamentoRepository>();
+builder.Services.AddTransient<IVendaRepository, VendaRepository>();
+builder.Services.AddTransient<IVendaItemRepository, VendaItemRepository>();
 
 builder.Services.AddDbContext<AppDbContext>();
 
