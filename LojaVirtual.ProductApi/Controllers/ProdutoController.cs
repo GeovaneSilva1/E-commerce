@@ -34,7 +34,7 @@ namespace LojaVirtual.ProductApi.Controllers
             string SKU = MontaSKUByNome(nome);
             if (SKU.Equals(""))
             {
-                return BadRequest("Nome do produto inválido!");
+                return BadRequest("Nome do produto inválido! Ex: nome cor tamanho");
             }
 
             var produto = new Produto(id, SKU, nome, preco);
