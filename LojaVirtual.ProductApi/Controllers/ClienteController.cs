@@ -15,15 +15,17 @@ namespace LojaVirtual.ProductApi.Controllers
             _clienteRepository = clienteRepository;
         }
 
+        [Route("CadastrarCliente")]
         [HttpPost]
         public IActionResult AddCliente(string cnpj, string razaoSocial)
         {
             var cliente = new Cliente(cnpj,razaoSocial);
             _clienteRepository.Add(cliente);
             
-            return Ok();
+            return Ok(cliente);
         }
 
+        [Route("ObterClientes")]
         [HttpGet]
         public IActionResult GetCliente()
         {
