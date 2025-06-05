@@ -17,9 +17,9 @@ namespace LojaVirtual.ProductApi.Controllers
 
         [Route("CadastrarCliente")]
         [HttpPost]
-        public IActionResult AddCliente(int id, string cnpj, string razaoSocial)
+        public IActionResult AddCliente(string cnpj, string razaoSocial)
         {
-            var cliente = new Cliente(id, cnpj,razaoSocial);
+            var cliente = new Cliente(cnpj,razaoSocial);
             _clienteRepository.Add(cliente);
             
             return Ok(cliente);

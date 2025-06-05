@@ -63,10 +63,10 @@ namespace LojaVirtual.ProductApi.Context
                 .WithOne()
                 .HasForeignKey(n => n.ClienteId); 
 
-            modelBuilder.Entity<CondicaoPagamento>()
+            /*modelBuilder.Entity<CondicaoPagamento>()
                 .HasMany(cp => cp.Vendas)
                 .WithOne()
-                .HasForeignKey(v => v.CondicaoPagamentoId);
+                .HasForeignKey(v => v.CondicaoPagamentoId);*/
         }
 
     }

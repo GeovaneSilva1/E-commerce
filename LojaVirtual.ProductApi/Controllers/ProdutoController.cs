@@ -43,7 +43,7 @@ namespace LojaVirtual.ProductApi.Controllers
             return Ok(produto);
         }
 
-        private string MontaSKUByNome(string nome)
+        public static string MontaSKUByNome(string nome)
         {
             if (string.IsNullOrWhiteSpace(nome))
                 return string.Empty;
