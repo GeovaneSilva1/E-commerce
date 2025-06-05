@@ -17,7 +17,7 @@ namespace LojaVirtual.ProductApi.Controllers
 
         [HttpPost]
         [Route("AdminCadastrarProduto")]
-        public IActionResult AddProduto(int id, string nome)
+        public IActionResult AddProduto(int id, string nome, decimal preco)
         {
             bool produtoExistente = _produtoRepository.ExistById(id);
             
@@ -32,7 +32,7 @@ namespace LojaVirtual.ProductApi.Controllers
                 return BadRequest("Nome do produto inválido");
             }
 
-            var produto = new Produto(id, SKU, nome);
+            var produto = new Produto(id, SKU, nome, preco);
             return Ok(produto);
         }
 
