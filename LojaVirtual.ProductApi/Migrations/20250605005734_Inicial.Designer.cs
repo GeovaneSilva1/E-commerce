@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaVirtual.ProductApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250603032900_Inicial")]
+    [Migration("20250605005734_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -41,7 +41,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("clientes");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.CondicaoPagamento", b =>
@@ -60,7 +60,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CondicaoPagamentos");
+                    b.ToTable("condicaopagamentos");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Notificacao", b =>
@@ -139,12 +139,15 @@ namespace LojaVirtual.ProductApi.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
+                    b.Property<decimal>("Preco")
+                        .HasColumnType("decimal(65,30)");
+
                     b.Property<string>("SKU")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Produtos");
+                    b.ToTable("produtos");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.TabelaPreco", b =>

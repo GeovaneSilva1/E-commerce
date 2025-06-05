@@ -9,8 +9,10 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         List<Cliente> Get();
 
         Cliente GetById(int id);
+        Cliente GetByCNPJ(string CNPJ);
 
         bool ExistById(int id);
+        bool ExistByCNPJ(string CNPJ);
 
         Cliente Update(Cliente cliente);
 

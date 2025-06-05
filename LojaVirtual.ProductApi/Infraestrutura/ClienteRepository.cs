@@ -6,7 +6,13 @@ namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public class ClienteRepository : IClienteRepository
     {
-        private readonly AppDbContext _appDbContext = new AppDbContext();
+        private readonly AppDbContext _appDbContext;
+
+        public ClienteRepository(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
+
         public void Add(Cliente cliente)
         {
             _appDbContext.Clientes.Add(cliente);
@@ -41,6 +47,16 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         public Cliente GetById(int id)
         {
             return _appDbContext.Clientes.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+        public Cliente GetByCNPJ(string CNPJ)
+        {
+            return _appDbContext.Clientes.Where(c => c.CNPJ == CNPJ).FirstOrDefault();
+        }
+
+        public bool ExistByCNPJ(string CNPJ)
+        {
+            return _appDbContext.Clientes.Any(c => c.CNPJ == CNPJ);
         }
     }
 }

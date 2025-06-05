@@ -12,6 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IClienteRepository, ClienteRepository>();
+builder.Services.AddTransient<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddTransient<ICondicaoPagamentoRepository, CondicaoPagamentoRepository>();
+
+builder.Services.AddDbContext<AppDbContext>();
 
 var app = builder.Build();
 

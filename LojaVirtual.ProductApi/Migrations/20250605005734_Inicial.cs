@@ -16,7 +16,7 @@ namespace LojaVirtual.ProductApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Clientes",
+                name: "clientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -28,12 +28,12 @@ namespace LojaVirtual.ProductApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clientes", x => x.Id);
+                    table.PrimaryKey("PK_clientes", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CondicaoPagamentos",
+                name: "condicaopagamentos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -45,12 +45,12 @@ namespace LojaVirtual.ProductApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CondicaoPagamentos", x => x.Id);
+                    table.PrimaryKey("PK_condicaopagamentos", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Produtos",
+                name: "produtos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -58,11 +58,12 @@ namespace LojaVirtual.ProductApi.Migrations
                     SKU = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Descricao = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Preco = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Produtos", x => x.Id);
+                    table.PrimaryKey("PK_produtos", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -97,15 +98,15 @@ namespace LojaVirtual.ProductApi.Migrations
                 {
                     table.PrimaryKey("PK_Vendas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vendas_Clientes_ClienteId",
+                        name: "FK_Vendas_clientes_ClienteId",
                         column: x => x.ClienteId,
-                        principalTable: "Clientes",
+                        principalTable: "clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Vendas_CondicaoPagamentos_CondicaoPagamentoId",
+                        name: "FK_Vendas_condicaopagamentos_CondicaoPagamentoId",
                         column: x => x.CondicaoPagamentoId,
-                        principalTable: "CondicaoPagamentos",
+                        principalTable: "condicaopagamentos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -129,15 +130,15 @@ namespace LojaVirtual.ProductApi.Migrations
                 {
                     table.PrimaryKey("PK_Notificacoes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notificacoes_Clientes_ClienteId",
+                        name: "FK_Notificacoes_clientes_ClienteId",
                         column: x => x.ClienteId,
-                        principalTable: "Clientes",
+                        principalTable: "clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Notificacoes_Produtos_ProdutoId",
+                        name: "FK_Notificacoes_produtos_ProdutoId",
                         column: x => x.ProdutoId,
-                        principalTable: "Produtos",
+                        principalTable: "produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -158,21 +159,21 @@ namespace LojaVirtual.ProductApi.Migrations
                 {
                     table.PrimaryKey("PK_PrecoProdutoClientes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PrecoProdutoClientes_Clientes_ClienteId",
-                        column: x => x.ClienteId,
-                        principalTable: "Clientes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PrecoProdutoClientes_Produtos_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "Produtos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_PrecoProdutoClientes_TabelaPrecos_TabelaPrecoId",
                         column: x => x.TabelaPrecoId,
                         principalTable: "TabelaPrecos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PrecoProdutoClientes_clientes_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "clientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PrecoProdutoClientes_produtos_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -193,15 +194,15 @@ namespace LojaVirtual.ProductApi.Migrations
                 {
                     table.PrimaryKey("PK_VendaItens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VendaItens_Produtos_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "Produtos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_VendaItens_Vendas_VendaId",
                         column: x => x.VendaId,
                         principalTable: "Vendas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VendaItens_produtos_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -269,16 +270,16 @@ namespace LojaVirtual.ProductApi.Migrations
                 name: "TabelaPrecos");
 
             migrationBuilder.DropTable(
-                name: "Produtos");
-
-            migrationBuilder.DropTable(
                 name: "Vendas");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "produtos");
 
             migrationBuilder.DropTable(
-                name: "CondicaoPagamentos");
+                name: "clientes");
+
+            migrationBuilder.DropTable(
+                name: "condicaopagamentos");
         }
     }
 }
