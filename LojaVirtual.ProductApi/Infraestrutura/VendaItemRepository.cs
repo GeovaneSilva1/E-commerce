@@ -17,5 +17,10 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext.VendaItens.Add(vendaitem);
             _appDbContext.SaveChanges();
         }
+
+        public decimal GetValorTotalVenda(int idVenda)
+        {
+            return _appDbContext.VendaItens.Where(v => v.VendaId == idVenda).Sum(v => v.ValorUnitario);
+        }
     }
 }
