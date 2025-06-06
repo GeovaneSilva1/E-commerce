@@ -1,4 +1,5 @@
-﻿using LojaVirtual.ProductApi.Models;
+﻿using LojaVirtual.ProductApi.Classes;
+using LojaVirtual.ProductApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.ProductApi.Context
@@ -13,6 +14,7 @@ namespace LojaVirtual.ProductApi.Context
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<VendaItem> VendaItens { get; set; }
         public DbSet<Notificacao> Notificacoes { get; set; }
+        public DbSet<VendaRelatorio> VendaRelatorios { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -22,6 +24,8 @@ namespace LojaVirtual.ProductApi.Context
            
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<VendaRelatorio>().HasNoKey();
+
             modelBuilder.Entity<Venda>()
                 .HasMany(v => v.Itens)
                 .WithOne()
