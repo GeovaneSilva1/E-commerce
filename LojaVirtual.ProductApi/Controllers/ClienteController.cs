@@ -1,4 +1,5 @@
-﻿using LojaVirtual.ProductApi.Infraestrutura;
+﻿using LojaVirtual.ProductApi.Classes;
+using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,10 @@ namespace LojaVirtual.ProductApi.Controllers
 
         [Route("CadastrarCliente")]
         [HttpPost]
-        public IActionResult AddCliente(string cnpj, string razaoSocial)
+        public IActionResult AddCliente([FromBody] ClienteRequest clienteRequest)
         {
-            var cliente = new Cliente(cnpj,razaoSocial);
+            var cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial);
+
             _clienteRepository.Add(cliente);
             
             return Ok(cliente);
@@ -47,13 +49,15 @@ namespace LojaVirtual.ProductApi.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult EditCliente(int id, [FromBody] Cliente cliente)
+        public IActionResult EditCliente(int id, [FromBody] ClienteRequest clienteRequest)
         {
             var clienteSolicitado = _clienteRepository.ExistById(id);
 
             if (!clienteSolicitado)
                return NotFound("Cliente não encontrado.");
-            
+
+            Cliente cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial);
+
             cliente.Id = id;
 
             _clienteRepository.Update(cliente);
