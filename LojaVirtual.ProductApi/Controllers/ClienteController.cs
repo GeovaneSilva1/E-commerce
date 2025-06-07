@@ -2,6 +2,7 @@
 using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace LojaVirtual.ProductApi.Controllers
 {
@@ -18,6 +19,7 @@ namespace LojaVirtual.ProductApi.Controllers
 
         [Route("CadastrarCliente")]
         [HttpPost]
+        [SwaggerOperation(Summary = "Cadastrar novo cliente", Description = "Cadastra um novo cliente ao sistema.")]
         public IActionResult AddCliente([FromBody] ClienteRequest clienteRequest)
         {
             var cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial);
@@ -27,16 +29,24 @@ namespace LojaVirtual.ProductApi.Controllers
             return Ok(cliente);
         }
 
+        /// <summary>
+        /// Retorna todos os clientes cadastrados.
+        /// </summary>
+        /// <returns>Lista de clientes</returns>
         [Route("ObterClientes")]
         [HttpGet]
+        [SwaggerOperation(Summary = "Listar todos os clientes", Description = "Retorna todos os clientes ativos no sistema.")]
         public IActionResult GetCliente()
         {
             var cliente = _clienteRepository.Get();
 
-            return Ok(cliente);
+            ClienteResponse clienteResponse = new ClienteResponse();
+            clienteResponse.IncluirAtributos(cliente);
+            return Ok(clienteResponse);
         }
 
         [HttpGet("{id:int}")]
+        [SwaggerOperation(Summary = "Listar cliente", Description = "Retorna um cliente específico pelo Id.")]
         public IActionResult GetClienteById(int id)
         {
             var clienteSolicitado = _clienteRepository.ExistById(id);
@@ -44,11 +54,14 @@ namespace LojaVirtual.ProductApi.Controllers
                 return NotFound("Cliente não encontrado.");
 
             var cliente = _clienteRepository.GetById(id);
-
-            return Ok(cliente);
+            
+            ClienteResponse clienteResponse = new ClienteResponse();
+            clienteResponse.IncluirAtributos(cliente);
+            return Ok(clienteResponse);
         }
 
         [HttpPut("{id:int}")]
+        [SwaggerOperation(Summary = "Alterar cliente", Description = "Altera um cliente específico pelo Id.")]
         public IActionResult EditCliente(int id, [FromBody] ClienteRequest clienteRequest)
         {
             var clienteSolicitado = _clienteRepository.ExistById(id);
@@ -66,6 +79,7 @@ namespace LojaVirtual.ProductApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [SwaggerOperation(Summary = "Deletar cliente", Description = "Apaga um cliente específico pelo Id.")]
         public IActionResult DeleteCliente(int id)
         {
             var clienteSolicitado = _clienteRepository.ExistById(id);
