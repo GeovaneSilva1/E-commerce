@@ -33,7 +33,9 @@ namespace LojaVirtual.ProductApi.Controllers
         {
             var cliente = _clienteRepository.Get();
 
-            return Ok(cliente);
+            ClienteResponse clienteResponse = new ClienteResponse();
+            clienteResponse.IncluirAtributos(cliente);
+            return Ok(clienteResponse);
         }
 
         [HttpGet("{id:int}")]
@@ -44,8 +46,10 @@ namespace LojaVirtual.ProductApi.Controllers
                 return NotFound("Cliente não encontrado.");
 
             var cliente = _clienteRepository.GetById(id);
-
-            return Ok(cliente);
+            
+            ClienteResponse clienteResponse = new ClienteResponse();
+            clienteResponse.IncluirAtributos(cliente);
+            return Ok(clienteResponse);
         }
 
         [HttpPut("{id:int}")]
