@@ -1,4 +1,5 @@
-﻿using LojaVirtual.ProductApi.Infraestrutura;
+﻿using LojaVirtual.ProductApi.Classes;
+using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,22 @@ namespace LojaVirtual.ProductApi.Controllers
             _condicaoPagamentoRepository.Add(condicaoPagamento);
 
             return Ok(condicaoPagamento);
+        }
+
+        [HttpGet]
+        [Route("ObterCondPagamento")]
+        public IActionResult GetCondPagamentos()
+        {
+            var condicaoPagamento = _condicaoPagamentoRepository.GetMany();
+
+            if (condicaoPagamento is null)
+            {
+                return BadRequest("Nenhuma condição de pagamento cadastrada!");
+            }
+
+            var condPagamentoResponse = new CondicaoPagamentoResponse();
+            condPagamentoResponse.IncluirAtributos(condicaoPagamento);
+            return Ok(condPagamentoResponse);
         }
     }
 }
