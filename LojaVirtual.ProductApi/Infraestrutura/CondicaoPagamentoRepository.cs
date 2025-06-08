@@ -18,6 +18,11 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext.SaveChanges();
         }
 
+        public List<CondicaoPagamento> GetMany()
+        {
+            return _appDbContext.CondicaoPagamentos.ToList();
+        }
+
         public bool ExistById(int id)
         {
             return _appDbContext.CondicaoPagamentos.Any(cp => cp.Id == id);

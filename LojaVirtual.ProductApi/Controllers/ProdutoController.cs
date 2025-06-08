@@ -1,4 +1,5 @@
-﻿using LojaVirtual.ProductApi.Infraestrutura;
+﻿using LojaVirtual.ProductApi.Classes;
+using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,6 +42,22 @@ namespace LojaVirtual.ProductApi.Controllers
             _produtoRepository.Add(produto);
 
             return Ok(produto);
+        }
+
+        [HttpGet]
+        [Route("ObterProdutos")]
+        public IActionResult GetProdutos()
+        {
+            var produtos = _produtoRepository.GetMany();
+            if (produtos is null)
+            {
+                return BadRequest("Nenhum produto cadastrado!");
+            }
+
+            var produtoResponse = new ProdutoResponse();
+            produtoResponse.IncluirAtributos(produtos);
+
+            return Ok(produtoResponse);
         }
 
         public static string MontaSKUByNome(string nome)

@@ -18,6 +18,11 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext.SaveChanges();
         }
 
+        public List<Produto> GetMany()
+        {
+            return _appDbContext.Produtos.ToList();
+        }
+
         public bool ExistById(int id)
         {
             return _appDbContext.Produtos.Any(p => p.Id == id);

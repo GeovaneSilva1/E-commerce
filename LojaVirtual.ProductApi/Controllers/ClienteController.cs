@@ -40,6 +40,11 @@ namespace LojaVirtual.ProductApi.Controllers
         {
             var cliente = _clienteRepository.Get();
 
+            if (cliente is null)
+            {
+                return BadRequest("Nenhum cliente cadastrado!");
+            }
+
             ClienteResponse clienteResponse = new ClienteResponse();
             clienteResponse.IncluirAtributos(cliente);
             return Ok(clienteResponse);
