@@ -6,6 +6,7 @@ namespace LojaVirtual.ProductApi.Classes
     {
         public string CpfCnpj { get; set; }
         public string NomeRazao { get; set; }
+        public string Email { get; set; }
         public AtributosCondicaoPagamento? CondicaoPagamento { get; set; }
         public List<ItemCompra>? Itens { get; set; }
     }

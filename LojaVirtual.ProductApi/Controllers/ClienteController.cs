@@ -22,7 +22,7 @@ namespace LojaVirtual.ProductApi.Controllers
         [SwaggerOperation(Summary = "Cadastrar novo cliente", Description = "Cadastra um novo cliente ao sistema.")]
         public IActionResult AddCliente([FromBody] ClienteRequest clienteRequest)
         {
-            var cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial);
+            var cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial, clienteRequest.Email);
 
             _clienteRepository.Add(cliente);
             
@@ -74,7 +74,7 @@ namespace LojaVirtual.ProductApi.Controllers
             if (!clienteSolicitado)
                return NotFound("Cliente não encontrado.");
 
-            Cliente cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial);
+            Cliente cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial, clienteRequest.Email);
 
             cliente.Id = id;
 

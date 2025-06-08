@@ -102,7 +102,7 @@ namespace LojaVirtual.ProductApi.Controllers
             Cliente cliente = _clienteRepository.GetByCNPJ(compra.CpfCnpj);
             if (cliente is null)
             {
-                cliente = new Cliente(compra.CpfCnpj, compra.NomeRazao);
+                cliente = new Cliente(compra.CpfCnpj, compra.NomeRazao, compra.Email);
                 _clienteRepository.Add(cliente);
             }
 

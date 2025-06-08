@@ -14,7 +14,7 @@ namespace LojaVirtual.ProductApi.Models
         public List<Venda>? Vendas { get; set; }
         public List<Notificacao>? Notificacoes { get; set; }
 
-        public Cliente(string CNPJ, string RazaoSocial) 
+        public Cliente(string CNPJ, string RazaoSocial, string Email) 
         { 
             this.CNPJ = CNPJ;
             this.RazaoSocial = RazaoSocial;
