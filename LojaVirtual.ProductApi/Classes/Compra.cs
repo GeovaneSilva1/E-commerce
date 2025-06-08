@@ -6,7 +6,7 @@ namespace LojaVirtual.ProductApi.Classes
     {
         public string CpfCnpj { get; set; }
         public string NomeRazao { get; set; }
-        public CondicaoPagamento? CondicaoPagamento { get; set; }
+        public AtributosCondicaoPagamento? CondicaoPagamento { get; set; }
         public List<ItemCompra>? Itens { get; set; }
     }
     public class ItemCompra
@@ -14,5 +14,11 @@ namespace LojaVirtual.ProductApi.Classes
         public int ProdutoId { get; set; }
         public string? NomeProduto { get; set; }
         public int Quantidade { get; set; }
+    }
+
+    public class AtributosCondicaoPagamento
+    {
+        public string? Descricao { get; set; }
+        public string? Dias { get; set; }
     }
 }

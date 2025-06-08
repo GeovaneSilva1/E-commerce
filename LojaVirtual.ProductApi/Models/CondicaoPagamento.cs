@@ -7,8 +7,8 @@ namespace LojaVirtual.ProductApi.Models
     {
         public int Id { get; set; }
         public string? Descricao { get; set; } 
-        public string? Dias { get; set; } 
-
+        public string? Dias { get; set; }
+        public List<Venda>? Vendas { get; set; }
         public CondicaoPagamento(string Descricao, string Dias)
         {
             this.Descricao = Descricao;
