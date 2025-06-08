@@ -14,11 +14,12 @@ public class Produto
     public List<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
     public List<VendaItem>? VendaItems { get; set; }
     public List<Notificacao>? Notificacoes { get; set; }
-    public Produto(int Id, string SKU, string Descricao, decimal Preco)
+    public Produto(int Id, string SKU, string Descricao, decimal Preco, int TabelaPrecoId)
     {
         this.Id = Id;
         this.SKU = SKU;
         this.Descricao = Descricao;
         this.Preco = Preco;
+        this.TabelaPrecoId = TabelaPrecoId;
     }
 }
