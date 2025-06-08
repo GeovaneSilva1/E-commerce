@@ -19,6 +19,7 @@ builder.Services.AddTransient<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddTransient<ICondicaoPagamentoRepository, CondicaoPagamentoRepository>();
 builder.Services.AddTransient<IVendaRepository, VendaRepository>();
 builder.Services.AddTransient<IVendaItemRepository, VendaItemRepository>();
+builder.Services.AddTransient<ITabelaPrecoRepository, TabelaPrecoRepository>();
 
 builder.Services.AddDbContext<AppDbContext>();
 

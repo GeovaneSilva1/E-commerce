@@ -10,15 +10,17 @@ namespace LojaVirtual.ProductApi.Controllers
     public class ProdutoController : ControllerBase
     {
         private readonly IProdutoRepository _produtoRepository;
+        private readonly ITabelaPrecoRepository _tabelaPrecoRepository;
 
-        public ProdutoController(IProdutoRepository produtoRepository)
+        public ProdutoController(IProdutoRepository produtoRepository, ITabelaPrecoRepository tabelaPrecoRepository)
         {
             _produtoRepository = produtoRepository;
+            _tabelaPrecoRepository = tabelaPrecoRepository;
         }
 
         [HttpPost]
         [Route("AdminCadastrarProduto")]
-        public IActionResult AddProduto(int id, string nome, decimal preco)
+        public IActionResult AddProduto(int id, string nome, decimal preco, string descricaoTabelaPreco)
         {
             bool produtoExistente = _produtoRepository.ExistById(id);
             
@@ -38,7 +40,14 @@ namespace LojaVirtual.ProductApi.Controllers
                 return BadRequest("Nome do produto inválido! Ex: nome cor tamanho");
             }
 
-            var produto = new Produto(id, SKU, nome, preco);
+            TabelaPreco tabelaPrecoValida = _tabelaPrecoRepository.ValidaByDescricao(descricaoTabelaPreco);
+            
+            if (tabelaPrecoValida is null)
+            {
+                return BadRequest("Tabela de preço Inexistente ou fora do período de aplicação!");
+            }
+
+            var produto = new Produto(id, SKU, nome, preco, tabelaPrecoValida.Id);
             _produtoRepository.Add(produto);
 
             return Ok(produto);
