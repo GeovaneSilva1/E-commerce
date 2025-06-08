@@ -71,6 +71,11 @@ namespace LojaVirtual.ProductApi.Context
                 .HasMany(cp => cp.Vendas)
                 .WithOne()
                 .HasForeignKey(v => v.CondicaoPagamentoId);
+
+            modelBuilder.Entity<TabelaPreco>()
+                .HasMany(tb => tb.Produtos)
+                .WithOne()
+                .HasForeignKey(p => p.TabelaPrecoId);
         }
 
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaVirtual.ProductApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250605005734_Inicial")]
+    [Migration("20250608191821_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -24,6 +24,26 @@ namespace LojaVirtual.ProductApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("LojaVirtual.ProductApi.Classes.VendaRelatorio", b =>
+                {
+                    b.Property<int>("IdVenda")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NomeCliente")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Produto")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.ToTable("VendaRelatorios");
+                });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Cliente", b =>
                 {
@@ -37,6 +57,7 @@ namespace LojaVirtual.ProductApi.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("RazaoSocial")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -145,7 +166,12 @@ namespace LojaVirtual.ProductApi.Migrations
                     b.Property<string>("SKU")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("TabelaPrecoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TabelaPrecoId");
 
                     b.ToTable("produtos");
                 });
@@ -195,7 +221,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasIndex("CondicaoPagamentoId");
 
-                    b.ToTable("Vendas");
+                    b.ToTable("vendas");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.VendaItem", b =>
@@ -224,7 +250,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasIndex("VendaId");
 
-                    b.ToTable("VendaItens");
+                    b.ToTable("vendaitens");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Notificacao", b =>
@@ -258,6 +284,15 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasOne("LojaVirtual.ProductApi.Models.TabelaPreco", null)
                         .WithMany("PrecoProdutoClientes")
+                        .HasForeignKey("TabelaPrecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LojaVirtual.ProductApi.Models.Produto", b =>
+                {
+                    b.HasOne("LojaVirtual.ProductApi.Models.TabelaPreco", null)
+                        .WithMany("Produtos")
                         .HasForeignKey("TabelaPrecoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -319,6 +354,8 @@ namespace LojaVirtual.ProductApi.Migrations
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.TabelaPreco", b =>
                 {
                     b.Navigation("PrecoProdutoClientes");
+
+                    b.Navigation("Produtos");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Venda", b =>

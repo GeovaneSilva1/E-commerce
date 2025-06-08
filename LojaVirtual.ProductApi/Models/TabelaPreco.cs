@@ -8,5 +8,6 @@
         public DateTime? DataFim { get; set; }
 
         public List<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
+        public List<Produto>? Produtos { get; set; }
     }
 }
