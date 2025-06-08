@@ -8,6 +8,7 @@ namespace LojaVirtual.ProductApi.Models
         public int Id { get; set; }
         public string? CNPJ { get; set; } 
         public string RazaoSocial { get; set; }
+        public string? Email { get; set; }
 
         public List<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
         public List<Venda>? Vendas { get; set; }
@@ -17,6 +18,7 @@ namespace LojaVirtual.ProductApi.Models
         { 
             this.CNPJ = CNPJ;
             this.RazaoSocial = RazaoSocial;
+            this.Email = Email;
         }
     }
 }

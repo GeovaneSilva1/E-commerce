@@ -4,5 +4,6 @@
     {
         public string CNPJ { get; set; }
         public string? RazaoSocial { get; set; }
+        public string? Email { get; set; }
     }
 }
