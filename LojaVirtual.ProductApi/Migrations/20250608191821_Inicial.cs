@@ -23,7 +23,7 @@ namespace LojaVirtual.ProductApi.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CNPJ = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    RazaoSocial = table.Column<string>(type: "longtext", nullable: true)
+                    RazaoSocial = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -50,24 +50,6 @@ namespace LojaVirtual.ProductApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "produtos",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SKU = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Preco = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_produtos", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "TabelaPrecos",
                 columns: table => new
                 {
@@ -85,7 +67,24 @@ namespace LojaVirtual.ProductApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Vendas",
+                name: "VendaRelatorios",
+                columns: table => new
+                {
+                    IdVenda = table.Column<int>(type: "int", nullable: false),
+                    NomeCliente = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Produto = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Quantidade = table.Column<int>(type: "int", nullable: false),
+                    Valor = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                },
+                constraints: table =>
+                {
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "vendas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -96,17 +95,42 @@ namespace LojaVirtual.ProductApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vendas", x => x.Id);
+                    table.PrimaryKey("PK_vendas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vendas_clientes_ClienteId",
+                        name: "FK_vendas_clientes_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Vendas_condicaopagamentos_CondicaoPagamentoId",
+                        name: "FK_vendas_condicaopagamentos_CondicaoPagamentoId",
                         column: x => x.CondicaoPagamentoId,
                         principalTable: "condicaopagamentos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "produtos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    SKU = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Descricao = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Preco = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    TabelaPrecoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_produtos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_produtos_TabelaPrecos_TabelaPrecoId",
+                        column: x => x.TabelaPrecoId,
+                        principalTable: "TabelaPrecos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -180,7 +204,7 @@ namespace LojaVirtual.ProductApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "VendaItens",
+                name: "vendaitens",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -192,17 +216,17 @@ namespace LojaVirtual.ProductApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VendaItens", x => x.Id);
+                    table.PrimaryKey("PK_vendaitens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VendaItens_Vendas_VendaId",
-                        column: x => x.VendaId,
-                        principalTable: "Vendas",
+                        name: "FK_vendaitens_produtos_ProdutoId",
+                        column: x => x.ProdutoId,
+                        principalTable: "produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_VendaItens_produtos_ProdutoId",
-                        column: x => x.ProdutoId,
-                        principalTable: "produtos",
+                        name: "FK_vendaitens_vendas_VendaId",
+                        column: x => x.VendaId,
+                        principalTable: "vendas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -234,23 +258,28 @@ namespace LojaVirtual.ProductApi.Migrations
                 column: "TabelaPrecoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VendaItens_ProdutoId",
-                table: "VendaItens",
+                name: "IX_produtos_TabelaPrecoId",
+                table: "produtos",
+                column: "TabelaPrecoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_vendaitens_ProdutoId",
+                table: "vendaitens",
                 column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VendaItens_VendaId",
-                table: "VendaItens",
+                name: "IX_vendaitens_VendaId",
+                table: "vendaitens",
                 column: "VendaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vendas_ClienteId",
-                table: "Vendas",
+                name: "IX_vendas_ClienteId",
+                table: "vendas",
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vendas_CondicaoPagamentoId",
-                table: "Vendas",
+                name: "IX_vendas_CondicaoPagamentoId",
+                table: "vendas",
                 column: "CondicaoPagamentoId");
         }
 
@@ -264,16 +293,19 @@ namespace LojaVirtual.ProductApi.Migrations
                 name: "PrecoProdutoClientes");
 
             migrationBuilder.DropTable(
-                name: "VendaItens");
+                name: "vendaitens");
 
             migrationBuilder.DropTable(
-                name: "TabelaPrecos");
-
-            migrationBuilder.DropTable(
-                name: "Vendas");
+                name: "VendaRelatorios");
 
             migrationBuilder.DropTable(
                 name: "produtos");
+
+            migrationBuilder.DropTable(
+                name: "vendas");
+
+            migrationBuilder.DropTable(
+                name: "TabelaPrecos");
 
             migrationBuilder.DropTable(
                 name: "clientes");

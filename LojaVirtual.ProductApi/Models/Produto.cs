@@ -9,6 +9,7 @@ public class Produto
     public string? SKU { get; set; }
     public string? Descricao { get; set; }
     public decimal Preco { get; set; }
+    public int TabelaPrecoId { get; set; }
 
     public List<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
     public List<VendaItem>? VendaItems { get; set; }
