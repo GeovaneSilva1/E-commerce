@@ -53,6 +53,9 @@ namespace LojaVirtual.ProductApi.Migrations
                     b.Property<string>("CNPJ")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("RazaoSocial")
                         .IsRequired()
                         .HasColumnType("longtext");

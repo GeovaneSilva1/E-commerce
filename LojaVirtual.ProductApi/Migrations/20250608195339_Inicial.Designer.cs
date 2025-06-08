@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaVirtual.ProductApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250608191821_Inicial")]
+    [Migration("20250608195339_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -54,6 +54,9 @@ namespace LojaVirtual.ProductApi.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CNPJ")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
                         .HasColumnType("longtext");
 
                     b.Property<string>("RazaoSocial")
