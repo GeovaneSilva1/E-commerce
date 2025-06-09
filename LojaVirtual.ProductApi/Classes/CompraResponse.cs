@@ -10,6 +10,7 @@
             this.NomeRazao = compra.NomeRazao;
             this.CondicaoPagamento = compra.CondicaoPagamento;
             this.Itens = compra.Itens;
+            this.Email = compra.Email;
 
             this.ValorTotalVenda = ValorTotalVenda;
         }
