@@ -3,6 +3,7 @@ using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using LojaVirtual.ProductApi.Controllers;
+using System.Collections.Generic;
 
 namespace LojaVirtual.ProductApi.Controllers
 {
@@ -15,18 +16,21 @@ namespace LojaVirtual.ProductApi.Controllers
         private readonly ICondicaoPagamentoRepository _condicaoPagamentoRepository;
         private readonly IVendaRepository _vendaRepository;
         private readonly IVendaItemRepository _vendaItemRepository;
+        private readonly IPrecoProdutoClienteRepository _PrecoProdutoClienteRepository;
 
         public CompraController(IClienteRepository clienteRepository,
                                IProdutoRepository produtoRepository,
                                ICondicaoPagamentoRepository condicaoPagamentoRepository,
                                IVendaRepository vendaRepository,
-                               IVendaItemRepository vendaItemRepository)
+                               IVendaItemRepository vendaItemRepository,
+                               IPrecoProdutoClienteRepository precoProdutoClienteRepository)
         {
             _clienteRepository = clienteRepository;
             _produtoRepository = produtoRepository;
             _condicaoPagamentoRepository = condicaoPagamentoRepository;
             _vendaRepository = vendaRepository;   
             _vendaItemRepository = vendaItemRepository;
+            _PrecoProdutoClienteRepository = precoProdutoClienteRepository;
         }
 
         [HttpPost]
@@ -60,7 +64,11 @@ namespace LojaVirtual.ProductApi.Controllers
             Venda venda = CriaVenda(cliente, condicaoPagamento);
 
             //tabela vendaitens
-            CriaVendaItens(produtos, venda);
+            List<VendaItem> vendaItems = CriaVendaItens(produtos, venda);
+
+            //tabela precoprodutoclientes *Politica de preços*
+            CriaPoliticaPrecos(vendaItems, cliente);
+
             decimal valorTotalVenda = _vendaItemRepository.GetValorTotalVenda(venda.Id);
             
             CompraResponse compraResponse = new CompraResponse(compra,valorTotalVenda);
@@ -68,14 +76,28 @@ namespace LojaVirtual.ProductApi.Controllers
             return Ok(compraResponse);
         }
 
-        private void CriaVendaItens(Dictionary<Produto, int> produtos, Venda venda)
+        private void CriaPoliticaPrecos(List<VendaItem> vendaItems, Cliente cliente)
         {
+            foreach (VendaItem vItem in vendaItems)
+            {
+                Produto produto = _produtoRepository.GetById(vItem.ProdutoId);
+                PrecoProdutoCliente precoProdutoCliente = new PrecoProdutoCliente(produto.Id, cliente.Id, produto.TabelaPrecoId, vItem.ValorUnitario);
+                _PrecoProdutoClienteRepository.Add(precoProdutoCliente);
+            }
+        }
+
+        private List<VendaItem> CriaVendaItens(Dictionary<Produto, int> produtos, Venda venda)
+        {
+            List<VendaItem> vendaItems = new List<VendaItem>();
+
             foreach (var prod in produtos)
             {
                 decimal valorUnProduto = _produtoRepository.GetPrecoUnitarioById(prod.Key.Id);
                 var vendaitem = new VendaItem(venda.Id, prod.Key.Id, prod.Value, (prod.Value * valorUnProduto));
                 _vendaItemRepository.Add(vendaitem);
+                vendaItems.Add(vendaitem);
             }
+            return vendaItems;
         }
 
         private Venda CriaVenda(Cliente cliente, CondicaoPagamento condicaoPagamento)
