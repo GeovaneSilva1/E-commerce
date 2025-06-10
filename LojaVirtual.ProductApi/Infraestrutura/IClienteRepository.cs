@@ -1,4 +1,5 @@
-﻿using LojaVirtual.ProductApi.Models;
+﻿using LojaVirtual.ProductApi.Classes;
+using LojaVirtual.ProductApi.Models;
 
 namespace LojaVirtual.ProductApi.Infraestrutura
 {
@@ -14,7 +15,7 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         bool ExistById(int id);
         bool ExistByCNPJ(string CNPJ);
 
-        Cliente Update(Cliente cliente);
+        Cliente Update(Cliente cliente, ClienteRequest clienteRequest);
 
         Cliente DeleteById(int id);
     }

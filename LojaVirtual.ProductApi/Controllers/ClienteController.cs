@@ -69,18 +69,16 @@ namespace LojaVirtual.ProductApi.Controllers
         [SwaggerOperation(Summary = "Alterar cliente", Description = "Altera um cliente específico pelo Id.")]
         public IActionResult EditCliente(int id, [FromBody] ClienteRequest clienteRequest)
         {
-            var clienteSolicitado = _clienteRepository.ExistById(id);
+            var clienteSolicitado = _clienteRepository.GetById(id);
 
-            if (!clienteSolicitado)
+            if (clienteSolicitado is null)
                return NotFound("Cliente não encontrado.");
 
-            Cliente cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial, clienteRequest.Email);
-
-            cliente.Id = id;
-
-            _clienteRepository.Update(cliente);
-
-            return Ok(cliente);
+            var clienteModificado = _clienteRepository.Update(clienteSolicitado, clienteRequest);
+            ClienteResponse clienteRespponse = new ClienteResponse();
+            clienteRespponse.IncluirAtributos(clienteModificado);
+            
+            return Ok(clienteRespponse);
         }
 
         [HttpDelete("{id:int}")]
