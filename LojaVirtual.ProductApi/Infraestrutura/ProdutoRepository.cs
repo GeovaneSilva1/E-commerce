@@ -47,5 +47,13 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         {
             return _appDbContext.Produtos.Where(p => p.Id == id).Select(pc => pc.Preco).FirstOrDefault();
         }
+
+        public Produto Update(Produto produto, decimal preco)
+        {
+            _appDbContext.Entry(produto).State = EntityState.Modified;
+            produto.Preco = preco;
+            _appDbContext.SaveChanges();
+            return produto;
+        }
     }
 }

@@ -69,6 +69,23 @@ namespace LojaVirtual.ProductApi.Controllers
             return Ok(produtoResponse);
         }
 
+        [HttpPut("{id:int}")]
+        public IActionResult AlterarProduto(int id, [FromBody] ProdutoRequest produtoRequest)
+        {
+            Produto produto = _produtoRepository.GetById(id);
+            
+            if (produto is null)
+            {
+                return NotFound("Produto não encontrado");
+            }
+
+            var produtoAlterado = _produtoRepository.Update(produto, produtoRequest.NovoPreco);
+            ProdutoResponse produtoResponse = new ProdutoResponse();
+            produtoResponse.IncluirAtributos(produtoAlterado);
+            
+            return Ok(produtoResponse);
+        }
+
         public static string MontaSKUByNome(string nome)
         {
             if (string.IsNullOrWhiteSpace(nome))

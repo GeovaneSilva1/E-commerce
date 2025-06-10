@@ -1,4 +1,5 @@
-﻿using LojaVirtual.ProductApi.Context;
+﻿using LojaVirtual.ProductApi.Classes;
+using LojaVirtual.ProductApi.Context;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,9 +30,13 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return _appDbContext.Clientes.Any(c => c.Id == id);
         }
 
-        public Cliente Update(Cliente cliente)
+        public Cliente Update(Cliente cliente, ClienteRequest clienteRequest)
         {
             _appDbContext.Entry(cliente).State = EntityState.Modified;
+            cliente.CNPJ = clienteRequest.CNPJ;
+            cliente.RazaoSocial = clienteRequest.RazaoSocial;
+            cliente.Email = clienteRequest.Email;
+
             _appDbContext.SaveChanges();
             return cliente;
         }
