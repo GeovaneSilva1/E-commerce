@@ -20,6 +20,6 @@ namespace LojaVirtual.ProductApi.Classes
     public class AtributosCondicaoPagamento
     {
         public string? Descricao { get; set; }
-        public string? Dias { get; set; }
+        public int? Dias { get; set; }
     }
 }

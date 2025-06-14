@@ -15,7 +15,7 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         bool ExistById(int id);
         bool ExistByCNPJ(string CNPJ);
 
-        Cliente Update(Cliente cliente, ClienteRequest clienteRequest);
+        Cliente Update(Cliente cliente, ClienteDTO clienteRequest);
 
         Cliente DeleteById(int id);
     }

@@ -28,7 +28,7 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return _appDbContext.CondicaoPagamentos.Any(cp => cp.Id == id);
         }
 
-        public bool ExistByDescAndDias(string descricao, string dias)
+        public bool ExistByDescAndDias(string descricao, int? dias)
         {
             return _appDbContext.CondicaoPagamentos.Any(cp => cp.Descricao == descricao && cp.Dias == dias);
         }
@@ -38,7 +38,7 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return _appDbContext.CondicaoPagamentos.Where(cp => cp.Id == id).FirstOrDefault();
         }
 
-        public CondicaoPagamento GetByByDescAndDias(string descricao, string dias)
+        public CondicaoPagamento GetByByDescAndDias(string descricao, int? dias)
         {
             return _appDbContext.CondicaoPagamentos.Where(cp => cp.Descricao == descricao && cp.Dias == dias).FirstOrDefault();
         }

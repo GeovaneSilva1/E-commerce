@@ -7,8 +7,8 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         void Add(CondicaoPagamento condicaoPagamento);
         public List<CondicaoPagamento> GetMany();
         CondicaoPagamento GetById(int id);
-        CondicaoPagamento GetByByDescAndDias(string descricao, string dias);
+        CondicaoPagamento GetByByDescAndDias(string descricao, int? dias);
         bool ExistById(int id);
-        bool ExistByDescAndDias(string descricao, string dias);
+        bool ExistByDescAndDias(string descricao, int? dias);
     }
 }

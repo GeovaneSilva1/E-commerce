@@ -30,7 +30,7 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return _appDbContext.Clientes.Any(c => c.Id == id);
         }
 
-        public Cliente Update(Cliente cliente, ClienteRequest clienteRequest)
+        public Cliente Update(Cliente cliente, ClienteDTO clienteRequest)
         {
             _appDbContext.Entry(cliente).State = EntityState.Modified;
             cliente.CNPJ = clienteRequest.CNPJ;

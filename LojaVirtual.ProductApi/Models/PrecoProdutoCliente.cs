@@ -1,19 +1,23 @@
-﻿namespace LojaVirtual.ProductApi.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace LojaVirtual.ProductApi.Models
 {
+    [Table("precoprodutoclientes")]
     public class PrecoProdutoCliente
     {
         public int Id { get; set; }
-        public int ProdutoId { get; set; }
-        public int ClienteId { get; set; }
-        public int TabelaPrecoId { get; set; }
         public decimal Valor { get; set; }
 
-        public PrecoProdutoCliente(int ProdutoId, int ClienteId, int TabelaPrecoId, decimal Valor)
+        /*public PrecoProdutoCliente(int ProdutoId, int ClienteId, int TabelaPrecoId, decimal Valor)
         {
-            this.ProdutoId = ProdutoId;
-            this.ClienteId = ClienteId;
-            this.TabelaPrecoId = TabelaPrecoId;
+            this.pro_Id = ProdutoId;
+            this.cli_Id = ClienteId;
+            this.tp_Id = TabelaPrecoId;
             this.Valor = Valor;
-        }
+        }*/
+
+        //public TabelaPreco? TabelaPreco { get; set; }
+        public Produto? Produto { get; set; }
+        public Cliente? Cliente { get; set; }
     }
 }

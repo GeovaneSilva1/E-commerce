@@ -7,12 +7,13 @@ namespace LojaVirtual.ProductApi.Models
     {
         public int Id { get; set; }
         public string? Descricao { get; set; } 
-        public string? Dias { get; set; }
-        public List<Venda>? Vendas { get; set; }
-        public CondicaoPagamento(string Descricao, string Dias)
+        public int? Dias { get; set; }
+
+        public CondicaoPagamento(string Descricao, int? Dias)
         {
             this.Descricao = Descricao;
             this.Dias = Dias;
         }
+        public ICollection<Venda>? Vendas { get; set; }
     }
 }

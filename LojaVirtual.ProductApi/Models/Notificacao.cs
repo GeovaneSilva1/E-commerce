@@ -1,12 +1,15 @@
-﻿namespace LojaVirtual.ProductApi.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace LojaVirtual.ProductApi.Models
 {
+    [Table("notificacoes")]
     public class Notificacao
     {
         public int Id { get; set; }
-        public int ClienteId { get; set; }
-        public int ProdutoId { get; set; }
-        public string Mensagem { get; set; } = string.Empty;
+        public string? Mensagem { get; set; }
         public DateTime DataEnvio { get; set; } = DateTime.Now;
-        public string Status { get; set; } = "Enviado";
+        public string? Status { get; set; }
+        public Cliente? Cliente { get; set; }
+        public Produto? Produto { get; set; }
     }
 }

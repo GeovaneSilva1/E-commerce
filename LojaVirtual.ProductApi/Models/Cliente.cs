@@ -10,9 +10,9 @@ namespace LojaVirtual.ProductApi.Models
         public string RazaoSocial { get; set; }
         public string? Email { get; set; }
 
-        public List<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
-        public List<Venda>? Vendas { get; set; }
-        public List<Notificacao>? Notificacoes { get; set; }
+        public ICollection<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
+        public ICollection<Venda>? Vendas { get; set; }
+        public ICollection<Notificacao>? Notificacoes { get; set; }
 
         public Cliente(string CNPJ, string RazaoSocial, string Email) 
         { 

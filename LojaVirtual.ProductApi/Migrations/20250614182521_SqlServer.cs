@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -7,92 +6,77 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LojaVirtual.ProductApi.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class SqlServer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "clientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CNPJ = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    RazaoSocial = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CNPJ = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
+                    RazaoSocial = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_clientes", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "condicaopagamentos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Dias = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Dias = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_condicaopagamentos", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
-                name: "TabelaPrecos",
+                name: "tabelaprecos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataInicio = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    DataFim = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DataInicio = table.Column<DateTime>(type: "date", nullable: false),
+                    DataFim = table.Column<DateTime>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TabelaPrecos", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                    table.PrimaryKey("PK_tabelaprecos", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "VendaRelatorios",
                 columns: table => new
                 {
                     IdVenda = table.Column<int>(type: "int", nullable: false),
-                    NomeCliente = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Produto = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NomeCliente = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Produto = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
-                    Valor = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    Valor = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "vendas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteId = table.Column<int>(type: "int", nullable: false),
-                    Data = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Data = table.Column<DateTime>(type: "date", nullable: false),
                     CondicaoPagamentoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -110,111 +94,96 @@ namespace LojaVirtual.ProductApi.Migrations
                         principalTable: "condicaopagamentos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "produtos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SKU = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Preco = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SKU = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Preco = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
                     TabelaPrecoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_produtos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_produtos_TabelaPrecos_TabelaPrecoId",
+                        name: "FK_produtos_tabelaprecos_TabelaPrecoId",
                         column: x => x.TabelaPrecoId,
-                        principalTable: "TabelaPrecos",
+                        principalTable: "tabelaprecos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
-                name: "Notificacoes",
+                name: "notificacoes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Mensagem = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    DataEnvio = table.Column<DateTime>(type: "date", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ClienteId = table.Column<int>(type: "int", nullable: false),
-                    ProdutoId = table.Column<int>(type: "int", nullable: false),
-                    Mensagem = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataEnvio = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Status = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    ProdutoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notificacoes", x => x.Id);
+                    table.PrimaryKey("PK_notificacoes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notificacoes_clientes_ClienteId",
+                        name: "FK_notificacoes_clientes_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Notificacoes_produtos_ProdutoId",
+                        name: "FK_notificacoes_produtos_ProdutoId",
                         column: x => x.ProdutoId,
                         principalTable: "produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
-                name: "PrecoProdutoClientes",
+                name: "precoprodutoclientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Valor = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
                     ProdutoId = table.Column<int>(type: "int", nullable: false),
-                    ClienteId = table.Column<int>(type: "int", nullable: false),
-                    TabelaPrecoId = table.Column<int>(type: "int", nullable: false),
-                    Valor = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    ClienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PrecoProdutoClientes", x => x.Id);
+                    table.PrimaryKey("PK_precoprodutoclientes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PrecoProdutoClientes_TabelaPrecos_TabelaPrecoId",
-                        column: x => x.TabelaPrecoId,
-                        principalTable: "TabelaPrecos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PrecoProdutoClientes_clientes_ClienteId",
+                        name: "FK_precoprodutoclientes_clientes_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PrecoProdutoClientes_produtos_ProdutoId",
+                        name: "FK_precoprodutoclientes_produtos_ProdutoId",
                         column: x => x.ProdutoId,
                         principalTable: "produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "vendaitens",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    VendaId = table.Column<int>(type: "int", nullable: false),
-                    ProdutoId = table.Column<int>(type: "int", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
-                    ValorUnitario = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    Valor = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
+                    VendaId = table.Column<int>(type: "int", nullable: false),
+                    ProdutoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -231,33 +200,27 @@ namespace LojaVirtual.ProductApi.Migrations
                         principalTable: "vendas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notificacoes_ClienteId",
-                table: "Notificacoes",
+                name: "IX_notificacoes_ClienteId",
+                table: "notificacoes",
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notificacoes_ProdutoId",
-                table: "Notificacoes",
+                name: "IX_notificacoes_ProdutoId",
+                table: "notificacoes",
                 column: "ProdutoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrecoProdutoClientes_ClienteId",
-                table: "PrecoProdutoClientes",
+                name: "IX_precoprodutoclientes_ClienteId",
+                table: "precoprodutoclientes",
                 column: "ClienteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrecoProdutoClientes_ProdutoId",
-                table: "PrecoProdutoClientes",
+                name: "IX_precoprodutoclientes_ProdutoId",
+                table: "precoprodutoclientes",
                 column: "ProdutoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PrecoProdutoClientes_TabelaPrecoId",
-                table: "PrecoProdutoClientes",
-                column: "TabelaPrecoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_produtos_TabelaPrecoId",
@@ -289,10 +252,10 @@ namespace LojaVirtual.ProductApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Notificacoes");
+                name: "notificacoes");
 
             migrationBuilder.DropTable(
-                name: "PrecoProdutoClientes");
+                name: "precoprodutoclientes");
 
             migrationBuilder.DropTable(
                 name: "vendaitens");
@@ -307,7 +270,7 @@ namespace LojaVirtual.ProductApi.Migrations
                 name: "vendas");
 
             migrationBuilder.DropTable(
-                name: "TabelaPrecos");
+                name: "tabelaprecos");
 
             migrationBuilder.DropTable(
                 name: "clientes");

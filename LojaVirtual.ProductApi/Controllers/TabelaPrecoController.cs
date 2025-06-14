@@ -43,10 +43,10 @@ namespace LojaVirtual.ProductApi.Controllers
             List<TabelaPreco> tabPrecos = new List<TabelaPreco>();
             foreach (var tabelaprecoRequest in tabelaPrecosRequests)
             {
-                TabelaPreco novaTabelaPreco = new TabelaPreco(tabelaprecoRequest.Descricao, DateTime.Now, RetornaDataByDias(tabelaprecoRequest.DiasValidos));
-                _tabelaPrecoRepository.Add(novaTabelaPreco);
+                //TabelaPreco novaTabelaPreco = new TabelaPreco(tabelaprecoRequest.Descricao, DateTime.Now, RetornaDataByDias(tabelaprecoRequest.DiasValidos));
+                //_tabelaPrecoRepository.Add(novaTabelaPreco);
 
-                tabPrecos.Add(novaTabelaPreco);
+                //tabPrecos.Add(novaTabelaPreco);
             }
 
             return tabPrecos;

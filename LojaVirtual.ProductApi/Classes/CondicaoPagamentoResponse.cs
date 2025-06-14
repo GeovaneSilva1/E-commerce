@@ -16,7 +16,7 @@ namespace LojaVirtual.ProductApi.Classes
                 {
                     Id = condicaoPagamento[count].Id,
                     Descricao = condicaoPagamento[count].Descricao,
-                    Dias = condicaoPagamento [count].Dias
+                    Dias = condicaoPagamento[count].Dias
                 });
             }
         }
@@ -26,7 +26,7 @@ namespace LojaVirtual.ProductApi.Classes
     {
         public int Id { get; set; }
         public string? Descricao { get; set; }
-        public string? Dias { get; set; }
+        public int? Dias { get; set; }
 
     }
 }

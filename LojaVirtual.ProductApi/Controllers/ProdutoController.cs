@@ -47,10 +47,10 @@ namespace LojaVirtual.ProductApi.Controllers
                 return BadRequest("Tabela de preço Inexistente ou fora do período de aplicação!");
             }
 
-            var produto = new Produto(id, SKU, nome, preco, tabelaPrecoValida.Id);
-            _produtoRepository.Add(produto);
+            //var produto = new Produto(id, SKU, nome, preco, tabelaPrecoValida.tp_Id);
+            //_produtoRepository.Add(produto);
 
-            return Ok(produto);
+            return Ok();
         }
 
         [HttpGet]

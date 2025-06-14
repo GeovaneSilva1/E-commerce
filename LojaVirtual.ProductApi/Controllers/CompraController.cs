@@ -78,12 +78,12 @@ namespace LojaVirtual.ProductApi.Controllers
 
         private void CriaPoliticaPrecos(List<VendaItem> vendaItems, Cliente cliente)
         {
-            foreach (VendaItem vItem in vendaItems)
+           /* foreach (VendaItem vItem in vendaItems)
             {
                 Produto produto = _produtoRepository.GetById(vItem.ProdutoId);
-                PrecoProdutoCliente precoProdutoCliente = new PrecoProdutoCliente(produto.Id, cliente.Id, produto.TabelaPrecoId, vItem.ValorUnitario);
+                PrecoProdutoCliente precoProdutoCliente = new PrecoProdutoCliente(produto.pro_Id, cliente.Id, produto.tp_Id, vItem.ValorUnitario);
                 _PrecoProdutoClienteRepository.Add(precoProdutoCliente);
-            }
+            } */
         }
 
         private List<VendaItem> CriaVendaItens(Dictionary<Produto, int> produtos, Venda venda)
@@ -93,7 +93,7 @@ namespace LojaVirtual.ProductApi.Controllers
             foreach (var prod in produtos)
             {
                 decimal valorUnProduto = _produtoRepository.GetPrecoUnitarioById(prod.Key.Id);
-                var vendaitem = new VendaItem(venda.Id, prod.Key.Id, prod.Value, (prod.Value * valorUnProduto));
+                var vendaitem = new VendaItem(/*venda.Id, prod.Key.Id, prod.Value, (prod.Value * valorUnProduto)*/);
                 _vendaItemRepository.Add(vendaitem);
                 vendaItems.Add(vendaitem);
             }
@@ -102,9 +102,9 @@ namespace LojaVirtual.ProductApi.Controllers
 
         private Venda CriaVenda(Cliente cliente, CondicaoPagamento condicaoPagamento)
         {
-            var venda = new Venda(cliente.Id, condicaoPagamento.Id);
+            var venda = new Venda();
             _vendaRepository.Add(venda);
-            return venda;
+            return venda; 
         }
 
         private CondicaoPagamento RetornaCondicaoPagamento(Compra compra)

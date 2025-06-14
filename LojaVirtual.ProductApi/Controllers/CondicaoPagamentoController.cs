@@ -18,7 +18,7 @@ namespace LojaVirtual.ProductApi.Controllers
 
         [HttpPost]
         [Route("AdminCadastrarCondicoesPag")]
-        public IActionResult AddCondPagamento(string descricao, string dias)
+        public IActionResult AddCondPagamento(string descricao, int dias)
         {
             bool existeCondPag = _condicaoPagamentoRepository.ExistByDescAndDias(descricao, dias);
 

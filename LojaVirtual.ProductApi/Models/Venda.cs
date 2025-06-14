@@ -6,16 +6,18 @@ namespace LojaVirtual.ProductApi.Models
     public class Venda
     {
         public int Id { get; set; }
-        public int ClienteId { get; set; }
+        public Cliente? Cliente { get; set; }
         public DateTime Data { get; set; }
-        public int CondicaoPagamentoId { get; set; }
+        public CondicaoPagamento? CondicaoPagamento { get; set; }
 
-        public Venda(int ClienteId, int CondicaoPagamentoId)
+        /*public Venda(int ClienteId, int CondicaoPagamentoId)
         {
             this.ClienteId = ClienteId;
-            this.CondicaoPagamentoId = CondicaoPagamentoId;
+            //this.CondicaoPagamentoId = CondicaoPagamentoId;
             this.Data = DateTime.Now;
-        }
-        public List<VendaItem> Itens { get; set; } = new();
+        } */
+        
+
+        public ICollection<VendaItem> VendaItem { get; set; }
     }
 }

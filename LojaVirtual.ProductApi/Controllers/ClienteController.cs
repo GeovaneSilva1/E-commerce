@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace LojaVirtual.ProductApi.Controllers
 {
     [ApiController]
-    [Route("api/v1/cliente")]
+    [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
         private readonly IClienteRepository _clienteRepository;
@@ -20,8 +20,13 @@ namespace LojaVirtual.ProductApi.Controllers
         [Route("CadastrarCliente")]
         [HttpPost]
         [SwaggerOperation(Summary = "Cadastrar novo cliente", Description = "Cadastra um novo cliente ao sistema.")]
-        public IActionResult AddCliente([FromBody] ClienteRequest clienteRequest)
+        public async Task<ActionResult<ClienteDTO>> AddCliente([FromBody] ClienteDTO clienteRequest)
         {
+            if (clienteRequest is null)
+            {
+                return BadRequest("Dados de cliente Inválidos");
+            }
+
             var cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial, clienteRequest.Email);
 
             _clienteRepository.Add(cliente);
@@ -67,7 +72,7 @@ namespace LojaVirtual.ProductApi.Controllers
 
         [HttpPut("{id:int}")]
         [SwaggerOperation(Summary = "Alterar cliente", Description = "Altera um cliente específico pelo Id.")]
-        public IActionResult EditCliente(int id, [FromBody] ClienteRequest clienteRequest)
+        public IActionResult EditCliente(int id, [FromBody] ClienteDTO clienteRequest)
         {
             var clienteSolicitado = _clienteRepository.GetById(id);
 
