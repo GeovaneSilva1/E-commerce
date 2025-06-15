@@ -1,7 +1,7 @@
 ﻿using LojaVirtual.ProductApi.Models;
 using System.Diagnostics.Metrics;
 
-namespace LojaVirtual.ProductApi.Classes
+namespace LojaVirtual.ProductApi.DTOs
 {
     public class ClienteResponse
     {

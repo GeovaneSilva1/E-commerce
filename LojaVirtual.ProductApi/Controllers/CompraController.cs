@@ -1,4 +1,4 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -124,7 +124,7 @@ namespace LojaVirtual.ProductApi.Controllers
             Cliente cliente = _clienteRepository.GetByCNPJ(compra.CpfCnpj);
             if (cliente is null)
             {
-                cliente = new Cliente(compra.CpfCnpj, compra.NomeRazao, compra.Email);
+                cliente = new Cliente();
                 _clienteRepository.Add(cliente);
             }
 

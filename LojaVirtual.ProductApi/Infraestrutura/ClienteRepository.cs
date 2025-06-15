@@ -1,4 +1,4 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Context;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,23 +14,19 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext = appDbContext;
         }
 
-        public void Add(Cliente cliente)
+        public async Task<Cliente> Add(Cliente cliente)
         {
             _appDbContext.Clientes.Add(cliente);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
+            return cliente;
         }
 
-        public List<Cliente> Get()
+        public async Task<bool> ExistById(int id)
         {
-            return _appDbContext.Clientes.ToList();
+            return await _appDbContext.Clientes.AnyAsync(c => c.Id == id);
         }
 
-        public bool ExistById(int id)
-        {
-            return _appDbContext.Clientes.Any(c => c.Id == id);
-        }
-
-        public Cliente Update(Cliente cliente, ClienteDTO clienteRequest)
+        /*public Cliente Update(Cliente cliente, ClienteDTO clienteRequest)
         {
             _appDbContext.Entry(cliente).State = EntityState.Modified;
             cliente.CNPJ = clienteRequest.CNPJ;
@@ -39,19 +35,19 @@ namespace LojaVirtual.ProductApi.Infraestrutura
 
             _appDbContext.SaveChanges();
             return cliente;
-        }
+        } */
 
-        public Cliente DeleteById(int id)
+        /*public Cliente DeleteById(int id)
         {
             var cliente = GetById(id);
             _appDbContext.Clientes.Remove(cliente);
             _appDbContext.SaveChanges();
             return cliente;
-        }
+        } */
 
-        public Cliente GetById(int id)
-        {
-            return _appDbContext.Clientes.Where(c => c.Id == id).FirstOrDefault();
+        public async Task<Cliente> GetById(int id)
+        { 
+            return await _appDbContext.Clientes.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         public Cliente GetByCNPJ(string CNPJ)
@@ -62,6 +58,26 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         public bool ExistByCNPJ(string CNPJ)
         {
             return _appDbContext.Clientes.Any(c => c.CNPJ == CNPJ);
+        }
+
+        public async Task<Cliente> Delete(int id)
+        {
+            var cliente = await GetById(id);
+            _appDbContext.Clientes.Remove(cliente);
+            await _appDbContext.SaveChangesAsync();
+            return cliente;
+        }
+
+        public async Task<IEnumerable<Cliente>> Get()
+        {
+            return await _appDbContext.Clientes.ToListAsync();
+        }
+
+        public async Task<Cliente> Update(Cliente cliente)
+        {
+            _appDbContext.Entry(cliente).State = EntityState.Modified;
+            await _appDbContext.SaveChangesAsync();
+            return cliente;
         }
     }
 }

@@ -1,6 +1,9 @@
 using LojaVirtual.ProductApi.Context;
 using LojaVirtual.ProductApi.Infraestrutura;
+using LojaVirtual.ProductApi.Services;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
 });
+var mysqlServerConnection = "Server=DESKTOP-74J9NVH\\MSSQLSERVER2025;Database=HavanDB;UId=sa;Password=masterkey;TrustServerCertificate=True";
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(mysqlServerConnection));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -23,6 +29,8 @@ builder.Services.AddTransient<IVendaRepository, VendaRepository>();
 builder.Services.AddTransient<IVendaItemRepository, VendaItemRepository>();
 builder.Services.AddTransient<ITabelaPrecoRepository, TabelaPrecoRepository>();
 builder.Services.AddTransient<IPrecoProdutoClienteRepository, PrecoProdutoClienteRepository>();
+
+builder.Services.AddTransient<IClienteService, ClienteService>();
 
 builder.Services.AddDbContext<AppDbContext>();
 

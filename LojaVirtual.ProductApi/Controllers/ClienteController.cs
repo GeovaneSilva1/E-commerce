@@ -1,6 +1,8 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using AutoMapper;
+using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
+using LojaVirtual.ProductApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -10,28 +12,33 @@ namespace LojaVirtual.ProductApi.Controllers
     [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
-        private readonly IClienteRepository _clienteRepository;
+        private readonly IClienteService _clienteService;
+        
 
-        public ClienteController(IClienteRepository clienteRepository)
+        public ClienteController(IClienteRepository clienteRepository, IClienteService clienteService)
         {
-            _clienteRepository = clienteRepository;
+            _clienteService = clienteService;
         }
 
         [Route("CadastrarCliente")]
         [HttpPost]
         [SwaggerOperation(Summary = "Cadastrar novo cliente", Description = "Cadastra um novo cliente ao sistema.")]
-        public async Task<ActionResult<ClienteDTO>> AddCliente([FromBody] ClienteDTO clienteRequest)
+        public async Task<ActionResult<ClienteDTO>> AddCliente([FromBody] ClienteDTO clienteDTO)
         {
-            if (clienteRequest is null)
+            if (clienteDTO is null)
             {
                 return BadRequest("Dados de cliente Inválidos");
             }
 
-            var cliente = new Cliente(clienteRequest.CNPJ, clienteRequest.RazaoSocial, clienteRequest.Email);
+            var clienteEncontrado = await _clienteService.GetClienteById(clienteDTO.Id);
+            if (clienteEncontrado is not null)
+            {
+                return BadRequest("Cliente Existente!");
+            }
 
-            _clienteRepository.Add(cliente);
-            
-            return Ok(cliente);
+            await _clienteService.AddCliente(clienteDTO);
+
+            return new CreatedAtRouteResult("GetCliente", new { id = clienteDTO.Id}, clienteDTO);
         }
 
         /// <summary>
@@ -41,63 +48,57 @@ namespace LojaVirtual.ProductApi.Controllers
         [Route("ObterClientes")]
         [HttpGet]
         [SwaggerOperation(Summary = "Listar todos os clientes", Description = "Retorna todos os clientes ativos no sistema.")]
-        public IActionResult GetCliente()
+        public async Task<ActionResult<IEnumerable<ClienteDTO>>> GetCliente()
         {
-            var cliente = _clienteRepository.Get();
-
-            if (cliente is null)
-            {
-                return BadRequest("Nenhum cliente cadastrado!");
-            }
-
-            ClienteResponse clienteResponse = new ClienteResponse();
-            clienteResponse.IncluirAtributos(cliente);
-            return Ok(clienteResponse);
+            var clienteDTO = await _clienteService.GetClientes();
+            if (clienteDTO is null)
+                return NotFound("Nenhum cliente encontrado!");
+            
+            return Ok(clienteDTO);
         }
 
-        [HttpGet("{id:int}")]
-        [SwaggerOperation(Summary = "Listar cliente", Description = "Retorna um cliente específico pelo Id.")]
-        public IActionResult GetClienteById(int id)
+        [HttpGet("{id:int}", Name = "GetCliente")]
+        public async Task<ActionResult<ClienteDTO>> Get(int id)
         {
-            var clienteSolicitado = _clienteRepository.ExistById(id);
-            if (!clienteSolicitado)
-                return NotFound("Cliente não encontrado.");
-
-            var cliente = _clienteRepository.GetById(id);
-            
-            ClienteResponse clienteResponse = new ClienteResponse();
-            clienteResponse.IncluirAtributos(cliente);
-            return Ok(clienteResponse);
+            var clienteDTO = await _clienteService.GetClienteById(id);
+            if (clienteDTO is null)
+            {
+                return BadRequest("Cliente não encontrado");
+            }
+            return Ok(clienteDTO);
         }
 
         [HttpPut("{id:int}")]
         [SwaggerOperation(Summary = "Alterar cliente", Description = "Altera um cliente específico pelo Id.")]
-        public IActionResult EditCliente(int id, [FromBody] ClienteDTO clienteRequest)
+        public async Task<ActionResult<ClienteDTO>> EditCliente(int id, [FromBody] ClienteDTO clienteDTO)
         {
-            var clienteSolicitado = _clienteRepository.GetById(id);
+            var clienteEncontrado = await _clienteService.ExistCLienteById(id);
+            if (!clienteEncontrado)
+            {
+                return BadRequest("Cliente não encontrado");
+            }
 
-            if (clienteSolicitado is null)
-               return NotFound("Cliente não encontrado.");
+            clienteDTO.Id = id;
 
-            var clienteModificado = _clienteRepository.Update(clienteSolicitado, clienteRequest);
-            ClienteResponse clienteRespponse = new ClienteResponse();
-            clienteRespponse.IncluirAtributos(clienteModificado);
+            await _clienteService.UpdateClienteById(clienteDTO);
             
-            return Ok(clienteRespponse);
+            return Ok(clienteDTO);
         }
 
         [HttpDelete("{id:int}")]
         [SwaggerOperation(Summary = "Deletar cliente", Description = "Apaga um cliente específico pelo Id.")]
-        public IActionResult DeleteCliente(int id)
+        public async Task<ActionResult<ClienteDTO>> DeleteCliente(int id)
         {
-            var clienteSolicitado = _clienteRepository.ExistById(id);
+            bool clienteEncontrado = await _clienteService.ExistCLienteById(id);
 
-            if (!clienteSolicitado)
+            if (!clienteEncontrado)
+            {
                 return NotFound("Cliente não encontrado.");
+            }
 
-            var clienteDeletado = _clienteRepository.DeleteById(id);
-
-            return Ok(clienteDeletado);
+            var clienteDTO = await _clienteService.RemoveCliente(id);
+            
+            return Ok(clienteDTO);
         }
 
     }

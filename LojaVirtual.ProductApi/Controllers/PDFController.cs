@@ -1,4 +1,4 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Infraestrutura;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,4 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Models;
 
 namespace LojaVirtual.ProductApi.Infraestrutura

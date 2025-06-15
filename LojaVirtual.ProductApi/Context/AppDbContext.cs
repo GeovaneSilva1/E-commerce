@@ -1,4 +1,4 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +6,11 @@ namespace LojaVirtual.ProductApi.Context
 {
     public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+
+        }
+
         public DbSet<Produto> Produtos { get; set; }
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<CondicaoPagamento> CondicaoPagamentos { get; set; }
@@ -16,12 +21,12 @@ namespace LojaVirtual.ProductApi.Context
         public DbSet<Notificacao> Notificacoes { get; set; }
         public DbSet<VendaRelatorio> VendaRelatorios { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+/*        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var mysqlServerConnection = "Server=localhost;Database=HavanDB;UId=sa;Password=masterkey;TrustServerCertificate=True";
+            var mysqlServerConnection = "Server=DESKTOP-74J9NVH\\MSSQLSERVER2025;Database=HavanDB;UId=sa;Password=masterkey;TrustServerCertificate=True";
             optionsBuilder.UseSqlServer(mysqlServerConnection);
 
-        }
+        } */
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

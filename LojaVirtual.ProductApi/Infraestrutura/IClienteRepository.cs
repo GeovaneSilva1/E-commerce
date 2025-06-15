@@ -1,22 +1,20 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Models;
 
 namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface IClienteRepository
     {
-        void Add(Cliente cliente);
-
-        List<Cliente> Get();
-
-        Cliente GetById(int id);
+        Task<Cliente> Add(Cliente cliente);
+        Task<Cliente> GetById(int id);
+        Task<IEnumerable<Cliente>> Get();
         Cliente GetByCNPJ(string CNPJ);
 
-        bool ExistById(int id);
+        Task<bool> ExistById(int id);
         bool ExistByCNPJ(string CNPJ);
 
-        Cliente Update(Cliente cliente, ClienteDTO clienteRequest);
+        Task<Cliente> Update(Cliente cliente);
 
-        Cliente DeleteById(int id);
+        Task<Cliente> Delete(int id);
     }
 }

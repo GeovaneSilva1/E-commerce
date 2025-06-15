@@ -1,6 +1,6 @@
 ﻿using LojaVirtual.ProductApi.Models;
 
-namespace LojaVirtual.ProductApi.Classes
+namespace LojaVirtual.ProductApi.DTOs
 {
     public class Compra
     {
