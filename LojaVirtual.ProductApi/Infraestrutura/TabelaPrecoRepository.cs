@@ -23,11 +23,6 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             await _appDbContext.SaveChangesAsync();
         }
 
-        public List<TabelaPreco> GetMany()
-        {
-            return _appDbContext.TabelaPrecos.ToList();
-        }
-
         public async Task<IEnumerable<TabelaPreco>> GetManyAsync()
         {
             return await _appDbContext.TabelaPrecos.ToListAsync();

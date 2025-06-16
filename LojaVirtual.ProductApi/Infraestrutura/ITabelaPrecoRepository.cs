@@ -8,6 +8,5 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         Task<TabelaPrecoDTO> ValidaByDescricaoAsync(string descricaoTabelaPreco);
         Task Add(TabelaPreco tabelaPreco);
         Task<IEnumerable<TabelaPreco>> GetManyAsync();
-        List<TabelaPreco> GetMany();
     }
 }

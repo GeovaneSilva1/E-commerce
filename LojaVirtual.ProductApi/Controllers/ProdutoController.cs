@@ -35,7 +35,7 @@ namespace LojaVirtual.ProductApi.Controllers
                 return BadRequest("Preço do produto deve ser maior que zero!");
             }
 
-            string SKU = MontaSKUByNome(produtoDTO.Descricao);
+            string SKU = _produtoService.MontaSKUByNome(produtoDTO.Descricao);
             if (SKU.Equals(""))
             {
                 return BadRequest("Nome do produto inválido! Ex: nome cor tamanho");
@@ -55,18 +55,16 @@ namespace LojaVirtual.ProductApi.Controllers
 
         [HttpGet]
         [Route("ObterProdutos")]
-        public IActionResult GetProdutos()
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutos()
         {
-          /*  var produtos = _produtoRepository.GetMany();
-            if (produtos is null)
+            IEnumerable<ProdutoDTO> produtoDTO = await _produtoService.GetProdutos();
+
+            if (produtoDTO.Count() <= 0)
             {
-                return BadRequest("Nenhum produto cadastrado!");
+                return NotFound("Nenhum produto encontrado!");
             }
 
-            var produtoResponse = new ProdutoResponse();
-            produtoResponse.IncluirAtributos(produtos);
-          */
-            return Ok();
+            return Ok(produtoDTO);
         }
 
         [HttpGet("{id:int}")]
@@ -83,38 +81,35 @@ namespace LojaVirtual.ProductApi.Controllers
 
 
         [HttpPut("{id:int}")]
-        public IActionResult AlterarProduto(int id, [FromBody] ProdutoRequest produtoRequest)
+        public async Task<ActionResult<ProdutoDTO>> EditProduto(int id, [FromBody] ProdutoDTO produtoDTO)
         {
-         /*   Produto produto = _produtoRepository.GetById(id);
-            
-            if (produto is null)
+            bool prodEncontrado = await _produtoService.ExistProdutoById(id);
+            if (!prodEncontrado)
             {
-                return NotFound("Produto não encontrado");
+                return BadRequest("Produto não encontrado!");
             }
 
-            var produtoAlterado = _produtoRepository.Update(produto, produtoRequest.NovoPreco);
-            ProdutoResponse produtoResponse = new ProdutoResponse();
-            produtoResponse.IncluirAtributos(produtoAlterado);
-            */
-            return Ok(); 
-        }
+            if (produtoDTO.Preco <= 0)
+            {
+                return BadRequest("Preço do produto deve ser maior que zero!");
+            }
+            
+            string SKU = _produtoService.MontaSKUByNome(produtoDTO.Descricao);
+            if (SKU.Equals(""))
+            {
+                return BadRequest("Nome do produto inválido! Ex: nome cor tamanho");
+            }
 
-        public static string MontaSKUByNome(string nome)
-        {
-            if (string.IsNullOrWhiteSpace(nome))
-                return string.Empty;
-
-            var palavras = nome.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-            if (palavras.Length < 3)
-                return string.Empty;
-
-            string primeira = palavras[0].Length >= 3 ? palavras[0].Substring(0, 3) : palavras[0];
-            string segunda = palavras[1].Length >= 2 ? palavras[1].Substring(0, 2) : palavras[1];
-            string terceira = palavras[2].Substring(0, 1);
-
-            return $"{primeira.ToUpper()}-{segunda.ToUpper()}-{terceira.ToUpper()}";
-
+            TabelaPrecoDTO tabelaPrecoDTO = await _tabelaPrecoService.ValidaByDescricao(produtoDTO.DescricaoTabelaPreco);
+            if (tabelaPrecoDTO is null)
+            {
+                return BadRequest("Tabela de preço Inexistente ou fora do período de aplicação!");
+            }
+            produtoDTO.SKU = SKU;
+            produtoDTO.Id = id;
+            await _produtoService.UpdateProdutoById(produtoDTO, tabelaPrecoDTO);
+            
+            return Ok(produtoDTO);
         }
     }
 }

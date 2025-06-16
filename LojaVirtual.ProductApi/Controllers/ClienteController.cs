@@ -51,7 +51,7 @@ namespace LojaVirtual.ProductApi.Controllers
         public async Task<ActionResult<IEnumerable<ClienteDTO>>> GetCliente()
         {
             var clienteDTO = await _clienteService.GetClientes();
-            if (clienteDTO is null)
+            if (clienteDTO.Count() <= 0)
                 return NotFound("Nenhum cliente encontrado!");
             
             return Ok(clienteDTO);

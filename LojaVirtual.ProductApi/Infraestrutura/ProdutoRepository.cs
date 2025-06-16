@@ -18,24 +18,30 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             await _appDbContext.SaveChangesAsync();
         }
 
-        public List<Produto> GetMany()
+        public async Task<IEnumerable<Produto>> GetMany()
         {
-            return _appDbContext.Produtos.ToList();
+            return await _appDbContext.Produtos.Include(p => p.TabelaPreco).ToListAsync();
         }
 
-        public bool ExistById(int id)
+        public async Task Update(Produto produto)
         {
-            return _appDbContext.Produtos.Any(p => p.Id == id);
+            _appDbContext.Entry(produto).State = EntityState.Modified;
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public bool ExistBySKU(string SKU)
+        public async Task<bool> ExistById(int id)
         {
-            return _appDbContext.Produtos.Any(p => p.SKU == SKU);
+            return await _appDbContext.Produtos.AnyAsync(p => p.Id == id);
         }
 
         public async Task<Produto> GetById(int id)
         {
             return await _appDbContext.Produtos.Include(p => p.TabelaPreco).Where(p => p.Id == id).FirstOrDefaultAsync();
+        }
+
+        public bool ExistBySKU(string SKU)
+        {
+            return _appDbContext.Produtos.Any(p => p.SKU == SKU);
         }
 
         public Produto GetBySKU(string SKU)
@@ -48,12 +54,6 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return _appDbContext.Produtos.Where(p => p.Id == id).Select(pc => pc.Preco).FirstOrDefault();
         }
 
-        public Produto Update(Produto produto, decimal preco)
-        {
-            _appDbContext.Entry(produto).State = EntityState.Modified;
-            produto.Preco = preco;
-            _appDbContext.SaveChanges();
-            return produto;
-        }
+        
     }
 }

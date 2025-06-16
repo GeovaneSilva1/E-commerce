@@ -45,7 +45,7 @@ namespace LojaVirtual.ProductApi.Services
             return tabelaprecoDTO;
         }
 
-        public async Task<IEnumerable<TabelaPrecoResponseDTO>> GetClientes()
+        public async Task<IEnumerable<TabelaPrecoResponseDTO>> GetTabelaPrecos()
         {
             IEnumerable<TabelaPreco> tabelaPreco = await _tabelaPrecoRepository.GetManyAsync();
             return _mapper.Map<IEnumerable<TabelaPrecoResponseDTO>>(tabelaPreco);

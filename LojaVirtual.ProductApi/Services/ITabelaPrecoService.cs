@@ -8,7 +8,7 @@ namespace LojaVirtual.ProductApi.Services
         Task<TabelaPrecoDTO> ValidaByDescricao(string descricaoTabelaPreco);
         Task AddTabelaPreco(TabelaPrecoDTO tabelaPrecoDTO);
         Task<IEnumerable<TabelaPrecoResponseDTO>> RetornaTabelaPrecosInseridas(IEnumerable<TabelaPrecoDTO> tabelaPrecoDTOs);
-        Task<IEnumerable<TabelaPrecoResponseDTO>> GetClientes();
+        Task<IEnumerable<TabelaPrecoResponseDTO>> GetTabelaPrecos();
         public TabelaPreco RetornaInstanciaByDTO(TabelaPrecoDTO tabelaPrecoDTO);
     }
 }

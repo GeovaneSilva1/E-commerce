@@ -32,31 +32,11 @@ namespace LojaVirtual.ProductApi.Controllers
         public async Task<ActionResult<IEnumerable<TabelaPrecoResponseDTO>>> ObterTabelaPrecos()
         {
             //falta testar
-            IEnumerable<TabelaPrecoResponseDTO> tabelaPrecoResponseDTO = await _tabelaPrecoService.GetClientes();
+            IEnumerable<TabelaPrecoResponseDTO> tabelaPrecoResponseDTO = await _tabelaPrecoService.GetTabelaPrecos();
             if (tabelaPrecoResponseDTO.Count() <= 0)
                 return NotFound("Nenhuma tabela de preço encontrada!");
 
             return Ok(tabelaPrecoResponseDTO);
         }
-
-       /* private List<TabelaPreco> RetornaTabelaPrecosInseridas(List<TabelaPrecoDTO> tabelaPrecosRequests)
-        {
-            List<TabelaPreco> tabPrecos = new List<TabelaPreco>();
-            foreach (var tabelaprecoRequest in tabelaPrecosRequests)
-            {
-                //TabelaPreco novaTabelaPreco = new TabelaPreco(tabelaprecoRequest.Descricao, DateTime.Now, RetornaDataByDias(tabelaprecoRequest.DiasValidos));
-                //_tabelaPrecoRepository.Add(novaTabelaPreco);
-
-                //tabPrecos.Add(novaTabelaPreco);
-            }
-
-            return tabPrecos;
-        }
-
-        private DateTime RetornaDataByDias(int dias)
-        {
-            DateTime DataFim = DateTime.Now.AddDays(dias);
-            return DataFim;
-        } */
     }
 }

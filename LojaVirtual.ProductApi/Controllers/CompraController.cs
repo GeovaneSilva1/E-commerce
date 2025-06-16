@@ -4,6 +4,7 @@ using LojaVirtual.ProductApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using LojaVirtual.ProductApi.Controllers;
 using System.Collections.Generic;
+using LojaVirtual.ProductApi.Services;
 
 namespace LojaVirtual.ProductApi.Controllers
 {
@@ -16,21 +17,21 @@ namespace LojaVirtual.ProductApi.Controllers
         private readonly ICondicaoPagamentoRepository _condicaoPagamentoRepository;
         private readonly IVendaRepository _vendaRepository;
         private readonly IVendaItemRepository _vendaItemRepository;
-        private readonly IPrecoProdutoClienteRepository _PrecoProdutoClienteRepository;
+        private readonly IProdutoService _produtoService;
 
-        public CompraController(IClienteRepository clienteRepository,
-                               IProdutoRepository produtoRepository,
-                               ICondicaoPagamentoRepository condicaoPagamentoRepository,
-                               IVendaRepository vendaRepository,
-                               IVendaItemRepository vendaItemRepository,
-                               IPrecoProdutoClienteRepository precoProdutoClienteRepository)
+        public CompraController(IClienteRepository clienteRepository, 
+                                IProdutoRepository produtoRepository, 
+                                ICondicaoPagamentoRepository condicaoPagamentoRepository, 
+                                IVendaRepository vendaRepository, 
+                                IVendaItemRepository vendaItemRepository, 
+                                IProdutoService produtoService)
         {
             _clienteRepository = clienteRepository;
             _produtoRepository = produtoRepository;
             _condicaoPagamentoRepository = condicaoPagamentoRepository;
-            _vendaRepository = vendaRepository;   
+            _vendaRepository = vendaRepository;
             _vendaItemRepository = vendaItemRepository;
-            _PrecoProdutoClienteRepository = precoProdutoClienteRepository;
+            _produtoService = produtoService;
         }
 
         [HttpPost]
@@ -42,7 +43,7 @@ namespace LojaVirtual.ProductApi.Controllers
             Dictionary<Produto, int> produtos = new Dictionary<Produto, int>();
             foreach (var itemcompra in compra.Itens)
             {
-                string SKU = ProdutoController.MontaSKUByNome(itemcompra.NomeProduto);
+                string SKU = _produtoService.MontaSKUByNome(itemcompra.NomeProduto);
                 if (SKU.Equals(""))
                 {
                     return BadRequest($"Nome do produto {itemcompra.NomeProduto} inválido! Ex: nome cor tamanho");
