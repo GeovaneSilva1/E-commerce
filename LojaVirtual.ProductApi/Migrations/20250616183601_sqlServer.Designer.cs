@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaVirtual.ProductApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250614182521_SqlServer")]
-    partial class SqlServer
+    [Migration("20250616183601_sqlServer")]
+    partial class sqlServer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LojaVirtual.ProductApi.Classes.VendaRelatorio", b =>
+            modelBuilder.Entity("LojaVirtual.ProductApi.DTOs.VendaRelatorio", b =>
                 {
                     b.Property<int>("IdVenda")
                         .HasColumnType("int");
@@ -70,7 +70,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("clientes");
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.CondicaoPagamento", b =>
@@ -180,7 +180,8 @@ namespace LojaVirtual.ProductApi.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("TabelaPrecoId")
+                    b.Property<int?>("TabelaPrecoId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");

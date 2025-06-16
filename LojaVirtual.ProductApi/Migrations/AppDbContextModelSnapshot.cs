@@ -22,7 +22,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LojaVirtual.ProductApi.Classes.VendaRelatorio", b =>
+            modelBuilder.Entity("LojaVirtual.ProductApi.DTOs.VendaRelatorio", b =>
                 {
                     b.Property<int>("IdVenda")
                         .HasColumnType("int");
@@ -67,7 +67,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("clientes");
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.CondicaoPagamento", b =>
@@ -177,7 +177,8 @@ namespace LojaVirtual.ProductApi.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("TabelaPrecoId")
+                    b.Property<int?>("TabelaPrecoId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");

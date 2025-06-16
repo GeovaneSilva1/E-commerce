@@ -1,11 +1,13 @@
-﻿using LojaVirtual.ProductApi.Models;
+﻿using LojaVirtual.ProductApi.DTOs;
+using LojaVirtual.ProductApi.Models;
 
 namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface ITabelaPrecoRepository
     {
-        TabelaPreco ValidaByDescricao(string descricaoTabelaPreco);
-        void Add(TabelaPreco tabelaPreco);
+        Task<TabelaPrecoDTO> ValidaByDescricaoAsync(string descricaoTabelaPreco);
+        Task Add(TabelaPreco tabelaPreco);
+        Task<IEnumerable<TabelaPreco>> GetManyAsync();
         List<TabelaPreco> GetMany();
     }
 }

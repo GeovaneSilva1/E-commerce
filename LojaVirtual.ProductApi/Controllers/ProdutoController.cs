@@ -1,6 +1,7 @@
 ﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
+using LojaVirtual.ProductApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaVirtual.ProductApi.Controllers
@@ -9,55 +10,54 @@ namespace LojaVirtual.ProductApi.Controllers
     [Route("api/v1/produto")]
     public class ProdutoController : ControllerBase
     {
-        private readonly IProdutoRepository _produtoRepository;
-        private readonly ITabelaPrecoRepository _tabelaPrecoRepository;
+        private readonly IProdutoService _produtoService;
+        private readonly ITabelaPrecoService _tabelaPrecoService;
 
-        public ProdutoController(IProdutoRepository produtoRepository, ITabelaPrecoRepository tabelaPrecoRepository)
+        public ProdutoController(IProdutoService produtoService, ITabelaPrecoService tabelaPrecoService)
         {
-            _produtoRepository = produtoRepository;
-            _tabelaPrecoRepository = tabelaPrecoRepository;
+            _produtoService = produtoService;
+            _tabelaPrecoService = tabelaPrecoService;
         }
 
         [HttpPost]
         [Route("AdminCadastrarProduto")]
-        public IActionResult AddProduto(int id, string nome, decimal preco, string descricaoTabelaPreco)
+        public async Task<ActionResult<ProdutoDTO>> AddProduto([FromBody] ProdutoDTO produtoDTO)
         {
-            bool produtoExistente = _produtoRepository.ExistById(id);
+            //Falta testar
+            var produtoEncontrado = await _produtoService.GetById(produtoDTO.Id);
             
-            if (produtoExistente)
+            if (produtoEncontrado is not null) 
             {
                 return BadRequest("Produto já cadastrado!");
             }
-
-            if (preco <= 0)
+            if (produtoDTO.Preco <= 0)
             {
                 return BadRequest("Preço do produto deve ser maior que zero!");
             }
 
-            string SKU = MontaSKUByNome(nome);
+            string SKU = MontaSKUByNome(produtoDTO.Descricao);
             if (SKU.Equals(""))
             {
                 return BadRequest("Nome do produto inválido! Ex: nome cor tamanho");
             }
+            produtoDTO.SKU = SKU;
 
-            TabelaPreco tabelaPrecoValida = _tabelaPrecoRepository.ValidaByDescricao(descricaoTabelaPreco);
-            
-            if (tabelaPrecoValida is null)
+            TabelaPrecoDTO tabelaPrecoDTO = await _tabelaPrecoService.ValidaByDescricao(produtoDTO.DescricaoTabelaPreco);
+            if (tabelaPrecoDTO is null)
             {
                 return BadRequest("Tabela de preço Inexistente ou fora do período de aplicação!");
             }
+            
+            await _produtoService.AddProduto(produtoDTO, tabelaPrecoDTO);
 
-            //var produto = new Produto(id, SKU, nome, preco, tabelaPrecoValida.tp_Id);
-            //_produtoRepository.Add(produto);
-
-            return Ok();
+            return Ok(produtoDTO);
         }
 
         [HttpGet]
         [Route("ObterProdutos")]
         public IActionResult GetProdutos()
         {
-            var produtos = _produtoRepository.GetMany();
+          /*  var produtos = _produtoRepository.GetMany();
             if (produtos is null)
             {
                 return BadRequest("Nenhum produto cadastrado!");
@@ -65,14 +65,27 @@ namespace LojaVirtual.ProductApi.Controllers
 
             var produtoResponse = new ProdutoResponse();
             produtoResponse.IncluirAtributos(produtos);
-
-            return Ok(produtoResponse);
+          */
+            return Ok();
         }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProdutoDTO>> GetProduto(int id)
+        {
+            var ProdutoDTO = await _produtoService.GetById(id);
+            if (ProdutoDTO is null)
+            {
+                return NotFound("Produto não encontrado");
+            }
+
+            return Ok(ProdutoDTO);
+        }
+
 
         [HttpPut("{id:int}")]
         public IActionResult AlterarProduto(int id, [FromBody] ProdutoRequest produtoRequest)
         {
-            Produto produto = _produtoRepository.GetById(id);
+         /*   Produto produto = _produtoRepository.GetById(id);
             
             if (produto is null)
             {
@@ -82,8 +95,8 @@ namespace LojaVirtual.ProductApi.Controllers
             var produtoAlterado = _produtoRepository.Update(produto, produtoRequest.NovoPreco);
             ProdutoResponse produtoResponse = new ProdutoResponse();
             produtoResponse.IncluirAtributos(produtoAlterado);
-            
-            return Ok(produtoResponse);
+            */
+            return Ok(); 
         }
 
         public static string MontaSKUByNome(string nome)

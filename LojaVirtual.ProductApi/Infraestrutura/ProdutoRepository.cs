@@ -12,10 +12,10 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext = context;
         }
 
-        public void Add(Produto produto)
+        public async Task Add(Produto produto)
         {
             _appDbContext.Produtos.Add(produto);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
 
         public List<Produto> GetMany()
@@ -33,9 +33,9 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return _appDbContext.Produtos.Any(p => p.SKU == SKU);
         }
 
-        public Produto GetById(int id)
+        public async Task<Produto> GetById(int id)
         {
-            return _appDbContext.Produtos.Where(p => p.Id == id).FirstOrDefault();
+            return await _appDbContext.Produtos.Include(p => p.TabelaPreco).Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
         public Produto GetBySKU(string SKU)

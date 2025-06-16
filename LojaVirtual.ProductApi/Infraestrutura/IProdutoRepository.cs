@@ -4,9 +4,9 @@ namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface IProdutoRepository
     {
-        void Add(Produto produto);
+        Task Add(Produto produto);
         public List<Produto> GetMany();
-        Produto GetById(int id);
+        Task<Produto> GetById(int id);
         Produto GetBySKU(string SKU);
         Produto Update(Produto produto, decimal preco);
         bool ExistById(int id);

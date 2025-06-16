@@ -10,14 +10,5 @@ namespace LojaVirtual.ProductApi.Models
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
         public ICollection<Produto>? Produtos { get; set; }
-
-        public TabelaPreco(string Descricao, DateTime DataInicio, DateTime DataFim) 
-        {
-            this.Descricao = Descricao;
-            this.DataInicio = DataInicio;
-            this.DataFim = DataFim;
-        }
-
-        
     }
 }

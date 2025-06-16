@@ -31,6 +31,8 @@ builder.Services.AddTransient<ITabelaPrecoRepository, TabelaPrecoRepository>();
 builder.Services.AddTransient<IPrecoProdutoClienteRepository, PrecoProdutoClienteRepository>();
 
 builder.Services.AddTransient<IClienteService, ClienteService>();
+builder.Services.AddTransient<IProdutoService, ProdutoService>();
+builder.Services.AddTransient<ITabelaPrecoService, TabelaPrecoService>();
 
 builder.Services.AddDbContext<AppDbContext>();
 

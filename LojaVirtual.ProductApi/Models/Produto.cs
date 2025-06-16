@@ -10,6 +10,7 @@ public class Produto
     public string? Descricao { get; set; }
     public decimal Preco { get; set; }
     public TabelaPreco? TabelaPreco { get; set; }
+    public int? TabelaPrecoId { get; set; }
     public ICollection<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
     public ICollection<VendaItem>? VendaItem { get; set; }
     public ICollection<Notificacao>? Notificacoes { get; set; }

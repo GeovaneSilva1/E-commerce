@@ -1,6 +1,7 @@
 ﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
+using LojaVirtual.ProductApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaVirtual.ProductApi.Controllers
@@ -9,36 +10,36 @@ namespace LojaVirtual.ProductApi.Controllers
     [Route("api/v1/tabelapreco")]
     public class TabelaPrecoController : ControllerBase
     {
-        private readonly ITabelaPrecoRepository _tabelaPrecoRepository;
+        private readonly ITabelaPrecoService _tabelaPrecoService;
 
-        public TabelaPrecoController(ITabelaPrecoRepository tabelaPrecoRepository)
+        public TabelaPrecoController(ITabelaPrecoService tabelaPrecoService)
         {
-            _tabelaPrecoRepository = tabelaPrecoRepository;
+            _tabelaPrecoService = tabelaPrecoService;
         }
 
         [HttpPost]
-        [Route("AdminCadastrarTabelaPreco")]
-        public IActionResult AddTabelaPreco([FromBody] List<TabelaPrecoRequest> tabelaPrecos)
+        [Route("CadastrarTabelaPreco")]
+        public async Task<ActionResult<IEnumerable<TabelaPrecoResponseDTO>>> AddTabelaPreco([FromBody] IEnumerable<TabelaPrecoDTO> tabelaPrecos)
         {
-            List<TabelaPreco> tabelaPrecosInseridas = RetornaTabelaPrecosInseridas(tabelaPrecos);
+            //falta testar
+            var tabelaPrecosInseridas = await _tabelaPrecoService.RetornaTabelaPrecosInseridas(tabelaPrecos);
 
             return Ok(tabelaPrecosInseridas);
         }
 
         [HttpGet]
-        [Route("AdminObterTabelaPrecos")]
-        public IActionResult ObterTabelaPrecos()
+        [Route("ObterTabelaPrecos")]
+        public async Task<ActionResult<IEnumerable<TabelaPrecoResponseDTO>>> ObterTabelaPrecos()
         {
-            var tabelaPrecos = _tabelaPrecoRepository.GetMany();
-            if (tabelaPrecos is null)
-            {
-                return BadRequest("Nenhuma tabela de preço encontrada!");
-            }
+            //falta testar
+            IEnumerable<TabelaPrecoResponseDTO> tabelaPrecoResponseDTO = await _tabelaPrecoService.GetClientes();
+            if (tabelaPrecoResponseDTO.Count() <= 0)
+                return NotFound("Nenhuma tabela de preço encontrada!");
 
-            return Ok(tabelaPrecos);
+            return Ok(tabelaPrecoResponseDTO);
         }
 
-        private List<TabelaPreco> RetornaTabelaPrecosInseridas(List<TabelaPrecoRequest> tabelaPrecosRequests)
+       /* private List<TabelaPreco> RetornaTabelaPrecosInseridas(List<TabelaPrecoDTO> tabelaPrecosRequests)
         {
             List<TabelaPreco> tabPrecos = new List<TabelaPreco>();
             foreach (var tabelaprecoRequest in tabelaPrecosRequests)
@@ -56,6 +57,6 @@ namespace LojaVirtual.ProductApi.Controllers
         {
             DateTime DataFim = DateTime.Now.AddDays(dias);
             return DataFim;
-        }
+        } */
     }
 }

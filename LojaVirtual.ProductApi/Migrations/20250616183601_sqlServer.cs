@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LojaVirtual.ProductApi.Migrations
 {
     /// <inheritdoc />
-    public partial class SqlServer : Migration
+    public partial class sqlServer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "clientes",
+                name: "Clientes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,7 +23,7 @@ namespace LojaVirtual.ProductApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_clientes", x => x.Id);
+                    table.PrimaryKey("PK_Clientes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,9 +83,9 @@ namespace LojaVirtual.ProductApi.Migrations
                 {
                     table.PrimaryKey("PK_vendas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_vendas_clientes_ClienteId",
+                        name: "FK_vendas_Clientes_ClienteId",
                         column: x => x.ClienteId,
-                        principalTable: "clientes",
+                        principalTable: "Clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -134,9 +134,9 @@ namespace LojaVirtual.ProductApi.Migrations
                 {
                     table.PrimaryKey("PK_notificacoes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_notificacoes_clientes_ClienteId",
+                        name: "FK_notificacoes_Clientes_ClienteId",
                         column: x => x.ClienteId,
-                        principalTable: "clientes",
+                        principalTable: "Clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -161,9 +161,9 @@ namespace LojaVirtual.ProductApi.Migrations
                 {
                     table.PrimaryKey("PK_precoprodutoclientes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_precoprodutoclientes_clientes_ClienteId",
+                        name: "FK_precoprodutoclientes_Clientes_ClienteId",
                         column: x => x.ClienteId,
-                        principalTable: "clientes",
+                        principalTable: "Clientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -273,7 +273,7 @@ namespace LojaVirtual.ProductApi.Migrations
                 name: "tabelaprecos");
 
             migrationBuilder.DropTable(
-                name: "clientes");
+                name: "Clientes");
 
             migrationBuilder.DropTable(
                 name: "condicaopagamentos");

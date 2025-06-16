@@ -21,13 +21,6 @@ namespace LojaVirtual.ProductApi.Context
         public DbSet<Notificacao> Notificacoes { get; set; }
         public DbSet<VendaRelatorio> VendaRelatorios { get; set; }
 
-/*        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var mysqlServerConnection = "Server=DESKTOP-74J9NVH\\MSSQLSERVER2025;Database=HavanDB;UId=sa;Password=masterkey;TrustServerCertificate=True";
-            optionsBuilder.UseSqlServer(mysqlServerConnection);
-
-        } */
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VendaRelatorio>().HasNoKey();
@@ -66,6 +59,11 @@ namespace LojaVirtual.ProductApi.Context
             modelBuilder.Entity<Produto>().
                 Property(p => p.Preco).
                 HasPrecision(12, 2);
+
+            modelBuilder.Entity<Produto>()
+                .HasOne(p => p.TabelaPreco)
+                .WithMany()
+                .HasForeignKey(p => p.TabelaPrecoId);
 
             //clientes
             modelBuilder.Entity<Cliente>().HasKey(c => c.Id);
