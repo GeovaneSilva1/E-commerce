@@ -19,6 +19,7 @@ namespace LojaVirtual.ProductApi.Services
 
         public async Task AddCliente(ClienteDTO clienteDTO)
         {
+            clienteDTO.Id = 0;
             Cliente cliente = _mapper.Map<Cliente>(clienteDTO);
             await _clienteRepository.Add(cliente);
             clienteDTO.Id = cliente.Id;

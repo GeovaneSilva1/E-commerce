@@ -4,10 +4,10 @@ namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface ICondicaoPagamentoRepository
     {
-        void Add(CondicaoPagamento condicaoPagamento);
-        public List<CondicaoPagamento> GetMany();
+        Task Add(CondicaoPagamento condicaoPagamento);
+        Task<IEnumerable<CondicaoPagamento>> GetMany();
         CondicaoPagamento GetById(int id);
-        CondicaoPagamento GetByByDescAndDias(string descricao, int? dias);
+        Task<CondicaoPagamento> GetByDescAndDias(string descricao, int? dias);
         bool ExistById(int id);
         bool ExistByDescAndDias(string descricao, int? dias);
     }

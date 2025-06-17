@@ -9,11 +9,11 @@ namespace LojaVirtual.ProductApi.Models
         public string? Descricao { get; set; } 
         public int? Dias { get; set; }
 
-        public CondicaoPagamento(string Descricao, int? Dias)
+        /*public CondicaoPagamento(string Descricao, int? Dias)
         {
             this.Descricao = Descricao;
             this.Dias = Dias;
-        }
+        } */
         public ICollection<Venda>? Vendas { get; set; }
     }
 }

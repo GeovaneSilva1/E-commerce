@@ -110,13 +110,14 @@ namespace LojaVirtual.ProductApi.Controllers
 
         private CondicaoPagamento RetornaCondicaoPagamento(Compra compra)
         {
-            CondicaoPagamento condicaoPagamento = _condicaoPagamentoRepository.GetByByDescAndDias(compra.CondicaoPagamento.Descricao, compra.CondicaoPagamento.Dias);
+            /*CondicaoPagamento condicaoPagamento = _condicaoPagamentoRepository.GetByByDescAndDias(compra.CondicaoPagamento.Descricao, compra.CondicaoPagamento.Dias);
             if (condicaoPagamento is null)
             {
                 condicaoPagamento = new CondicaoPagamento(compra.CondicaoPagamento.Descricao, compra.CondicaoPagamento.Dias);
                 _condicaoPagamentoRepository.Add(condicaoPagamento);
             }
-
+            */
+            var condicaoPagamento = new CondicaoPagamento();
             return condicaoPagamento;
         }
 

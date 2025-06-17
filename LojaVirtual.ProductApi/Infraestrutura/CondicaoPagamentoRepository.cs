@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.ProductApi.Context;
 using LojaVirtual.ProductApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.ProductApi.Infraestrutura
 {
@@ -12,15 +13,20 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext = appDbContext;
         }
 
-        public void Add(CondicaoPagamento condicaoPagamento)
+        public async Task Add(CondicaoPagamento condicaoPagamento)
         {
             _appDbContext.CondicaoPagamentos.Add(condicaoPagamento);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public List<CondicaoPagamento> GetMany()
+        public async Task<IEnumerable<CondicaoPagamento>> GetMany()
         {
-            return _appDbContext.CondicaoPagamentos.ToList();
+            return await _appDbContext.CondicaoPagamentos.ToListAsync();
+        }
+
+        public async Task<CondicaoPagamento> GetByDescAndDias(string? descricao, int? dias)
+        {
+            return await _appDbContext.CondicaoPagamentos.Where(cp => cp.Descricao == descricao && cp.Dias == dias).FirstOrDefaultAsync();
         }
 
         public bool ExistById(int id)
@@ -36,11 +42,6 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         public CondicaoPagamento GetById(int id)
         {
             return _appDbContext.CondicaoPagamentos.Where(cp => cp.Id == id).FirstOrDefault();
-        }
-
-        public CondicaoPagamento GetByByDescAndDias(string descricao, int? dias)
-        {
-            return _appDbContext.CondicaoPagamentos.Where(cp => cp.Descricao == descricao && cp.Dias == dias).FirstOrDefault();
         }
     }
 }

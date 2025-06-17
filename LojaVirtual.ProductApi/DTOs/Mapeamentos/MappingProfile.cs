@@ -21,14 +21,12 @@ namespace LojaVirtual.ProductApi.DTOs.Mapeamentos
             CreateMap<TabelaPrecoDTO, TabelaPreco>();
             CreateMap<TabelaPreco, TabelaPrecoDTO>();
 
-            //CreateMap<IEnumerable<TabelaPrecoDTO>,IEnumerable<TabelaPreco>>();
-            //CreateMap<IEnumerable<TabelaPreco>, IEnumerable<TabelaPrecoDTO>>();
-
             CreateMap<TabelaPrecoResponseDTO, TabelaPreco>();
             CreateMap<TabelaPreco, TabelaPrecoResponseDTO>();
 
-            //CreateMap<IEnumerable<TabelaPrecoResponseDTO>, IEnumerable<TabelaPreco>>();
-            //CreateMap<IEnumerable<TabelaPreco>, IEnumerable<TabelaPrecoResponseDTO>>();
+            CreateMap<CondicaoPagamentoDTO, CondicaoPagamento>();
+            CreateMap<CondicaoPagamento, CondicaoPagamentoDTO>();
+
         }
     }
 }
