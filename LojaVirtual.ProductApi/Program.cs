@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
 });
-var mysqlServerConnection = "Server=DESKTOP-74J9NVH\\MSSQLSERVER2025;Database=HavanDB;UId=sa;Password=masterkey;TrustServerCertificate=True";
+var mysqlServerConnection = builder.Configuration.GetConnectionString("localhost");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(mysqlServerConnection));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
