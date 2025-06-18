@@ -10,5 +10,6 @@ namespace LojaVirtual.ProductApi.Services
         Task<bool> ExistCLienteById(int id);
         Task UpdateClienteById(ClienteDTO clienteDTO);
         Task<ClienteDTO> RemoveCliente(int id);
+        Task<ClienteDTO> GetByCNPJ(string? CNPJ);
     }
 }

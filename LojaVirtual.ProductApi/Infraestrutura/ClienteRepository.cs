@@ -26,38 +26,14 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return await _appDbContext.Clientes.AnyAsync(c => c.Id == id);
         }
 
-        /*public Cliente Update(Cliente cliente, ClienteDTO clienteRequest)
-        {
-            _appDbContext.Entry(cliente).State = EntityState.Modified;
-            cliente.CNPJ = clienteRequest.CNPJ;
-            cliente.RazaoSocial = clienteRequest.RazaoSocial;
-            cliente.Email = clienteRequest.Email;
-
-            _appDbContext.SaveChanges();
-            return cliente;
-        } */
-
-        /*public Cliente DeleteById(int id)
-        {
-            var cliente = GetById(id);
-            _appDbContext.Clientes.Remove(cliente);
-            _appDbContext.SaveChanges();
-            return cliente;
-        } */
-
         public async Task<Cliente> GetById(int id)
         { 
             return await _appDbContext.Clientes.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
-        public Cliente GetByCNPJ(string CNPJ)
+        public async Task<Cliente> GetByCNPJ(string CNPJ)
         {
-            return _appDbContext.Clientes.Where(c => c.CNPJ == CNPJ).FirstOrDefault();
-        }
-
-        public bool ExistByCNPJ(string CNPJ)
-        {
-            return _appDbContext.Clientes.Any(c => c.CNPJ == CNPJ);
+            return await _appDbContext.Clientes.Where(c => c.CNPJ == CNPJ).FirstOrDefaultAsync();
         }
 
         public async Task<Cliente> Delete(int id)

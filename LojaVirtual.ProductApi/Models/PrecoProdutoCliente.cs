@@ -7,17 +7,9 @@ namespace LojaVirtual.ProductApi.Models
     {
         public int Id { get; set; }
         public decimal Valor { get; set; }
-
-        /*public PrecoProdutoCliente(int ProdutoId, int ClienteId, int TabelaPrecoId, decimal Valor)
-        {
-            this.pro_Id = ProdutoId;
-            this.cli_Id = ClienteId;
-            this.tp_Id = TabelaPrecoId;
-            this.Valor = Valor;
-        }*/
-
-        //public TabelaPreco? TabelaPreco { get; set; }
         public Produto? Produto { get; set; }
+        public int ProdutoId { get; set; }
         public Cliente? Cliente { get; set; }
+        public int ClienteId { get; set; }
     }
 }

@@ -30,6 +30,12 @@ namespace LojaVirtual.ProductApi.Services
             return await _clienteRepository.ExistById(id);
         }
 
+        public async Task<ClienteDTO> GetByCNPJ(string? CNPJ)
+        {
+            var cliente = await _clienteRepository.GetByCNPJ(CNPJ);
+            return _mapper.Map<ClienteDTO>(cliente);
+        }
+
         public async Task<ClienteDTO> GetClienteById(int id)
         {
             var cliente = await _clienteRepository.GetById(id);

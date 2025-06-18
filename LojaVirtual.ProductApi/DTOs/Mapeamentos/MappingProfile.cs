@@ -27,6 +27,17 @@ namespace LojaVirtual.ProductApi.DTOs.Mapeamentos
             CreateMap<CondicaoPagamentoDTO, CondicaoPagamento>();
             CreateMap<CondicaoPagamento, CondicaoPagamentoDTO>();
 
+            CreateMap<ClienteDTO,CompraDTO>();
+            CreateMap<CompraDTO, ClienteDTO>();
+
+            CreateMap<VendaDTO, Venda>();
+            CreateMap<Venda, VendaDTO>();
+
+            CreateMap<VendaItemDTO, VendaItem>();
+            CreateMap<VendaItem, VendaItemDTO>();
+
+            CreateMap<VendaItemResponseDTO, VendaItemDTO>();
+            CreateMap<VendaItemDTO, VendaItemResponseDTO>();
         }
     }
 }

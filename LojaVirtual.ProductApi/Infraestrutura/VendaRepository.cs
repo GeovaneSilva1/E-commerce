@@ -14,10 +14,17 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext = appDbContext;
         }
 
-        public void Add(Venda venda)
+        public async Task Add(Venda venda)
         {
             _appDbContext.Vendas.Add(venda);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<Venda> GetById(int id)
+        {
+            return await _appDbContext.Vendas.Include(v => v.Cliente)
+                .Include(v => v.CondicaoPagamento)
+                .Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
         public  List<VendaRelatorio> GetQueryRelatorioVendas(string CNPJ, string razaoSocial)

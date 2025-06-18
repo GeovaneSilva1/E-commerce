@@ -28,20 +28,5 @@ namespace LojaVirtual.ProductApi.Infraestrutura
         {
             return await _appDbContext.CondicaoPagamentos.Where(cp => cp.Descricao == descricao && cp.Dias == dias).FirstOrDefaultAsync();
         }
-
-        public bool ExistById(int id)
-        {
-            return _appDbContext.CondicaoPagamentos.Any(cp => cp.Id == id);
-        }
-
-        public bool ExistByDescAndDias(string descricao, int? dias)
-        {
-            return _appDbContext.CondicaoPagamentos.Any(cp => cp.Descricao == descricao && cp.Dias == dias);
-        }
-
-        public CondicaoPagamento GetById(int id)
-        {
-            return _appDbContext.CondicaoPagamentos.Where(cp => cp.Id == id).FirstOrDefault();
-        }
     }
 }

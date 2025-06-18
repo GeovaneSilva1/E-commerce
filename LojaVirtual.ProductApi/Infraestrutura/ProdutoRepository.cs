@@ -39,21 +39,9 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             return await _appDbContext.Produtos.Include(p => p.TabelaPreco).Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        public bool ExistBySKU(string SKU)
+        public async Task<Produto> GetBySKU(string SKU)
         {
-            return _appDbContext.Produtos.Any(p => p.SKU == SKU);
+            return await _appDbContext.Produtos.Include(p => p.TabelaPreco).Where(p => p.SKU == SKU).FirstOrDefaultAsync();
         }
-
-        public Produto GetBySKU(string SKU)
-        {
-            return _appDbContext.Produtos.Where(p => p.SKU == SKU).FirstOrDefault();
-        }
-
-        public decimal GetPrecoUnitarioById(int id)
-        {
-            return _appDbContext.Produtos.Where(p => p.Id == id).Select(pc => pc.Preco).FirstOrDefault();
-        }
-
-        
     }
 }

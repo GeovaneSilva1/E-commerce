@@ -5,6 +5,7 @@ namespace LojaVirtual.ProductApi.DTOs
 {
     public class CondicaoPagamentoDTO
     {
+        [JsonIgnore]
         public int Id { get; set; }
         public string? Descricao { get; set; }
         public int? Dias { get; set; }

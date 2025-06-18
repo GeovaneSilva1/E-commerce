@@ -5,7 +5,8 @@ namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface IVendaRepository
     {
-        void Add(Venda venda);
+        Task Add(Venda venda);
+        Task<Venda> GetById(int id);
         List<VendaRelatorio> GetQueryRelatorioVendas(string CNPJ, string razaoSocial);
     }
 }

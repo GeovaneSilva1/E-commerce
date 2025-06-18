@@ -16,11 +16,6 @@ namespace LojaVirtual.ProductApi.Services
             _mapper = mapper;
         }
 
-        public async Task AddTabelaPreco(TabelaPrecoDTO tabelaPrecoDTO)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<TabelaPrecoResponseDTO>> RetornaTabelaPrecosInseridas(IEnumerable<TabelaPrecoDTO> tabelaPrecoDTOs)
         {
             List<TabelaPreco> tabelaPrecosInseridas = new List<TabelaPreco>();
@@ -55,11 +50,6 @@ namespace LojaVirtual.ProductApi.Services
         {
             DateTime DataFim = DateTime.Now.AddDays(dias);
             return DataFim;
-        }
-
-        public TabelaPreco RetornaInstanciaByDTO(TabelaPrecoDTO tabelaPrecoDTO)
-        {
-            return _mapper.Map<TabelaPreco>(tabelaPrecoDTO);
         }
     }
 }

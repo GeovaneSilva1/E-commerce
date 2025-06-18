@@ -91,6 +91,16 @@ namespace LojaVirtual.ProductApi.Context
                 HasColumnType("date").
                 IsRequired();
 
+            modelBuilder.Entity<Venda>()
+                .HasOne(v => v.Cliente)
+                .WithMany()
+                .HasForeignKey(v => v.ClienteId);
+
+            modelBuilder.Entity<Venda>()
+                .HasOne(v => v.CondicaoPagamento)
+                .WithMany()
+                .HasForeignKey(v => v.CondicaoPagamentoId);
+
             //condicaoPagamento
             modelBuilder.Entity<CondicaoPagamento>().HasKey(cp => cp.Id);
 
@@ -110,6 +120,16 @@ namespace LojaVirtual.ProductApi.Context
                 Property(ppc => ppc.Valor).
                 HasPrecision(12, 2);
 
+            modelBuilder.Entity<PrecoProdutoCliente>()
+                .HasOne(ppc => ppc.Produto)
+                .WithMany()
+                .HasForeignKey(ppc => ppc.ProdutoId);
+
+            modelBuilder.Entity<PrecoProdutoCliente>()
+                .HasOne(ppc => ppc.Cliente)
+                .WithMany()
+                .HasForeignKey(ppc => ppc.ClienteId);
+
             //vendaitens
             modelBuilder.Entity<VendaItem>().HasKey(vi => vi.Id);
 
@@ -121,6 +141,16 @@ namespace LojaVirtual.ProductApi.Context
                 Property(vi => vi.Valor).
                 HasPrecision(12,2).
                 IsRequired();
+
+            modelBuilder.Entity<VendaItem>()
+                .HasOne(vi => vi.Venda)
+                .WithMany()
+                .HasForeignKey(vi => vi.VendaId);
+
+            modelBuilder.Entity<VendaItem>()
+                .HasOne(vi => vi.Produto)
+                .WithMany()
+                .HasForeignKey(vi => vi.ProdutoId);
 
             //notificacoes
             modelBuilder.Entity<Notificacao>().HasKey(n => n.Id);
@@ -139,6 +169,16 @@ namespace LojaVirtual.ProductApi.Context
                 Property(n => n.Status).
                 HasMaxLength(100).
                 IsRequired();
+
+            modelBuilder.Entity<Notificacao>()
+                .HasOne(n => n.Cliente)
+                .WithMany()
+                .HasForeignKey(n => n.ClienteId);
+
+            modelBuilder.Entity<Notificacao>()
+                .HasOne(n => n.Produto)
+                .WithMany()
+                .HasForeignKey(n => n.ProdutoId);
 
             //Relacionamento vendaitens-venda-produto
             modelBuilder.Entity<Venda>().

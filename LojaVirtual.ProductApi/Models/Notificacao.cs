@@ -10,6 +10,8 @@ namespace LojaVirtual.ProductApi.Models
         public DateTime DataEnvio { get; set; } = DateTime.Now;
         public string? Status { get; set; }
         public Cliente? Cliente { get; set; }
+        public int ClienteId { get; set; }
         public Produto? Produto { get; set; }
+        public int ProdutoId { get; set; }
     }
 }

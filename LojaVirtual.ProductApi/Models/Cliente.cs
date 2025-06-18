@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace LojaVirtual.ProductApi.Models
 {
-   
+    [Table("clientes")]
     public class Cliente
     {
         public int Id { get; set; }

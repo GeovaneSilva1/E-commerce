@@ -69,5 +69,10 @@ namespace LojaVirtual.ProductApi.Services
             return $"{primeira.ToUpper()}-{segunda.ToUpper()}-{terceira.ToUpper()}";
 
         }
+
+        public async Task<Produto> GetBySKU(string SKU)
+        {
+            return await _produtoRepository.GetBySKU(SKU);
+        }
     }
 }
