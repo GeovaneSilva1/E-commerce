@@ -38,6 +38,8 @@ namespace LojaVirtual.ProductApi.DTOs.Mapeamentos
 
             CreateMap<VendaItemResponseDTO, VendaItemDTO>();
             CreateMap<VendaItemDTO, VendaItemResponseDTO>();
+
+            CreateMap<PrecoProdutoClienteDTO, PrecoProdutoCliente>().ReverseMap();
         }
     }
 }

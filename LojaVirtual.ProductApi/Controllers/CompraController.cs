@@ -31,6 +31,9 @@ namespace LojaVirtual.ProductApi.Controllers
             }
 
             VendaItemResponseDTO vendaItemResponseDTO = await _compraService.GetVendaItensResponseDTO(vendaDTO, compra.ItensDTO);
+
+            await _compraService.CriaPoliticaPrecos(vendaItemResponseDTO.VendaItensDTO, clienteDTO);
+
             return Ok(vendaItemResponseDTO);            
         }
     }

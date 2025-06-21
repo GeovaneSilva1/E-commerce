@@ -13,23 +13,26 @@ namespace LojaVirtual.ProductApi.Services
         private readonly IMapper _mapper;
         private readonly IProdutoService _produtoService;
         private readonly IVendaItemService _vendaItemService;
+        private readonly IPrecoProdutoClienteService _precoProdutoClienteService;
         private readonly AppDbContext _appDbContext;
 
         public CompraService(IClienteService clienteService, 
                              ICondicaoPagamentoService condicaoPagamentoService, 
                              IVendaService vendaService, 
-                             IMapper mapper,
-                             IProdutoService produtoService,
-                             IVendaItemService vendaItemService,
+                             IMapper mapper, 
+                             IProdutoService produtoService, 
+                             IVendaItemService vendaItemService, 
+                             IPrecoProdutoClienteService precoProdutoClienteService, 
                              AppDbContext appDbContext)
         {
             _clienteService = clienteService;
             _condicaoPagamentoService = condicaoPagamentoService;
             _vendaService = vendaService;
+            _mapper = mapper;
             _produtoService = produtoService;
             _vendaItemService = vendaItemService;
+            _precoProdutoClienteService = precoProdutoClienteService;
             _appDbContext = appDbContext;
-            _mapper = mapper;
         }
 
         public async Task<ClienteDTO> RetornaClienteDTO(CompraDTO compra)
@@ -114,6 +117,21 @@ namespace LojaVirtual.ProductApi.Services
             {
                 await transaction.RollbackAsync();
                 throw;
+            }
+        }
+
+        public async Task CriaPoliticaPrecos(IEnumerable<VendaItemDTO>? vendaItensDTO, ClienteDTO clienteDTO)
+        {
+            foreach (var vendaItem in vendaItensDTO)
+            {
+                ProdutoDTO produto = await _produtoService.GetById(vendaItem.ProdutoId);
+                PrecoProdutoClienteDTO precoProdutoClienteDTO = new PrecoProdutoClienteDTO();
+                
+                precoProdutoClienteDTO.ProdutoId = produto.Id;
+                precoProdutoClienteDTO.Valor = produto.Preco;
+                precoProdutoClienteDTO.ClienteId = clienteDTO.Id;
+
+                await _precoProdutoClienteService.AddPrecoProdutoClientes(precoProdutoClienteDTO);
             }
         }
     }

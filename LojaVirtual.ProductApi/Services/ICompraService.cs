@@ -9,5 +9,6 @@ namespace LojaVirtual.ProductApi.Services
         Task<VendaDTO> RetornaVendaDTO(ClienteDTO clienteDTO, CondicaoPagamentoDTO condicaoPagamentoDTO);
         Task<VendaItemResponseDTO> GetVendaItensResponseDTO(VendaDTO vendaDTO,IEnumerable<VendaItemDTO>? itensDTO);
         Task<VendaDTO> CriaVendaItensVenda(IEnumerable<VendaItemDTO>? itensDTO, ClienteDTO clienteDTO, CondicaoPagamentoDTO condicaoPagamentoDTO);
+        Task CriaPoliticaPrecos(IEnumerable<VendaItemDTO>? vendaItensDTO, ClienteDTO clienteDTO);
     }
 }

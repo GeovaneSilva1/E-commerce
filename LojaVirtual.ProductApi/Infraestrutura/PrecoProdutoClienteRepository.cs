@@ -12,10 +12,10 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext = appDbContext;
         }
 
-        public void Add(PrecoProdutoCliente precoProdutoCliente)
+        public async Task Add(PrecoProdutoCliente precoProdutoCliente)
         {
             _appDbContext.PrecoProdutoClientes.Add(precoProdutoCliente);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
     }
 }
