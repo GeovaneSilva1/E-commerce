@@ -34,11 +34,11 @@ namespace LojaVirtual.ProductApi.Infraestrutura
                    c.RazaoSocial as nomeCliente,
                    p.Descricao as produto,
                    vi.Quantidade,
-                   vi.ValorUnitario as valor
-            FROM vendas v
-            inner join vendaitens vi on (v.Id = vi.VendaId)
-            inner join produtos p on (vi.ProdutoId = p.Id )
-            inner join clientes c on (v.ClienteId = c.Id )
+                   vi.Valor as valor
+            FROM vendaitens vi
+            inner join vendas v   on (vi.VendaId = v.Id)
+            inner join produtos p on (vi.ProdutoId = p.Id)
+            inner join clientes c on (v.ClienteId = c.Id)
             where c.CNPJ = {CNPJ} or c.RazaoSocial LIKE {'%' + razaoSocial + '%'}
             ").ToList();
         }
