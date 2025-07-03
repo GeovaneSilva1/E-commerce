@@ -4,7 +4,7 @@ using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace LojaVirtual.ProductApi.Classes
+namespace LojaVirtual.ProductApi.DTOs
 {
     public class GeracaoPDF
     {

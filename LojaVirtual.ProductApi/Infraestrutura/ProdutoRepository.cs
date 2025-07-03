@@ -12,48 +12,36 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext = context;
         }
 
-        public void Add(Produto produto)
+        public async Task Add(Produto produto)
         {
             _appDbContext.Produtos.Add(produto);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public List<Produto> GetMany()
+        public async Task<IEnumerable<Produto>> GetMany()
         {
-            return _appDbContext.Produtos.ToList();
+            return await _appDbContext.Produtos.Include(p => p.TabelaPreco).ToListAsync();
         }
 
-        public bool ExistById(int id)
-        {
-            return _appDbContext.Produtos.Any(p => p.Id == id);
-        }
-
-        public bool ExistBySKU(string SKU)
-        {
-            return _appDbContext.Produtos.Any(p => p.SKU == SKU);
-        }
-
-        public Produto GetById(int id)
-        {
-            return _appDbContext.Produtos.Where(p => p.Id == id).FirstOrDefault();
-        }
-
-        public Produto GetBySKU(string SKU)
-        {
-            return _appDbContext.Produtos.Where(p => p.SKU == SKU).FirstOrDefault();
-        }
-
-        public decimal GetPrecoUnitarioById(int id)
-        {
-            return _appDbContext.Produtos.Where(p => p.Id == id).Select(pc => pc.Preco).FirstOrDefault();
-        }
-
-        public Produto Update(Produto produto, decimal preco)
+        public async Task Update(Produto produto)
         {
             _appDbContext.Entry(produto).State = EntityState.Modified;
-            produto.Preco = preco;
-            _appDbContext.SaveChanges();
-            return produto;
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistById(int id)
+        {
+            return await _appDbContext.Produtos.AnyAsync(p => p.Id == id);
+        }
+
+        public async Task<Produto> GetById(int id)
+        {
+            return await _appDbContext.Produtos.Include(p => p.TabelaPreco).Where(p => p.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<Produto> GetBySKU(string SKU)
+        {
+            return await _appDbContext.Produtos.Include(p => p.TabelaPreco).Where(p => p.SKU == SKU).FirstOrDefaultAsync();
         }
     }
 }

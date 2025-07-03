@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace LojaVirtual.ProductApi.Models
 {
@@ -7,18 +8,14 @@ namespace LojaVirtual.ProductApi.Models
     {
         public int Id { get; set; }
         public string? CNPJ { get; set; } 
-        public string RazaoSocial { get; set; }
+        public string? RazaoSocial { get; set; }
         public string? Email { get; set; }
 
-        public List<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
-        public List<Venda>? Vendas { get; set; }
-        public List<Notificacao>? Notificacoes { get; set; }
-
-        public Cliente(string CNPJ, string RazaoSocial, string Email) 
-        { 
-            this.CNPJ = CNPJ;
-            this.RazaoSocial = RazaoSocial;
-            this.Email = Email;
-        }
+        [JsonIgnore]
+        public ICollection<PrecoProdutoCliente>? PrecoProdutoClientes { get; set; }
+        [JsonIgnore]
+        public ICollection<Venda>? Vendas { get; set; }
+        [JsonIgnore]
+        public ICollection<Notificacao>? Notificacoes { get; set; }
     }
 }

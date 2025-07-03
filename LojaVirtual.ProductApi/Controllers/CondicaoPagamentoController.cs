@@ -1,6 +1,7 @@
-﻿using LojaVirtual.ProductApi.Classes;
+﻿using LojaVirtual.ProductApi.DTOs;
 using LojaVirtual.ProductApi.Infraestrutura;
 using LojaVirtual.ProductApi.Models;
+using LojaVirtual.ProductApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaVirtual.ProductApi.Controllers
@@ -10,43 +11,42 @@ namespace LojaVirtual.ProductApi.Controllers
     public class CondicaoPagamentoController : ControllerBase
     {
         private readonly ICondicaoPagamentoRepository _condicaoPagamentoRepository;
+        private readonly ICondicaoPagamentoService _condicaoPagamentoService;
 
-        public CondicaoPagamentoController(ICondicaoPagamentoRepository condicaoPagamentoRepository)
+        public CondicaoPagamentoController(ICondicaoPagamentoRepository condicaoPagamentoRepository, 
+                                           ICondicaoPagamentoService condicaoPagamentoService)
         {
             _condicaoPagamentoRepository = condicaoPagamentoRepository;
+            _condicaoPagamentoService = condicaoPagamentoService;
         }
 
         [HttpPost]
-        [Route("AdminCadastrarCondicoesPag")]
-        public IActionResult AddCondPagamento(string descricao, string dias)
+        [Route("CadastrarCondPagamento")]
+        public async Task<ActionResult<CondicaoPagamentoDTO>> AddCondPagamento([FromBody] CondicaoPagamentoDTO condicaoPagamentoDTO)
         {
-            bool existeCondPag = _condicaoPagamentoRepository.ExistByDescAndDias(descricao, dias);
-
-            if (existeCondPag)
+            CondicaoPagamentoDTO condPagDTO = await _condicaoPagamentoService.GetCondPagamentoByDescAndDias(condicaoPagamentoDTO.Descricao, condicaoPagamentoDTO.Dias);
+            if (condPagDTO is not null)
             {
                 return BadRequest("Condição de pagamento já cadastrada!");
             }
 
-            var condicaoPagamento = new CondicaoPagamento(descricao, dias);
-            _condicaoPagamentoRepository.Add(condicaoPagamento);
+            await _condicaoPagamentoService.AddCondicaoPagamento(condicaoPagamentoDTO);
 
-            return Ok(condicaoPagamento);
+            return Ok(condicaoPagamentoDTO);
         }
 
         [HttpGet]
         [Route("ObterCondPagamento")]
-        public IActionResult GetCondPagamentos()
+        public async Task<ActionResult<IEnumerable<CondicaoPagamentoDTO>>> GetCondPagamentos()
         {
-            var condicaoPagamento = _condicaoPagamentoRepository.GetMany();
+            IEnumerable<CondicaoPagamentoDTO> condicaoPagamentoDTO = await _condicaoPagamentoService.GetCondicoesPagamento();
 
-            if (condicaoPagamento is null)
+            if (condicaoPagamentoDTO.Count() <= 0)
             {
-                return BadRequest("Nenhuma condição de pagamento cadastrada!");
+                return NotFound("Nenhuma condição de pagamento encontrada!");
             }
 
-            var condPagamentoResponse = new CondicaoPagamentoResponse();
-            condPagamentoResponse.IncluirAtributos(condicaoPagamento);
-            return Ok(condPagamentoResponse);
+            return Ok(condicaoPagamentoDTO);
         }
     }
 }

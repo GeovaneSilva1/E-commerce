@@ -4,7 +4,7 @@ namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface IVendaItemRepository
     {
-        void Add(VendaItem vendaItem);
-        decimal GetValorTotalVenda(int idVenda);
+        Task Add(VendaItem vendaItem);
+        Task<decimal> GetValorTotalVenda(int idVenda);
     }
 }

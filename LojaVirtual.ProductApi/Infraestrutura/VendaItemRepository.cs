@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.ProductApi.Context;
 using LojaVirtual.ProductApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.ProductApi.Infraestrutura
 {
@@ -12,15 +13,15 @@ namespace LojaVirtual.ProductApi.Infraestrutura
             _appDbContext = appDbContext;
         }
 
-        public void Add(VendaItem vendaitem)
+        public async Task Add(VendaItem vendaitem)
         {
             _appDbContext.VendaItens.Add(vendaitem);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
 
-        public decimal GetValorTotalVenda(int idVenda)
+        public async Task<decimal> GetValorTotalVenda(int idVenda)
         {
-            return _appDbContext.VendaItens.Where(v => v.VendaId == idVenda).Sum(v => v.ValorUnitario);
+            return await _appDbContext.VendaItens.Where(v => v.Venda.Id == idVenda).SumAsync(v => v.Valor);
         }
     }
 }

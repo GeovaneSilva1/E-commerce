@@ -6,17 +6,11 @@ namespace LojaVirtual.ProductApi.Models
     public class VendaItem
     {
         public int Id { get; set; }
-        public int VendaId { get; set; }
-        public int ProdutoId { get; set; }
         public int Quantidade { get; set; }
-        public decimal ValorUnitario { get; set; }
-
-        public VendaItem(int VendaId, int ProdutoId, int Quantidade, decimal ValorUnitario)
-        {
-            this.VendaId = VendaId;
-            this.ProdutoId = ProdutoId;
-            this.Quantidade = Quantidade;
-            this.ValorUnitario = ValorUnitario;
-        }
+        public decimal Valor { get; set; }
+        public Venda? Venda { get; set; }
+        public int VendaId { get; set; }
+        public Produto? Produto { get; set; }
+        public int ProdutoId { get; set; }
     }
 }

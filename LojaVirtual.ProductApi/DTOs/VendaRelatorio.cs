@@ -1,4 +1,4 @@
-﻿namespace LojaVirtual.ProductApi.Classes
+﻿namespace LojaVirtual.ProductApi.DTOs
 {
     public class VendaRelatorio
     {

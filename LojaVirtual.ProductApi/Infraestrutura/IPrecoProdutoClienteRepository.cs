@@ -4,6 +4,6 @@ namespace LojaVirtual.ProductApi.Infraestrutura
 {
     public interface IPrecoProdutoClienteRepository
     {
-        void Add(PrecoProdutoCliente precoProdutoCliente);
+        Task Add(PrecoProdutoCliente precoProdutoCliente);
     }
 }

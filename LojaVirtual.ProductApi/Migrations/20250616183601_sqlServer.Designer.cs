@@ -12,35 +12,35 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaVirtual.ProductApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250608195339_Inicial")]
-    partial class Inicial
+    [Migration("20250616183601_sqlServer")]
+    partial class sqlServer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.13")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("ProductVersion", "8.0.17")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LojaVirtual.ProductApi.Classes.VendaRelatorio", b =>
+            modelBuilder.Entity("LojaVirtual.ProductApi.DTOs.VendaRelatorio", b =>
                 {
                     b.Property<int>("IdVenda")
                         .HasColumnType("int");
 
                     b.Property<string>("NomeCliente")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Produto")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.ToTable("VendaRelatorios");
                 });
@@ -51,21 +51,26 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CNPJ")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("RazaoSocial")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("clientes");
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.CondicaoPagamento", b =>
@@ -74,13 +79,16 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Dias")
-                        .HasColumnType("longtext");
+                    b.Property<int?>("Dias")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -93,24 +101,26 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataEnvio")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<string>("Mensagem")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -118,7 +128,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.ToTable("Notificacoes");
+                    b.ToTable("notificacoes");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.PrecoProdutoCliente", b =>
@@ -127,7 +137,7 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
@@ -135,11 +145,9 @@ namespace LojaVirtual.ProductApi.Migrations
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TabelaPrecoId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.HasKey("Id");
 
@@ -147,9 +155,7 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.HasIndex("ProdutoId");
 
-                    b.HasIndex("TabelaPrecoId");
-
-                    b.ToTable("PrecoProdutoClientes");
+                    b.ToTable("precoprodutoclientes");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Produto", b =>
@@ -158,18 +164,24 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<string>("SKU")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("TabelaPrecoId")
+                    b.Property<int?>("TabelaPrecoId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -185,20 +197,22 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("DataFim")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DataFim")
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("DataInicio")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("TabelaPrecos");
+                    b.ToTable("tabelaprecos");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Venda", b =>
@@ -207,7 +221,7 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
@@ -216,7 +230,7 @@ namespace LojaVirtual.ProductApi.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
@@ -233,7 +247,7 @@ namespace LojaVirtual.ProductApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ProdutoId")
                         .HasColumnType("int");
@@ -241,8 +255,9 @@ namespace LojaVirtual.ProductApi.Migrations
                     b.Property<int>("Quantidade")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("ValorUnitario")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<decimal>("Valor")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<int>("VendaId")
                         .HasColumnType("int");
@@ -258,77 +273,89 @@ namespace LojaVirtual.ProductApi.Migrations
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Notificacao", b =>
                 {
-                    b.HasOne("LojaVirtual.ProductApi.Models.Cliente", null)
+                    b.HasOne("LojaVirtual.ProductApi.Models.Cliente", "Cliente")
                         .WithMany("Notificacoes")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LojaVirtual.ProductApi.Models.Produto", null)
+                    b.HasOne("LojaVirtual.ProductApi.Models.Produto", "Produto")
                         .WithMany("Notificacoes")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.PrecoProdutoCliente", b =>
                 {
-                    b.HasOne("LojaVirtual.ProductApi.Models.Cliente", null)
+                    b.HasOne("LojaVirtual.ProductApi.Models.Cliente", "Cliente")
                         .WithMany("PrecoProdutoClientes")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LojaVirtual.ProductApi.Models.Produto", null)
+                    b.HasOne("LojaVirtual.ProductApi.Models.Produto", "Produto")
                         .WithMany("PrecoProdutoClientes")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LojaVirtual.ProductApi.Models.TabelaPreco", null)
-                        .WithMany("PrecoProdutoClientes")
-                        .HasForeignKey("TabelaPrecoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Produto");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Produto", b =>
                 {
-                    b.HasOne("LojaVirtual.ProductApi.Models.TabelaPreco", null)
+                    b.HasOne("LojaVirtual.ProductApi.Models.TabelaPreco", "TabelaPreco")
                         .WithMany("Produtos")
                         .HasForeignKey("TabelaPrecoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TabelaPreco");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Venda", b =>
                 {
-                    b.HasOne("LojaVirtual.ProductApi.Models.Cliente", null)
+                    b.HasOne("LojaVirtual.ProductApi.Models.Cliente", "Cliente")
                         .WithMany("Vendas")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LojaVirtual.ProductApi.Models.CondicaoPagamento", null)
+                    b.HasOne("LojaVirtual.ProductApi.Models.CondicaoPagamento", "CondicaoPagamento")
                         .WithMany("Vendas")
                         .HasForeignKey("CondicaoPagamentoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("CondicaoPagamento");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.VendaItem", b =>
                 {
-                    b.HasOne("LojaVirtual.ProductApi.Models.Produto", null)
-                        .WithMany("VendaItems")
+                    b.HasOne("LojaVirtual.ProductApi.Models.Produto", "Produto")
+                        .WithMany("VendaItem")
                         .HasForeignKey("ProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LojaVirtual.ProductApi.Models.Venda", null)
-                        .WithMany("Itens")
+                    b.HasOne("LojaVirtual.ProductApi.Models.Venda", "Venda")
+                        .WithMany("VendaItem")
                         .HasForeignKey("VendaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Produto");
+
+                    b.Navigation("Venda");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Cliente", b =>
@@ -351,19 +378,17 @@ namespace LojaVirtual.ProductApi.Migrations
 
                     b.Navigation("PrecoProdutoClientes");
 
-                    b.Navigation("VendaItems");
+                    b.Navigation("VendaItem");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.TabelaPreco", b =>
                 {
-                    b.Navigation("PrecoProdutoClientes");
-
                     b.Navigation("Produtos");
                 });
 
             modelBuilder.Entity("LojaVirtual.ProductApi.Models.Venda", b =>
                 {
-                    b.Navigation("Itens");
+                    b.Navigation("VendaItem");
                 });
 #pragma warning restore 612, 618
         }
