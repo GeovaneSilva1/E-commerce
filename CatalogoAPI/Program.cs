@@ -1,4 +1,6 @@
 using LojaVirtual.CatalogoAPI.Context;
+using LojaVirtual.CatalogoAPI.Infraestrutura;
+using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -22,6 +24,11 @@ mysqlServerConnection = builder.Configuration.GetConnectionString("localhost");
 builder.Services.AddDbContext<AppDbContextCatalogoApi>(options => options.UseSqlServer(mysqlServerConnection));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddTransient<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddTransient<IMarcaRepository, MarcaRepository>();
+builder.Services.AddTransient<IImagemProdutoRepository, ImagemProdutoRepository>();
 
 
 var app = builder.Build();
