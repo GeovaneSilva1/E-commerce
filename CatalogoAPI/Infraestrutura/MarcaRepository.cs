@@ -1,23 +1,36 @@
-﻿using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
+﻿using AutoMapper;
+using LojaVirtual.CatalogoAPI.Context;
+using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
 using LojaVirtual.CatalogoAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.CatalogoAPI.Infraestrutura
 {
     public class MarcaRepository : IMarcaRepository
     {
-        public Task Add(Marca marca)
+        private readonly AppDbContextCatalogoApi _contextCatalogo;
+        private readonly IMapper _mapper;
+
+        public MarcaRepository(AppDbContextCatalogoApi contextCatalogo, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _contextCatalogo = contextCatalogo;
+            _mapper = mapper;
         }
 
-        public Task<Marca> Get(long handle)
+        public async Task Add(Marca marca)
         {
-            throw new NotImplementedException();
+            _contextCatalogo.Marcas.Add(marca);
+            await _contextCatalogo.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Marca>> GetMany()
+        public async Task<Marca> Get(long handle)
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.Marcas.Where(p => p.Handle == handle).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Marca>> GetMany()
+        {
+            return await _contextCatalogo.Marcas.ToListAsync();
         }
     }
 }

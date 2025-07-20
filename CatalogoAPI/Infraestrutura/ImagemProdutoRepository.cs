@@ -1,43 +1,69 @@
-﻿using LojaVirtual.CatalogoAPI.Models;
+﻿using AutoMapper;
+using LojaVirtual.CatalogoAPI.Context;
 using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
+using LojaVirtual.CatalogoAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.CatalogoAPI.Infraestrutura
 {
     public class ImagemProdutoRepository : IImagemProdutoRepository
     {
-        public Task Add(ImagemProduto imagemProduto)
+        private readonly AppDbContextCatalogoApi _contextCatalogo;
+        private readonly IMapper _mapper;
+
+        public ImagemProdutoRepository(AppDbContextCatalogoApi contextCatalogo, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _contextCatalogo = contextCatalogo;
+            _mapper = mapper;
         }
 
-        public Task Update(ImagemProduto imagemProduto)
+        public async Task Add(ImagemProduto imagemProduto)
         {
-            throw new NotImplementedException();
+            _contextCatalogo.ImagensProdutos.Add(imagemProduto);
+            await _contextCatalogo.SaveChangesAsync();
         }
 
-        public Task<ImagemProduto> Delete(long handle)
+        public async Task Update(ImagemProduto imagemProduto)
         {
-            throw new NotImplementedException();
+            _contextCatalogo.Entry(imagemProduto).State = EntityState.Modified;
+            await _contextCatalogo.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<ImagemProduto>> DeleteByProdutoHandle(long produtoHandle)
+        public async Task<ImagemProduto> Delete(long handle)
         {
-            throw new NotImplementedException();
+            var imagemProduto = await Get(handle);
+            _contextCatalogo.ImagensProdutos.Remove(imagemProduto);
+            await _contextCatalogo.SaveChangesAsync();
+            return imagemProduto;
         }
 
-        public Task<ImagemProduto> Get(long handle)
+        public async Task<IEnumerable<ImagemProduto>> DeleteByProdutoHandle(long produtoHandle)
         {
-            throw new NotImplementedException();
+            var imagensProduto = await GetByProdutoHandle(produtoHandle);
+            _contextCatalogo.ImagensProdutos.RemoveRange(imagensProduto);
+            await _contextCatalogo.SaveChangesAsync();
+            return imagensProduto;
         }
 
-        public Task<IEnumerable<ImagemProduto>> GetByProdutoHandle(long produtoHandle)
+        public async Task<ImagemProduto> Get(long handle)
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.ImagensProdutos
+                .Include(ip => ip.Produto)
+                .Where(p => p.Handle == handle).FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<ImagemProduto>> GetMany()
+        public async Task<IEnumerable<ImagemProduto>> GetByProdutoHandle(long produtoHandle)
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.ImagensProdutos
+                .Where(ip => ip.Produto.Handle == produtoHandle)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ImagemProduto>> GetMany()
+        {
+            return await _contextCatalogo.ImagensProdutos
+                .Include(ip => ip.Produto)
+                .ToListAsync();
         }
     }
 }

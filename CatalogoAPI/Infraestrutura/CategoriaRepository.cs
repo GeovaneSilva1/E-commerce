@@ -1,29 +1,43 @@
-﻿using LojaVirtual.CatalogoAPI.DTOs;
+﻿using AutoMapper;
+using LojaVirtual.CatalogoAPI.Context;
+using LojaVirtual.CatalogoAPI.DTOs;
 using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
 using LojaVirtual.CatalogoAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.CatalogoAPI.Infraestrutura
 {
     public class CategoriaRepository : ICategoriaRepository
     {
-        public Task Add(Categoria categoria)
+        private readonly AppDbContextCatalogoApi _contextCatalogo;
+        private readonly IMapper _mapper;
+
+        public CategoriaRepository(AppDbContextCatalogoApi contextCatalogo, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _contextCatalogo = contextCatalogo;
+            _mapper = mapper;
         }
 
-        public Task<Categoria> Get(long handle)
+        public async Task Add(Categoria categoria)
         {
-            throw new NotImplementedException();
+            _contextCatalogo.Categorias.Add(categoria);
+            await _contextCatalogo.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Categoria>> GetMany()
+        public async Task<Categoria> Get(long handle)
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.Categorias.Where(p => p.Handle == handle).FirstOrDefaultAsync();
         }
 
-        public Task<CategoriaDTO> ValidaByNome(string nomeCategoria)
+        public async Task<IEnumerable<Categoria>> GetMany()
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.Categorias.ToListAsync();
+        }
+
+        public async Task<CategoriaDTO> ValidaByNome(string nomeCategoria)
+        {
+            var categoria = await _contextCatalogo.Categorias.Where(tp => tp.Nome.Contains(nomeCategoria)).FirstOrDefaultAsync();
+            return _mapper.Map<CategoriaDTO>(categoria);
         }
     }
 }

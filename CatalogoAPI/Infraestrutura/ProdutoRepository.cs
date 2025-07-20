@@ -1,43 +1,60 @@
-﻿using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
+﻿using LojaVirtual.CatalogoAPI.Context;
+using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
 using LojaVirtual.CatalogoAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.CatalogoAPI.Infraestrutura
 {
     public class ProdutoRepository : IProdutoRepository
     {
-        public Task Add(Produto produto)
+        private readonly AppDbContextCatalogoApi _contextCatalogo;
+
+        public ProdutoRepository(AppDbContextCatalogoApi contextCatalogo)
         {
-            throw new NotImplementedException();
+            _contextCatalogo = contextCatalogo;
         }
 
-        public Task Update(Produto produto)
+        public async Task Add(Produto produto)
         {
-            throw new NotImplementedException();
+            _contextCatalogo.Produtos.Add(produto);
+            await _contextCatalogo.SaveChangesAsync();
         }
 
-        public Task<Produto> Delete(long id)
+        public async Task Update(Produto produto)
         {
-            throw new NotImplementedException();
+            _contextCatalogo.Entry(produto).State = EntityState.Modified;
+            await _contextCatalogo.SaveChangesAsync();
         }
 
-        public Task<bool> Exists(long id)
+        public async Task<Produto> Delete(long handle)
         {
-            throw new NotImplementedException();
+            var produto = await Get(handle);
+            _contextCatalogo.Produtos.Remove(produto);
+            await _contextCatalogo.SaveChangesAsync();
+            return produto;
         }
 
-        public Task<Produto> Get(long id)
+        public async Task<bool> Exists(long handle)
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.Produtos.AnyAsync(p => p.Handle == handle);
         }
 
-        public Task<Produto> GetBySKU(string SKU)
+        public async Task<Produto> Get(long handle)
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.Produtos
+                .Include(p => p.Categoria )
+                .Include(p => p.Marca)
+                .Where(p => p.Handle == handle).FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<Produto>> GetMany()
+        public async Task<Produto> GetBySKU(string SKU)
         {
-            throw new NotImplementedException();
+            return await _contextCatalogo.Produtos.Include(p => p.Categoria).Where(p => p.SKU == SKU).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Produto>> GetMany()
+        {
+            return await _contextCatalogo.Produtos.Include(p => p.Categoria).ToListAsync();
         }
 
         
