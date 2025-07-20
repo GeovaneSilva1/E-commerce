@@ -49,12 +49,18 @@ namespace LojaVirtual.CatalogoAPI.Infraestrutura
 
         public async Task<Produto> GetBySKU(string SKU)
         {
-            return await _contextCatalogo.Produtos.Include(p => p.Categoria).Where(p => p.SKU == SKU).FirstOrDefaultAsync();
+            return await _contextCatalogo.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Marca)
+                .Where(p => p.SKU == SKU).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Produto>> GetMany()
         {
-            return await _contextCatalogo.Produtos.Include(p => p.Categoria).ToListAsync();
+            return await _contextCatalogo.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Marca)
+                .ToListAsync();
         }
 
         

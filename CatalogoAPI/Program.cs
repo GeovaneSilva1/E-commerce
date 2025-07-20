@@ -1,6 +1,8 @@
 using LojaVirtual.CatalogoAPI.Context;
 using LojaVirtual.CatalogoAPI.Infraestrutura;
 using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
+using LojaVirtual.CatalogoAPI.Services;
+using LojaVirtual.CatalogoAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -29,6 +31,11 @@ builder.Services.AddTransient<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<IMarcaRepository, MarcaRepository>();
 builder.Services.AddTransient<IImagemProdutoRepository, ImagemProdutoRepository>();
+
+builder.Services.AddTransient<IProdutoService, ProdutoService>();
+builder.Services.AddTransient<ICategoriaService, CategoriaService>();
+builder.Services.AddTransient<IMarcaService, MarcaService>();
+builder.Services.AddTransient<IImagemProdutoService, ImagemProdutoService>();
 
 
 var app = builder.Build();
