@@ -25,7 +25,9 @@ namespace LojaVirtual.ProductApi.Context
         {
             modelBuilder.Entity<VendaRelatorio>().HasNoKey();
 
-            //tabelaprecos
+            #region Entidades
+
+            #region TabelaPreco
             modelBuilder.Entity<TabelaPreco>().HasKey(tp => tp.Id);
 
             modelBuilder.Entity<TabelaPreco>().
@@ -42,8 +44,9 @@ namespace LojaVirtual.ProductApi.Context
                 Property(tp => tp.DataFim).
                 HasColumnType("date").
                 IsRequired();
+            #endregion TabelaPreco
 
-            //produtos
+            #region Produtos
             modelBuilder.Entity<Produto>().HasKey(p => p.Id);
 
             modelBuilder.Entity<Produto>().
@@ -64,8 +67,9 @@ namespace LojaVirtual.ProductApi.Context
                 .HasOne(p => p.TabelaPreco)
                 .WithMany()
                 .HasForeignKey(p => p.TabelaPrecoId);
+            #endregion Produtos
 
-            //clientes
+            #region clientes
             modelBuilder.Entity<Cliente>().HasKey(c => c.Id);
 
             modelBuilder.Entity<Cliente>().
@@ -82,8 +86,9 @@ namespace LojaVirtual.ProductApi.Context
                 Property(c => c.Email).
                 HasMaxLength(50).
                 IsRequired();
+            #endregion clientes
 
-            //vendas
+            #region Vendas
             modelBuilder.Entity<Venda>().HasKey(v => v.Id);
 
             modelBuilder.Entity<Venda>().
@@ -100,8 +105,9 @@ namespace LojaVirtual.ProductApi.Context
                 .HasOne(v => v.CondicaoPagamento)
                 .WithMany()
                 .HasForeignKey(v => v.CondicaoPagamentoId);
+            #endregion Vendas
 
-            //condicaoPagamento
+            #region CondicaoPagamentos
             modelBuilder.Entity<CondicaoPagamento>().HasKey(cp => cp.Id);
 
             modelBuilder.Entity<CondicaoPagamento>().
@@ -112,8 +118,9 @@ namespace LojaVirtual.ProductApi.Context
             modelBuilder.Entity<CondicaoPagamento>().
                 Property(cp => cp.Dias).
                 IsRequired();
+            #endregion CondicaoPagamentos
 
-            //PrecoProdutoClientes
+            #region PrecoProdutoClientes
             modelBuilder.Entity<PrecoProdutoCliente>().HasKey(ppc => ppc.Id);
 
             modelBuilder.Entity<PrecoProdutoCliente>().
@@ -129,8 +136,9 @@ namespace LojaVirtual.ProductApi.Context
                 .HasOne(ppc => ppc.Cliente)
                 .WithMany()
                 .HasForeignKey(ppc => ppc.ClienteId);
+            #endregion PrecoProdutoClientes
 
-            //vendaitens
+            #region VendaItens
             modelBuilder.Entity<VendaItem>().HasKey(vi => vi.Id);
 
             modelBuilder.Entity<VendaItem>().
@@ -151,7 +159,9 @@ namespace LojaVirtual.ProductApi.Context
                 .HasOne(vi => vi.Produto)
                 .WithMany()
                 .HasForeignKey(vi => vi.ProdutoId);
+            #endregion VendaItens
 
+            #region Notificacoes
             //notificacoes
             modelBuilder.Entity<Notificacao>().HasKey(n => n.Id);
 
@@ -179,7 +189,11 @@ namespace LojaVirtual.ProductApi.Context
                 .HasOne(n => n.Produto)
                 .WithMany()
                 .HasForeignKey(n => n.ProdutoId);
+            #endregion Notificacoes
+            
+            #endregion Entidades
 
+            #region Relacionamentos
             //Relacionamento vendaitens-venda-produto
             modelBuilder.Entity<Venda>().
                 HasMany(v => v.VendaItem).
@@ -238,6 +252,7 @@ namespace LojaVirtual.ProductApi.Context
                 WithOne(n => n.Produto).
                 IsRequired().
                 OnDelete(DeleteBehavior.Cascade);
+            #endregion Relacionamentos
         }
 
     }
