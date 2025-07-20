@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace CatalogoAPI.Migrations
+namespace LojaVirtual.CatalogoAPI.Migrations
 {
     /// <inheritdoc />
     public partial class SqlServerCatalogoApi : Migration

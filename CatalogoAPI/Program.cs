@@ -1,4 +1,4 @@
-using CatalogoAPI.Context;
+using LojaVirtual.CatalogoAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 

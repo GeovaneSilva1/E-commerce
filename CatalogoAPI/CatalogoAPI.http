@@ -1,6 +1,6 @@
-@CatalogoAPI_HostAddress = http://localhost:5255
+@LojaVirtual.CatalogoAPI_HostAddress = http://localhost:5255
 
-GET {{CatalogoAPI_HostAddress}}/weatherforecast/
+GET {{LojaVirtual.CatalogoAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

@@ -1,7 +1,7 @@
-﻿using CatalogoAPI.Models;
+﻿using LojaVirtual.CatalogoAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CatalogoAPI.Context
+namespace LojaVirtual.CatalogoAPI.Context
 {
     public class AppDbContextCatalogoApi: DbContext
     {   public AppDbContextCatalogoApi(DbContextOptions<AppDbContextCatalogoApi> options) : base(options)

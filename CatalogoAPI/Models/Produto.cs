@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CatalogoAPI.Models
+namespace LojaVirtual.CatalogoAPI.Models
 {
     [Table("produtos")]
     public class Produto

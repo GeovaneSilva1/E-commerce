@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.ProductApi", "LojaVirtual.ProductApi\LojaVirtual.ProductApi.csproj", "{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogoAPI", "CatalogoAPI\CatalogoAPI.csproj", "{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.CatalogoAPI", "CatalogoAPI\LojaVirtual.CatalogoAPI.csproj", "{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
