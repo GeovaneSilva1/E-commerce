@@ -4,6 +4,7 @@ using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
 using LojaVirtual.CatalogoAPI.Services;
 using LojaVirtual.CatalogoAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
