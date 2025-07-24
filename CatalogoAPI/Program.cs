@@ -22,7 +22,10 @@ builder.Services.AddSwaggerGen(c =>
 
 var mysqlServerConnection = "";
 
-mysqlServerConnection = builder.Configuration.GetConnectionString("localhost");
+if (Environment.MachineName.Equals("DESKTOP-5CHSN2N"))
+    mysqlServerConnection = builder.Configuration.GetConnectionString("duda");
+else
+    mysqlServerConnection = builder.Configuration.GetConnectionString("localhost");
 
 builder.Services.AddDbContext<AppDbContextCatalogoApi>(options => options.UseSqlServer(mysqlServerConnection));
 
