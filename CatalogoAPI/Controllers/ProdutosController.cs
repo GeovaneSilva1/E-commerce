@@ -1,19 +1,19 @@
 ﻿using LojaVirtual.CatalogoAPI.DTOs;
 using LojaVirtual.CatalogoAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LojaVirtual.CatalogoAPI.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("api/v1/produto")]
-    public class ProdutoController : ControllerBase
+    public class ProdutosController : ControllerBase
     {
         private readonly IProdutoService _produtoService;
         private readonly ICategoriaService _categoriaService;
         private readonly IMarcaService _marcaService;
 
-        public ProdutoController(IProdutoService produtoService, ICategoriaService categoriaService, IMarcaService marcaService)
+        public ProdutosController(IProdutoService produtoService, ICategoriaService categoriaService, IMarcaService marcaService)
         {
             _produtoService = produtoService;
             _categoriaService = categoriaService;
@@ -37,7 +37,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             var marcaDTO = await _marcaService.GetMarca(produtoDTO.MarcaId);
 
             await _produtoService.AddProduto(produtoDTO, categoriaDTO, marcaDTO);
-            
+
             return Ok(produtoDTO);
         }
 
@@ -45,11 +45,11 @@ namespace LojaVirtual.CatalogoAPI.Controllers
         public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutos()
         {
             var produtosDTO = await _produtoService.GetProdutos();
-            
+
             if (!produtosDTO.Any())
             {
                 return NotFound("Nenhum produto encontrado.");
-            }   
+            }
 
             return Ok(produtosDTO);
         }

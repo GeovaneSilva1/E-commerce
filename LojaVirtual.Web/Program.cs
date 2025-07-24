@@ -1,7 +1,17 @@
+using LojaVirtual.Web.Services;
+using LojaVirtual.Web.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient("CatalogoAPI", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUri:CatalogoAPI"]);
+});
+
+builder.Services.AddTransient<IProdutoService, ProdutoService>();
 
 var app = builder.Build();
 
