@@ -6,8 +6,8 @@ namespace LojaVirtual.CatalogoAPI.Models
     public class Produto
     {
         public long Handle { get; set; }
-        public string? SKU { get; set; }
         public string? Descricao { get; set; }
+        public string? SKU { get; set; }
         public decimal Preco { get; set; }
         public long Estoque { get; set; }
         public Categoria? Categoria { get; set; }

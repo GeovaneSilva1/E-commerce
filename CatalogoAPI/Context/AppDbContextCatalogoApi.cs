@@ -25,8 +25,7 @@ namespace LojaVirtual.CatalogoAPI.Context
 
             modelBuilder.Entity<Produto>()
                 .Property(p => p.SKU)
-                .HasMaxLength(100)
-                .IsRequired();
+                .HasMaxLength(100);
 
             modelBuilder.Entity<Produto>()
                 .Property(p => p.Preco)

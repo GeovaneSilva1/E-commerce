@@ -113,7 +113,7 @@ namespace LojaVirtual.Web.Services
                 }
                 else
                 {
-                    throw new Exception("Erro ao obter produtos: " + response.ReasonPhrase);
+                    return Enumerable.Empty<ProdutoViewModel>();
                 }
             }
             return _produtosVM;

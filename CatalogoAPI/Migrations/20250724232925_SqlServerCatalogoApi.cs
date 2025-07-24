@@ -42,8 +42,8 @@ namespace LojaVirtual.CatalogoAPI.Migrations
                 {
                     Handle = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SKU = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SKU = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Preco = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
                     Estoque = table.Column<long>(type: "bigint", nullable: false),
                     CategoriaId = table.Column<long>(type: "bigint", nullable: false),

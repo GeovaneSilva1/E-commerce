@@ -111,7 +111,6 @@ namespace LojaVirtual.CatalogoAPI.Migrations
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<string>("SKU")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 

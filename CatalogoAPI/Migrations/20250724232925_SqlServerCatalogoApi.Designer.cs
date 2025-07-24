@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaVirtual.CatalogoAPI.Migrations
 {
     [DbContext(typeof(AppDbContextCatalogoApi))]
-    [Migration("20250720151104_SqlServerCatalogoApi")]
+    [Migration("20250724232925_SqlServerCatalogoApi")]
     partial class SqlServerCatalogoApi
     {
         /// <inheritdoc />
@@ -114,7 +114,6 @@ namespace LojaVirtual.CatalogoAPI.Migrations
                         .HasColumnType("decimal(12,2)");
 
                     b.Property<string>("SKU")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 

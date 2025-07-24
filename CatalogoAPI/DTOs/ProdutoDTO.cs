@@ -16,11 +16,9 @@ namespace LojaVirtual.CatalogoAPI.DTOs
 
         [JsonIgnore]
         public Categoria? Categoria { get; set; }
-        [JsonIgnore]
         public long CategoriaId { get; set; }
         [JsonIgnore]
         public Marca? Marca { get; set; }
-        [JsonIgnore]
         public long MarcaId { get; set; }
         [JsonIgnore]
         public ICollection<ImagemProduto>? ImagemProdutos { get; set; }

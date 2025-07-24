@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace LojaVirtual.Web.Models
@@ -11,7 +12,9 @@ namespace LojaVirtual.Web.Models
         public string? Descricao { get; set; }
         public decimal Preco { get; set; }
         public long Estoque { get; set; }
+        [DisplayName("Categoria")]
         public string? NomeCategoria { get; set; }
+        [DisplayName("Marca")]
         public string? NomeMarca { get; set; }
 
         [JsonIgnore]
