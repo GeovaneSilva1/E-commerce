@@ -5,7 +5,6 @@ namespace LojaVirtual.CatalogoAPI.DTOs
 {
     public class CategoriaDTO
     {
-        [JsonIgnore]
         public long Handle { get; set; }
         public string? Nome { get; set; }
         

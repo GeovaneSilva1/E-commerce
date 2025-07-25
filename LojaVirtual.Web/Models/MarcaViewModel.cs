@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace LojaVirtual.Web
+namespace LojaVirtual.Web.Models
 {
-    public class CategoriaViewModel
+    public class MarcaViewModel
     {
-        [JsonIgnore]
         public long Handle { get; set; }
         public string? Nome { get; set; }
     }
