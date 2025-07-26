@@ -41,14 +41,12 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(produtoDTO);
         }
 
-        [HttpPut("{handle}")]
-        public async Task<ActionResult<ProdutoDTO>> UpdateProduto(long handle, [FromBody] ProdutoDTO produtoDTO)
+        [HttpPut]
+        public async Task<ActionResult<ProdutoDTO>> UpdateProduto([FromBody] ProdutoDTO produtoDTO)
         {
-            var produtoExistente = await _produtoService.ExistProduto(handle);
-            
-            if (!produtoExistente)
+            if (produtoDTO is null)
             {
-                return NotFound($"Produto com id {handle} não encontrado.");
+                return BadRequest("Dados do produto inválidos.");
             }
 
             var categoriaDTO = await _categoriaService.GetCategoria(produtoDTO.CategoriaId);
@@ -63,8 +61,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             {
                 return NotFound($"Marca com id {produtoDTO.MarcaId} não encontrada.");
             }
-
-            produtoDTO.Handle = handle; 
+ 
             await _produtoService.UpdateProduto(produtoDTO, categoriaDTO, marcaDTO);
             
             return Ok(produtoDTO);

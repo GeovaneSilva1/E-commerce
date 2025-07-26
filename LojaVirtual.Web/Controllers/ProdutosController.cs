@@ -22,7 +22,7 @@ namespace LojaVirtual.Web.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoViewModel>>> Index()
-        {
+        {   
             var result = await _produtoService.ObterProdutosAsync();
             
             return View(result);
@@ -35,6 +35,7 @@ namespace LojaVirtual.Web.Controllers
             ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> CriarProduto(ProdutoViewModel produtoViewModel)
         {
@@ -44,6 +45,41 @@ namespace LojaVirtual.Web.Controllers
                 if (produtoCriado is not null)
                 {
                     TempData["MensagemSucesso"] = "Produto criado com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            
+            ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
+            ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
+            return View(produtoViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AtualizarProduto(long Handle)
+        {
+            var produto = await _produtoService.ObterProdutoPorIdAsync(Handle);
+            
+            if (produto is null)
+            {
+                TempData["MensagemErro"] = "Produto não encontrado!";
+                return RedirectToAction(nameof(Index));
+            }
+            
+            ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
+            ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
+            
+            return View(produto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarProduto(ProdutoViewModel produtoViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var produtoAtualizado = await _produtoService.AtualizarProdutoAsync(produtoViewModel);
+                if (produtoAtualizado is not null)
+                {
+                    TempData["MensagemSucesso"] = "Produto atualizado com sucesso!";
                     return RedirectToAction(nameof(Index));
                 }
             }

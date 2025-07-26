@@ -58,10 +58,10 @@
                         @Html.DisplayFor(modelItem => item.Preco)
                     </td>
                     <td>
-                        <a asp-action="AtualizarProduto" asp-route-id="@item.Handle" title="Edita" class="btn btn-warning">
+                        <a asp-action="AtualizarProduto" asp-route-Handle="@item.Handle" title="Edita" class="btn btn-warning">
                             <span class="fas fa-edit"></span>
                         </a>
-                        <a asp-action="DeletarProduto" asp-route-id="@item.Handle" title="Deleta" class="btn btn-danger">
+                        <a asp-action="DeletarProduto" asp-route-Handle="@item.Handle" title="Deleta" class="btn btn-danger">
                             <span class="fas fa-trash-alt"></span>
                         </a>
                     </td>

@@ -79,10 +79,10 @@ namespace LojaVirtual.Web.Services
                 }); 
         }
 
-        public async Task<ProdutoViewModel> ObterProdutoPorIdAsync(int id)
+        public async Task<ProdutoViewModel> ObterProdutoPorIdAsync(long handle)
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
-            using (var response = await client.GetAsync(_apiEndPoint + id))
+            using (var response = await client.GetAsync(_apiEndPoint + handle))
             {
                 if (response.IsSuccessStatusCode)
                 {
