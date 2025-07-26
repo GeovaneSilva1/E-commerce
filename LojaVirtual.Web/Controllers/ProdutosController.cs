@@ -11,8 +11,8 @@ namespace LojaVirtual.Web.Controllers
         private readonly ICategoriaService _categoriaService;
         private readonly IMarcaService _marcaService;
 
-        public ProdutosController(IProdutoService produtoService, 
-                                  ICategoriaService categoriaService, 
+        public ProdutosController(IProdutoService produtoService,
+                                  ICategoriaService categoriaService,
                                   IMarcaService marcaService)
         {
             _produtoService = produtoService;
@@ -22,9 +22,9 @@ namespace LojaVirtual.Web.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoViewModel>>> Index()
-        {   
+        {
             var result = await _produtoService.ObterProdutosAsync();
-            
+
             return View(result);
         }
 
@@ -40,7 +40,7 @@ namespace LojaVirtual.Web.Controllers
         public async Task<IActionResult> CriarProduto(ProdutoViewModel produtoViewModel)
         {
             if (ModelState.IsValid)
-            { 
+            {
                 var produtoCriado = await _produtoService.CriarProdutoAsync(produtoViewModel);
                 if (produtoCriado is not null)
                 {
@@ -48,7 +48,7 @@ namespace LojaVirtual.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            
+
             ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
             ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
             return View(produtoViewModel);
@@ -58,16 +58,16 @@ namespace LojaVirtual.Web.Controllers
         public async Task<IActionResult> AtualizarProduto(long Handle)
         {
             var produto = await _produtoService.ObterProdutoPorIdAsync(Handle);
-            
+
             if (produto is null)
             {
                 TempData["MensagemErro"] = "Produto não encontrado!";
                 return RedirectToAction(nameof(Index));
             }
-            
+
             ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
             ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
-            
+
             return View(produto);
         }
 
@@ -83,11 +83,40 @@ namespace LojaVirtual.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            
+
             ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
             ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
             return View(produtoViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeletarProduto(long Handle)
+        {
+            var produto = await _produtoService.ObterProdutoPorIdAsync(Handle);
+
+            if (produto is null)
+            {
+                TempData["MensagemErro"] = "Produto não encontrado!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(produto);
+        }
+
+        [HttpPost(), ActionName("DeletarProduto")]
+        public async Task<IActionResult> DeletarProdutoConfirmado(long Handle)
+        {
+            var produtoDeletado = await _produtoService.DeletarProdutoAsync(Handle);
+
+            if (produtoDeletado)
+            {
+                TempData["MensagemSucesso"] = "Produto deletado com sucesso!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["MensagemErro"] = "Erro ao deletar produto!";
+            return RedirectToAction(nameof(Index));
+
+        }
     }
 }

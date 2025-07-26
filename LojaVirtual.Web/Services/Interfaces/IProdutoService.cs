@@ -8,7 +8,7 @@ namespace LojaVirtual.Web.Services.Interfaces
         Task<ProdutoViewModel> ObterProdutoPorIdAsync(long handle);
         Task<ProdutoViewModel> CriarProdutoAsync(ProdutoViewModel produtoVM);
         Task<ProdutoViewModel> AtualizarProdutoAsync(ProdutoViewModel produtoVM);
-        Task<bool> DeletarProdutoAsync(int id);
+        Task<bool> DeletarProdutoAsync(long handle);
 
     }
 }

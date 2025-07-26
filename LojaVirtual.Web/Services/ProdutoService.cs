@@ -62,10 +62,10 @@ namespace LojaVirtual.Web.Services
             return _ProdutoVM;
         }
 
-        public async Task<bool> DeletarProdutoAsync(int id)
+        public async Task<bool> DeletarProdutoAsync(long handle)
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
-            return await client.DeleteAsync(_apiEndPoint + id)
+            return await client.DeleteAsync(_apiEndPoint + handle)
                 .ContinueWith(response =>
                 {
                     if (response.Result.IsSuccessStatusCode)
