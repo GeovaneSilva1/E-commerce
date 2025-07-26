@@ -100,7 +100,7 @@ namespace LojaVirtual.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(produto);
+            return PartialView("DeletarProduto", produto);
         }
 
         [HttpPost(), ActionName("DeletarProduto")]

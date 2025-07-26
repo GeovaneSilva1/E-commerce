@@ -61,7 +61,9 @@
                         <a asp-action="AtualizarProduto" asp-route-Handle="@item.Handle" title="Edita" class="btn btn-warning">
                             <span class="fas fa-edit"></span>
                         </a>
-                        <a asp-action="DeletarProduto" asp-route-Handle="@item.Handle" title="Deleta" class="btn btn-danger">
+                        <a href="javascript:void(0);"
+                           class="btn btn-danger abrir-modal"
+                           data-url="@Url.Action("DeletarProduto", "Produtos", new { handle = item.Handle })">
                             <span class="fas fa-trash-alt"></span>
                         </a>
                     </td>
@@ -69,4 +71,8 @@
             }
         </tbody>
     </table>
+ <div id="modalContainer"></div>
 </div>
+@section Scripts {
+    <script src="~/js/modal.js"></script>
+}
