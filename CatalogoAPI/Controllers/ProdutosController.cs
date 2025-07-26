@@ -41,6 +41,55 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(produtoDTO);
         }
 
+        [HttpPut("{handle}")]
+        public async Task<ActionResult<ProdutoDTO>> UpdateProduto(long handle, [FromBody] ProdutoDTO produtoDTO)
+        {
+            var produtoExistente = await _produtoService.ExistProduto(handle);
+            
+            if (!produtoExistente)
+            {
+                return NotFound($"Produto com id {handle} não encontrado.");
+            }
+
+            var categoriaDTO = await _categoriaService.GetCategoria(produtoDTO.CategoriaId);
+            var marcaDTO = await _marcaService.GetMarca(produtoDTO.MarcaId);
+            
+            if (categoriaDTO is null)
+            {
+                return NotFound($"Categoria com id {produtoDTO.CategoriaId} não encontrada.");
+            }
+            
+            if (marcaDTO is null)
+            {
+                return NotFound($"Marca com id {produtoDTO.MarcaId} não encontrada.");
+            }
+
+            produtoDTO.Handle = handle; 
+            await _produtoService.UpdateProduto(produtoDTO, categoriaDTO, marcaDTO);
+            
+            return Ok(produtoDTO);
+        }
+
+        [HttpDelete("{handle}")]
+        public async Task<ActionResult<ProdutoDTO>> DeleteProduto(long handle)
+        {
+            var produtoDTO = await _produtoService.GetProduto(handle);
+            
+            if (produtoDTO is null)
+            {
+                return NotFound($"Produto com id {handle} não encontrado.");
+            }
+            if (produtoDTO.Estoque > 0)
+            {
+                return BadRequest("Não é possível excluir um produto que ainda possui estoque.");
+            }
+
+            produtoDTO = await _produtoService.DeleteProduto(handle);
+
+            return Ok(produtoDTO);
+        }
+
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutos()
         {
@@ -53,5 +102,17 @@ namespace LojaVirtual.CatalogoAPI.Controllers
 
             return Ok(produtosDTO);
         }
+
+        [HttpGet("{handle}")]
+        public async Task<ActionResult<ProdutoDTO>> GetProduto(long handle)
+        {
+            var produtoDTO = await _produtoService.GetProduto(handle);
+            if (produtoDTO is null)
+            {
+                return NotFound($"Produto com id {handle} não encontrado.");
+            }
+            return Ok(produtoDTO);
+        }
+
     }
 }
