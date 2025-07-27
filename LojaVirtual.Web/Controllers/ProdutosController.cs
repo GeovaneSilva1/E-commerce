@@ -68,7 +68,7 @@ namespace LojaVirtual.Web.Controllers
             ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
             ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
 
-            return View(produto);
+            return PartialView("AtualizarProduto",produto);
         }
 
         [HttpPost]
