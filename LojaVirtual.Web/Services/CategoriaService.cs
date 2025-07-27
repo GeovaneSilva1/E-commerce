@@ -97,5 +97,21 @@ namespace LojaVirtual.Web.Services
 
             return _categoriaVM;
         }
+
+        public async Task<bool> DeletarCategoriaAsync(long handle)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.DeleteAsync(_apiEndPoint + handle))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return await Task.FromResult(true);
+                }
+                else
+                {
+                    throw new Exception("Erro ao deletar categoria: " + response.ReasonPhrase);
+                }
+            }
+        }
     }
 }

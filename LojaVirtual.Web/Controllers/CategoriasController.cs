@@ -64,5 +64,33 @@ namespace LojaVirtual.Web.Controllers
 
             return View(categoriaViewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeletarCategoria(long Handle)
+        {
+            var categoria = await _categoriaService.ObterCategoriaPorIdAsync(Handle);
+            if (categoria is null)
+            {
+                TempData["MensagemErro"] = "Categoria não encontrada!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return PartialView("DeletarCategoria", categoria);
+        }
+
+        [HttpPost(), ActionName("DeletarCategoria")]
+        public async Task<IActionResult> DeletarCategoriaConfirmada(long Handle)
+        {
+            var categoriaExcluida = await _categoriaService.DeletarCategoriaAsync(Handle);
+            
+            if (categoriaExcluida)
+            {
+                TempData["MensagemSucesso"] = "Categoria excluída com sucesso!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["MensagemErro"] = "Erro ao deletar categoria!";
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

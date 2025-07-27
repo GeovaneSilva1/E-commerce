@@ -9,7 +9,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriasController : ControllerBase
-    {   
+    {
         private readonly ICategoriaService _categoriaService;
         public CategoriasController(ICategoriaService categoriaService)
         {
@@ -31,7 +31,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
         public async Task<ActionResult<CategoriaDTO>> AddCategoria([FromBody] CategoriaDTO categoriaDTO)
         {
             var categoriaExistente = await _categoriaService.GetCategoria(categoriaDTO.Handle);
-            
+
             if (categoriaExistente is not null)
             {
                 return BadRequest("Categoria já existe.");
@@ -42,10 +42,10 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             }
 
             await _categoriaService.AddCategoria(categoriaDTO);
-            
+
             return Ok(categoriaDTO);
         }
-        
+
         [HttpPut]
         public async Task<ActionResult<CategoriaDTO>> UpdateCategoria([FromBody] CategoriaDTO categoriaDTO)
         {
@@ -60,11 +60,11 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             }
 
             await _categoriaService.UpdateCategoria(categoriaDTO);
-            
+
             return Ok(categoriaDTO);
         }
 
-        [HttpDelete]
+        [HttpDelete("{handle}")]
         public async Task<ActionResult> DeleteCategoria(long handle)
         { 
             var categoriaDTO = await _categoriaService.GetCategoria(handle);

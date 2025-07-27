@@ -8,6 +8,7 @@ namespace LojaVirtual.Web.Services.Interfaces
         Task<CategoriaViewModel> ObterCategoriaPorIdAsync(long handle);
         Task<CategoriaViewModel> AdicionarCategoriaAsync(CategoriaViewModel categoria);
         Task<CategoriaViewModel> AtualizarCategoriaAsync(CategoriaViewModel categoria);
-        //Task<bool> ExcluirCategoriaAsync(int id);
+        Task<bool> DeletarCategoriaAsync(long handle);
+        
     }
 }
