@@ -57,14 +57,14 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Preco)
                     </td>
-                    <td>
+                    <td class="text-end">
                         <a href="javascript:void(0);"
-                           class="btn btn-warning abrir-modal-edicao"
+                           class="btn btn-warning abrir-modal-edicao margin-right: 5px;"
                            data-url="@Url.Action("AtualizarProduto", "Produtos", new { handle = item.Handle })">
                             <span class="fas fa-edit"></span>
                         </a>
                         <a href="javascript:void(0);"
-                           class="btn btn-danger abrir-modal-exclusao"
+                           class="btn btn-danger abrir-modal-exclusao margin-right: 5px;"
                            data-url="@Url.Action("DeletarProduto", "Produtos", new { handle = item.Handle })">
                             <span class="fas fa-trash-alt"></span>
                         </a>
