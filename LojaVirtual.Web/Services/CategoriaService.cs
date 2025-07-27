@@ -9,6 +9,8 @@ namespace LojaVirtual.Web.Services
         private readonly IHttpClientFactory _clientFactory;
         private const string _apiEndPoint = "api/categorias/"; // URL base da API de categorias
         private readonly JsonSerializerOptions _jsonSerializerOptions;
+        private CategoriaViewModel _categoriaVM;
+        private IEnumerable<CategoriaViewModel> _categoriasVM;
 
         public CategoriaService(IHttpClientFactory clientFactory)
         {
@@ -31,7 +33,6 @@ namespace LojaVirtual.Web.Services
                     var apiResponse = await response.Content.ReadAsStreamAsync();
 
                     categoriasVM = await JsonSerializer.DeserializeAsync<IEnumerable<CategoriaViewModel>>(apiResponse, _jsonSerializerOptions);
-
                 }
                 else
                 {
@@ -40,6 +41,61 @@ namespace LojaVirtual.Web.Services
             }
             return categoriasVM;
 
+        }
+
+        public async Task<CategoriaViewModel> AdicionarCategoriaAsync(CategoriaViewModel categoria)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.PostAsJsonAsync(_apiEndPoint, categoria))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    _categoriaVM = await JsonSerializer.DeserializeAsync<CategoriaViewModel>(apiResponse, _jsonSerializerOptions);
+                }
+                else
+                {
+                    throw new Exception("Erro ao criar categoria: " + response.ReasonPhrase);
+                }
+            }
+            return _categoriaVM;
+        }
+
+        public async Task<CategoriaViewModel> ObterCategoriaPorIdAsync(long handle)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.GetAsync(_apiEndPoint + handle))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    _categoriaVM = await JsonSerializer.DeserializeAsync<CategoriaViewModel>(apiResponse, _jsonSerializerOptions);
+                }
+                else
+                {
+                    throw new Exception("Erro ao obter categoria: " + response.ReasonPhrase);
+                }
+            }
+            return _categoriaVM;
+        }
+
+        public async Task<CategoriaViewModel> AtualizarCategoriaAsync(CategoriaViewModel categoria)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.PutAsJsonAsync(_apiEndPoint, categoria))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    _categoriaVM = await JsonSerializer.DeserializeAsync<CategoriaViewModel>(apiResponse, _jsonSerializerOptions);
+                }
+                else
+                {
+                    throw new Exception("Erro ao atualizar categoria: " + response.ReasonPhrase);
+                }
+            }
+
+            return _categoriaVM;
         }
     }
 }

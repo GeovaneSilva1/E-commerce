@@ -2,6 +2,7 @@
 using LojaVirtual.CatalogoAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
 
 namespace LojaVirtual.CatalogoAPI.Controllers
 {
@@ -23,7 +24,6 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             {
                 return NotFound("Nenhuma categoria encontrada.");
             }
-
             return Ok(categorias);
         }
 
@@ -43,6 +43,45 @@ namespace LojaVirtual.CatalogoAPI.Controllers
 
             await _categoriaService.AddCategoria(categoriaDTO);
             
+            return Ok(categoriaDTO);
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult<CategoriaDTO>> UpdateCategoria([FromBody] CategoriaDTO categoriaDTO)
+        {
+            if (categoriaDTO is null)
+            {
+                return BadRequest("Dados da categoria inválidos.");
+            }
+
+            if (string.IsNullOrWhiteSpace(categoriaDTO.Nome))
+            {
+                return BadRequest("O nome da categoria não pode ser vazio.");
+            }
+
+            await _categoriaService.UpdateCategoria(categoriaDTO);
+            
+            return Ok(categoriaDTO);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteCategoria(long handle)
+        { 
+            var categoriaDTO = await _categoriaService.GetCategoria(handle);
+
+            if (categoriaDTO is null)
+            {
+                return NotFound($"Categoria com id {handle} não encontrada.");
+            }
+            bool existeProdutosVinculados = await _categoriaService.ExistProdutosByCategoria(handle);
+
+            if (existeProdutosVinculados)
+            {
+                return BadRequest("Não é possível excluir uma categoria que ainda possui produtos cadastrados a ela.");
+            }
+
+            categoriaDTO = await _categoriaService.DeleteCategoria(handle);
+
             return Ok(categoriaDTO);
         }
 

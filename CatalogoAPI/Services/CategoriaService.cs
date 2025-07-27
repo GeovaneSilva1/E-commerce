@@ -25,6 +25,17 @@ namespace LojaVirtual.CatalogoAPI.Services
             await _categoriaRepository.Add(categoria);
         }
 
+        public async Task<CategoriaDTO> DeleteCategoria(long handle)
+        {
+            Categoria categoria = await _categoriaRepository.Delete(handle);
+            return _mapper.Map<CategoriaDTO>(categoria);
+        }
+
+        public async Task<bool> ExistProdutosByCategoria(long handle)
+        {
+            return await _categoriaRepository.ExistsProdutosByCategoria(handle);
+        }
+
         public async Task<CategoriaDTO> GetCategoria(long handle)
         {
             Categoria categoria = await _categoriaRepository.Get(handle);
@@ -35,6 +46,12 @@ namespace LojaVirtual.CatalogoAPI.Services
         {
             var categorias = await _categoriaRepository.GetMany();
             return _mapper.Map<IEnumerable<CategoriaDTO>>(categorias);
+        }
+
+        public async Task UpdateCategoria(CategoriaDTO categoriaDTO)
+        {
+            Categoria categoria = _mapper.Map<Categoria>(categoriaDTO);
+            await _categoriaRepository.Update(categoria);
         }
     }
 }

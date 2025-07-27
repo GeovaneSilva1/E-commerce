@@ -1,0 +1,24 @@
+﻿@model LojaVirtual.Web.Models.CategoriaViewModel
+
+<h2>Criar uma nova categoria</h2>
+
+<form asp-action="CriarCategoria">
+    <div class="form-horizontal">
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Nome" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Criar" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-info">Voltar</a>
+            </div>
+        </div>
+    </div>
+</form>

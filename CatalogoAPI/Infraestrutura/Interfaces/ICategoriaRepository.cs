@@ -9,5 +9,8 @@ namespace LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces
         Task Add(Categoria categoria);
         Task<IEnumerable<Categoria>> GetMany();
         Task<Categoria> Get(long handle);
+        Task Update(Categoria categoria);
+        Task<bool> ExistsProdutosByCategoria(long handle);
+        Task<Categoria> Delete(long handle);
     }
 }
