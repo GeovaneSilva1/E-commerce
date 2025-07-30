@@ -1,6 +1,7 @@
 ﻿using LojaVirtual.Web.Models;
 using LojaVirtual.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
 
 namespace LojaVirtual.Web.Controllers
 {
@@ -67,6 +68,33 @@ namespace LojaVirtual.Web.Controllers
                 }
             }
             return View(marcaViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeletarMarca(long handle)
+        {
+            var marca = await _marcaService.ObterMarcaPorIdAsync(handle);
+            if (marca is null)
+            {
+                TempData["MensagemErro"] = "Marca não encontrada!";
+                return RedirectToAction(nameof(Index));
+            }
+            return PartialView("DeletarMarca", marca);
+        }
+
+        [HttpPost, ActionName("DeletarMarca")]
+        public async Task<IActionResult> DeletarMarcaConfirmada(long Handle)
+        {
+            var marcaExcluida = await _marcaService.DeletarMarcaAsync(Handle);
+
+            if (marcaExcluida)
+            {
+                TempData["MensagemSucesso"] = "Marca excluída com sucesso!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["MensagemErro"] = "Erro ao deletar marca!";
+            return RedirectToAction(nameof(Index));
         }
     }
 }

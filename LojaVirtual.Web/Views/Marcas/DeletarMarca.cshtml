@@ -1,0 +1,21 @@
+﻿@model LojaVirtual.Web.Models.MarcaViewModel
+
+<div class="modal fade align-content-center" id="modalExclusao" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                Deseja realmente excluir a marca <strong>@Model.Nome</strong>?
+            </div>
+            <div class="modal-footer">
+                <form asp-action="DeletarMarca" asp-route-Handle="@Model.Handle" method="post">
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

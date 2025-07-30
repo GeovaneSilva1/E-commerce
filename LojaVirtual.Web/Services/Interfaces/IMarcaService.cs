@@ -4,10 +4,10 @@ namespace LojaVirtual.Web.Services.Interfaces
 {
     public interface IMarcaService
     {
-          Task<IEnumerable<MarcaViewModel>> ObterMarcasAsync();
+        Task<IEnumerable<MarcaViewModel>> ObterMarcasAsync();
         Task<MarcaViewModel> ObterMarcaPorIdAsync(long handle);
         Task<MarcaViewModel> AdicionarMarcaAsync(MarcaViewModel marca);
         Task<MarcaViewModel> AtualizarMarcaAsync(MarcaViewModel marca);
-        //Task<bool> DeletarMarcaAsync(int id);
+        Task<bool> DeletarMarcaAsync(long handle);
     }
 }
