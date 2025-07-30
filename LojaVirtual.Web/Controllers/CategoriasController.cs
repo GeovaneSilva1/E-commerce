@@ -14,7 +14,7 @@ namespace LojaVirtual.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProdutoViewModel>>> Index()
+        public async Task<ActionResult<IEnumerable<CategoriaViewModel>>> Index()
         {
             var categorias = await _categoriaService.ObterCategoriasAsync();
 

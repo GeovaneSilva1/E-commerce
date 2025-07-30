@@ -9,6 +9,7 @@ namespace LojaVirtual.Web.Services
         private readonly IHttpClientFactory _clientFactory;
         private const string _apiEndPoint = "api/marcas/"; // URL base da API de marcas
         private readonly JsonSerializerOptions _jsonSerializerOptions;
+        private MarcaViewModel _marcaVM;
 
         public MarcaService(IHttpClientFactory clientFactory)
         {
@@ -39,6 +40,25 @@ namespace LojaVirtual.Web.Services
                 }
             }
             return marcasVM;
+        }
+
+        public async Task<MarcaViewModel> AdicionarMarcaAsync(MarcaViewModel marca)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.PostAsJsonAsync(_apiEndPoint, marca))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+
+                    _marcaVM = await JsonSerializer.DeserializeAsync<MarcaViewModel>(apiResponse, _jsonSerializerOptions);
+                }
+                else
+                {
+                    throw new Exception("Erro ao adicionar marca: " + response.ReasonPhrase);
+                }
+            }
+            return _marcaVM;
         }
     }
 }

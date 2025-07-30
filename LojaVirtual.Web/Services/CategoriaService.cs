@@ -22,7 +22,7 @@ namespace LojaVirtual.Web.Services
         }
 
         public async Task<IEnumerable<CategoriaViewModel>> ObterCategoriasAsync()
-        {
+        {   
             var client = _clientFactory.CreateClient("CatalogoAPI");
             IEnumerable<CategoriaViewModel> categoriasVM;
 
