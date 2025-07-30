@@ -25,6 +25,17 @@ namespace LojaVirtual.CatalogoAPI.Services
             await _marcaRepository.Add(marca);
         }
 
+        public async Task<MarcaDTO> DeleteMarca(long handle)
+        {
+            Marca marca = await _marcaRepository.Delete(handle);
+            return _mapper.Map<MarcaDTO>(marca);
+        }
+
+        public async Task<bool> ExistProdutosByMarcas(long handle)
+        {
+            return await _marcaRepository.ExistsProdutosByMarca(handle);
+        }
+
         public async Task<MarcaDTO> GetMarca(long handle)
         {
             Marca marca = await _marcaRepository.Get(handle);
@@ -35,6 +46,12 @@ namespace LojaVirtual.CatalogoAPI.Services
         {
             var marcas = await _marcaRepository.GetMany();
             return _mapper.Map<IEnumerable<MarcaDTO>>(marcas);
+        }
+
+        public async Task UpdateMarca(MarcaDTO marcaDTO)
+        {
+            var marca = _mapper.Map<Marca>(marcaDTO);
+            await _marcaRepository.Update(marca);
         }
     }
 }

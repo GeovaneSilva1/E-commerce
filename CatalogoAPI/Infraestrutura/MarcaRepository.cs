@@ -23,6 +23,23 @@ namespace LojaVirtual.CatalogoAPI.Infraestrutura
             await _contextCatalogo.SaveChangesAsync();
         }
 
+        public async Task<Marca> Delete(long handle)
+        {
+            Marca marca = await Get(handle);
+            _contextCatalogo.Marcas.Remove(marca);
+            await _contextCatalogo.SaveChangesAsync();
+            return marca;
+        }
+
+        public async Task<bool> ExistsProdutosByMarca(long handle)
+        {
+            return await _contextCatalogo.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Marca)
+                .Where(p => p.MarcaId == handle)
+                .AnyAsync();
+        }
+
         public async Task<Marca> Get(long handle)
         {
             return await _contextCatalogo.Marcas.Where(p => p.Handle == handle).FirstOrDefaultAsync();
@@ -31,6 +48,12 @@ namespace LojaVirtual.CatalogoAPI.Infraestrutura
         public async Task<IEnumerable<Marca>> GetMany()
         {
             return await _contextCatalogo.Marcas.ToListAsync();
+        }
+
+        public async Task Update(Marca marca)
+        {
+            _contextCatalogo.Entry(marca).State = EntityState.Modified;
+            await _contextCatalogo.SaveChangesAsync();
         }
     }
 }

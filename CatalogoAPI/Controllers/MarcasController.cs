@@ -46,6 +46,45 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(marcaDTO);
         }
 
+        [HttpPut]
+        public async Task<ActionResult<MarcaDTO>> UpdateMarca([FromBody] MarcaDTO marcaDTO)
+        {
+            if (marcaDTO is null)
+            {
+                return BadRequest("Dados da marca inválidos.");
+            }
+
+            if (string.IsNullOrWhiteSpace(marcaDTO.Nome))
+            {
+                return BadRequest("O nome da marca não pode ser vazio.");
+            }
+
+            await _marcaService.UpdateMarca(marcaDTO);
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteMarca(long handle)
+        {
+            var marcaDTO = await _marcaService.GetMarca(handle);
+
+            if (marcaDTO is null)
+            {
+                return NotFound($"Marca com id {handle} não encontrada.");
+            }
+            bool existeProdutosVinculados = await _marcaService.ExistProdutosByMarcas(handle);
+
+            if (existeProdutosVinculados)
+            {
+                return BadRequest("Não é possível excluir uma marca que ainda possui produtos cadastrados a ela.");
+            }
+
+            marcaDTO = await _marcaService.DeleteMarca(handle);
+
+            return Ok(marcaDTO);
+        }
+
         [HttpGet("{handle}")]
         public async Task<ActionResult<MarcaDTO>> GetMarca(long handle)
         {
