@@ -61,7 +61,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
 
             await _marcaService.UpdateMarca(marcaDTO);
 
-            return Ok();
+            return Ok(marcaDTO);
         }
 
         [HttpDelete("{handle}")]

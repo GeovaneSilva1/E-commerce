@@ -60,5 +60,41 @@ namespace LojaVirtual.Web.Services
             }
             return _marcaVM;
         }
+
+        public async Task<MarcaViewModel> ObterMarcaPorIdAsync(long handle)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.GetAsync(_apiEndPoint + handle))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    _marcaVM = await JsonSerializer.DeserializeAsync<MarcaViewModel>(apiResponse, _jsonSerializerOptions);
+                }
+                else
+                {
+                    throw new Exception("Erro ao obter marca: " + response.ReasonPhrase);
+                }
+            }
+            return _marcaVM;
+        }
+
+        public async Task<MarcaViewModel> AtualizarMarcaAsync(MarcaViewModel marca)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.PutAsJsonAsync(_apiEndPoint, marca))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    _marcaVM = await JsonSerializer.DeserializeAsync<MarcaViewModel>(apiResponse, _jsonSerializerOptions);
+                }
+                else
+                {
+                    throw new Exception("Erro ao atualizar marca: " + response.ReasonPhrase);
+                }
+            }
+            return _marcaVM;
+        }
     }
 }

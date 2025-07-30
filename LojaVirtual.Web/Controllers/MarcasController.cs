@@ -40,5 +40,33 @@ namespace LojaVirtual.Web.Controllers
             }
             return View(marcaViewModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AtualizarMarca(long handle)
+        {
+            var marca = await _marcaService.ObterMarcaPorIdAsync(handle);
+            if (marca is null)
+            {
+                TempData["MensagemErro"] = "Marca não encontrada!";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return PartialView("AtualizarMarca", marca);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AtualizarMarca(MarcaViewModel marcaViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var marcaAtualizada = await _marcaService.AtualizarMarcaAsync(marcaViewModel);
+                if (marcaAtualizada is not null)
+                {
+                    TempData["MensagemSucesso"] = "Marca atualizada com sucesso!";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            return View(marcaViewModel);
+        }
     }
 }
