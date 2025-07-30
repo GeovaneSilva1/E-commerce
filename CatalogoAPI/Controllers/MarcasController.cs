@@ -64,7 +64,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{handle}")]
         public async Task<ActionResult> DeleteMarca(long handle)
         {
             var marcaDTO = await _marcaService.GetMarca(handle);
