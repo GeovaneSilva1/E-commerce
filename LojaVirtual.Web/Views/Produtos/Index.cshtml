@@ -74,7 +74,16 @@
         </tbody>
     </table>
  <div id="modalContainer"></div>
+    @if (TempData["MensagemErro"] != null)
+    {
+        <input type="hidden" id="mensagem-erro" value="@TempData["MensagemErro"]" />
+    }
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <input type="hidden" id="mensagem-sucesso" value="@TempData["MensagemSucesso"]" />
+    }
 </div>
 @section Scripts {
     <script src="~/js/modalProdutos.js"></script>
+    <script src="~/js/messages.js"></script>
 }

@@ -32,6 +32,10 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             {
                 return BadRequest("Preço do produto deve ser maior que zero!");
             }
+            if (produtoDTO.Estoque <= 0)
+            {
+                return BadRequest("Estoque do produto não pode ser negativo!");
+            }
 
             var categoriaDTO = await _categoriaService.GetCategoria(produtoDTO.CategoriaId);
             var marcaDTO = await _marcaService.GetMarca(produtoDTO.MarcaId);
@@ -48,7 +52,14 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             {
                 return BadRequest("Dados do produto inválidos.");
             }
-
+            if (produtoDTO.Preco <= 0)
+            {
+                return BadRequest("Preço do produto deve ser maior que zero!");
+            }
+            if (produtoDTO.Descricao is null)
+            {
+                return BadRequest("Descrição do produto não pode ser vazia.");
+            }
             var categoriaDTO = await _categoriaService.GetCategoria(produtoDTO.CategoriaId);
             var marcaDTO = await _marcaService.GetMarca(produtoDTO.MarcaId);
             

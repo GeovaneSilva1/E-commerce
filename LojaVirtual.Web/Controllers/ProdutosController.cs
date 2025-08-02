@@ -2,6 +2,8 @@
 using LojaVirtual.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LojaVirtual.Web.Controllers
 {
@@ -68,55 +70,56 @@ namespace LojaVirtual.Web.Controllers
             ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
             ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
 
-            return PartialView("AtualizarProduto",produto);
+            return PartialView("AtualizarProduto", produto);
         }
 
         [HttpPost]
         public async Task<IActionResult> AtualizarProduto(ProdutoViewModel produtoViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
                 var produtoAtualizado = await _produtoService.AtualizarProdutoAsync(produtoViewModel);
-                if (produtoAtualizado is not null)
-                {
-                    TempData["MensagemSucesso"] = "Produto atualizado com sucesso!";
-                    return RedirectToAction(nameof(Index));
-                }
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
             }
 
-            ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
-            ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
-            return View(produtoViewModel);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
         public async Task<IActionResult> DeletarProduto(long Handle)
         {
-            var produto = await _produtoService.ObterProdutoPorIdAsync(Handle);
-
-            if (produto is null)
+            try
             {
-                TempData["MensagemErro"] = "Produto não encontrado!";
+                var produto = await _produtoService.ObterProdutoPorIdAsync(Handle);
+                return PartialView("DeletarProduto", produto);
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
                 return RedirectToAction(nameof(Index));
             }
-
-            return PartialView("DeletarProduto", produto);
         }
 
         [HttpPost(), ActionName("DeletarProduto")]
         public async Task<IActionResult> DeletarProdutoConfirmado(long Handle)
         {
-            var produtoDeletado = await _produtoService.DeletarProdutoAsync(Handle);
-
-            if (produtoDeletado)
+            try
             {
-                TempData["MensagemSucesso"] = "Produto deletado com sucesso!";
-                return RedirectToAction(nameof(Index));
+                var produtoDeletado = await _produtoService.DeletarProdutoAsync(Handle);
+                if (produtoDeletado)
+                {
+                    TempData["MensagemSucesso"] = "Produto deletado com sucesso!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
             }
 
-            TempData["MensagemErro"] = "Erro ao deletar produto!";
             return RedirectToAction(nameof(Index));
-
         }
     }
 }

@@ -36,7 +36,8 @@ namespace LojaVirtual.Web.Services
                 }
                 else
                 {
-                    throw new Exception("Erro ao atualizar produto: " + response.ReasonPhrase);
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception("Erro ao atualizar produto: " + errorMessage);
                 }
             }
             return produtoVMUpdate;
@@ -56,7 +57,8 @@ namespace LojaVirtual.Web.Services
                 }
                 else
                 {
-                    throw new Exception("Erro ao criar produto: " + response.ReasonPhrase);
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception("Erro ao criar produto: " + errorMessage);
                 }
             }
             return _ProdutoVM;
@@ -65,18 +67,15 @@ namespace LojaVirtual.Web.Services
         public async Task<bool> DeletarProdutoAsync(long handle)
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
-            return await client.DeleteAsync(_apiEndPoint + handle)
-                .ContinueWith(response =>
+            using (var response = await client.DeleteAsync(_apiEndPoint + handle))
+            {
+                if (!response.IsSuccessStatusCode)
                 {
-                    if (response.Result.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        throw new Exception("Erro ao deletar produto: " + response.Result.ReasonPhrase);
-                    }
-                }); 
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception("Erro na exclusão: " + errorMessage);
+                }
+            }
+            return true;
         }
 
         public async Task<ProdutoViewModel> ObterProdutoPorIdAsync(long handle)
@@ -92,7 +91,8 @@ namespace LojaVirtual.Web.Services
                 }
                 else
                 {
-                    throw new Exception("Erro ao obter produto: " + response.ReasonPhrase);
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception("Erro ao obter produto: " + errorMessage);
                 }
             }
             return _ProdutoVM;
