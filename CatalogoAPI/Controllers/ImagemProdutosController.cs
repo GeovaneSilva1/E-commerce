@@ -1,0 +1,40 @@
+﻿using LojaVirtual.CatalogoAPI.DTOs;
+using LojaVirtual.CatalogoAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace LojaVirtual.CatalogoAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ImagemProdutosController : ControllerBase
+    {
+        private readonly IImagemProdutoService _imagemProdutoService;
+        private readonly IProdutoService _produtoService;
+
+        public ImagemProdutosController(IImagemProdutoService imagemProdutoService, IProdutoService produtoService)
+        {
+            _imagemProdutoService = imagemProdutoService;
+            _produtoService = produtoService;
+        }
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> AddImagemProdutos([FromForm] FileUploadDTO fileUploadDTO, [FromQuery] long produtoHandle)
+        {
+            var produto = await _produtoService.GetProduto(produtoHandle);
+            if (produto == null)
+            {
+                return NotFound("Produto não encontrado.");
+            }
+            if (fileUploadDTO.File is null)
+            {
+                return BadRequest("Nenhuma imagem enviada.");
+            }
+
+            await _imagemProdutoService.AddImagemProduto(fileUploadDTO, produto);
+
+            return Ok();
+        }
+    }
+}

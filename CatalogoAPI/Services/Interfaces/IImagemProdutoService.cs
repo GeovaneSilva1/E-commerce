@@ -4,7 +4,7 @@ namespace LojaVirtual.CatalogoAPI.Services.Interfaces
 {
     public interface IImagemProdutoService
     {   
-        Task AddImagemProduto(ImagemProdutoDTO imagemProdutoDTO, ProdutoDTO produtoDTO);
+        Task AddImagemProduto(FileUploadDTO fileUploadDTO, ProdutoDTO produtoDTO);
         Task UpdateImagemProduto(ImagemProdutoDTO imagemProdutoDTO, ProdutoDTO produtoDTO);
         Task<ImagemProdutoDTO> DeleteImagemProduto(long handle);
         Task<ImagemProdutoDTO> GetImagemProduto(long handle);

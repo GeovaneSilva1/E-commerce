@@ -1,0 +1,39 @@
+﻿@model LojaVirtual.Web.Models.Compostas.ProdutoImagensViewModel
+
+<div class="modal fade" id="modalAdicao" tabindex="-1" aria-labelledby="ImagemprodutoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form asp-action="AdicionarImagemProduto" enctype="multipart/form-data" asp-route-Handle="@Model.HandleProduto" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ImagemprodutoModalLabel">Adicionando imagens dos produtos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                    <div class="panel panel-default">
+                        <input asp-for="Files" type="file" class="form-control" multiple accept=".webp"/>
+                        <span asp-validation-for="Files" class="text-danger"></span>
+                        <input type="hidden" asp-for="HandleProduto"/>
+                        <div class="form-group" style="padding-top: 10px">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Imagens</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(model => Model.ImagemProdutos)
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </Div>
+               
+            </form>
+        </div>
+    </div>
+</div>

@@ -10,28 +10,32 @@ namespace LojaVirtual.CatalogoAPI.Services
     {
         private readonly IImagemProdutoRepository _imagemProdutoRepository;
         private readonly IMapper _mapper;
+        public static IWebHostEnvironment _webHostEnvironment;
 
-        public ImagemProdutoService(IImagemProdutoRepository imagemProdutoRepository, IMapper mapper)
+        public ImagemProdutoService(IImagemProdutoRepository imagemProdutoRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _imagemProdutoRepository = imagemProdutoRepository;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task AddImagemProduto(ImagemProdutoDTO imagemProdutoDTO, ProdutoDTO produtoDTO)
+        public async Task AddImagemProduto(FileUploadDTO fileUploadDTO, ProdutoDTO produtoDTO)
         {
-            imagemProdutoDTO.Handle = 0;
+            ImagemProdutoDTO imagemProdutoDTO = new ImagemProdutoDTO();
+            imagemProdutoDTO.ProdutoId = produtoDTO.Handle;
+            imagemProdutoDTO.NomeProduto = produtoDTO.Descricao;
+
+            imagemProdutoDTO.Url = fileUploadDTO.File.FileName;
+
             ImagemProduto imagemProduto = _mapper.Map<ImagemProduto>(imagemProdutoDTO);
-            imagemProduto.ProdutoId = produtoDTO.Handle;
 
             await _imagemProdutoRepository.Add(imagemProduto);
-            imagemProdutoDTO.Handle = imagemProduto.Handle;
-            imagemProdutoDTO.NomeProduto = imagemProduto.Produto.Descricao;
         }
 
         public async Task UpdateImagemProduto(ImagemProdutoDTO imagemProdutoDTO, ProdutoDTO produtoDTO)
         {
             ImagemProduto imagemProduto = _mapper.Map<ImagemProduto>(imagemProdutoDTO);
-            imagemProduto.ProdutoId = produtoDTO.Handle;    
+            imagemProduto.ProdutoId = produtoDTO.Handle;
 
             await _imagemProdutoRepository.Update(imagemProduto);
             imagemProdutoDTO.Handle = imagemProduto.Handle;
@@ -67,6 +71,6 @@ namespace LojaVirtual.CatalogoAPI.Services
             return _mapper.Map<IEnumerable<ImagemProdutoDTO>>(imagens);
         }
 
-        
+
     }
 }

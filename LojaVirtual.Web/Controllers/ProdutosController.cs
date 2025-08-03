@@ -1,4 +1,5 @@
 ﻿using LojaVirtual.Web.Models;
+using LojaVirtual.Web.Models.Compostas;
 using LojaVirtual.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,14 +13,17 @@ namespace LojaVirtual.Web.Controllers
         private readonly IProdutoService _produtoService;
         private readonly ICategoriaService _categoriaService;
         private readonly IMarcaService _marcaService;
+        private readonly IImagemProdutoService _ImagemProdutoService;
 
         public ProdutosController(IProdutoService produtoService,
                                   ICategoriaService categoriaService,
-                                  IMarcaService marcaService)
+                                  IMarcaService marcaService,
+                                  IImagemProdutoService imagemProdutoService)
         {
             _produtoService = produtoService;
             _categoriaService = categoriaService;
             _marcaService = marcaService;
+            _ImagemProdutoService = imagemProdutoService;
         }
 
         [HttpGet]
@@ -120,6 +124,41 @@ namespace LojaVirtual.Web.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdicionarImagemProduto(long Handle, [FromForm] ProdutoImagensViewModel produtoImagensViewModel)
+        {
+            var imagensProduto = await _ImagemProdutoService.ObterImagensPorProdutoIdAsync(Handle);
+            var produto = await _produtoService.ObterProdutoPorIdAsync(Handle);
+            produtoImagensViewModel.HandleProduto = produto.Handle;
+            produtoImagensViewModel.ImagemProdutos = imagensProduto;
+
+            return PartialView("AdicionarImagemProduto", produtoImagensViewModel);
+        }
+
+        [HttpPost(), ActionName("AdicionarImagemProduto")]
+        public async Task<IActionResult> AdicionarImagemProduto([FromForm] ProdutoImagensViewModel produtoImagensViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (produtoImagensViewModel.Files is null)
+                {
+                    TempData["MensagemErro"] = "Erro ao adicionar imagens.";
+                    return RedirectToAction(nameof(Index));
+                }
+                if (produtoImagensViewModel.HandleProduto <= 0)
+                {
+                    TempData["MensagemErro"] = "Erro ao adicionar imagens. Produto não encontrado";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var imagensAdicionadas = await _ImagemProdutoService.UploadImagensAsync(produtoImagensViewModel.Files, produtoImagensViewModel.HandleProduto);
+                TempData["MensagemSucesso"] = "Imagens adicionadas com sucesso!";
+            }
+
+            return RedirectToAction(nameof(Index));
+            
         }
     }
 }

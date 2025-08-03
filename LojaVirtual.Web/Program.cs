@@ -14,6 +14,7 @@ builder.Services.AddHttpClient("CatalogoAPI", c =>
 builder.Services.AddTransient<IProdutoService, ProdutoService>();
 builder.Services.AddTransient<ICategoriaService, CategoriaService>();
 builder.Services.AddTransient<IMarcaService, MarcaService>();
+builder.Services.AddTransient<IImagemProdutoService, ImagemProdutoService>();
 
 var app = builder.Build();
 
