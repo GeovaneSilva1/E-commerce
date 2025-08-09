@@ -36,5 +36,17 @@ namespace LojaVirtual.CatalogoAPI.Controllers
 
             return Ok();
         }
+
+        [HttpGet("{produtoHandle}")]
+        public async Task<IActionResult> GetImagensPorProdutoId(long produtoHandle)
+        {
+            var imagens = await _imagemProdutoService.GetImagensProdutoByProdutoHandle(produtoHandle);
+            if (imagens is null || !imagens.Any())
+            {
+                return NotFound("Nenhuma imagem encontrada para o produto.");
+            }
+
+            return Ok(imagens);
+        }
     }
 }

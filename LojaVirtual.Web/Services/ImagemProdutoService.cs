@@ -11,6 +11,7 @@ namespace LojaVirtual.Web.Services
     {
         private readonly IHttpClientFactory _clientFactory;
         private const string _apiEndPoint = "api/ImagemProdutos"; // URL base da API de imagens de produtos
+        private const string _caminhoImagens = "\\images\\produtos\\";
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private IEnumerable<ImagemProdutoViewModel> _imagensProdutoVMs;
         private ImagemProdutoViewModel _imagemProdutoVM;
@@ -26,11 +27,11 @@ namespace LojaVirtual.Web.Services
             };
         }
 
-        public async Task<IEnumerable<ImagemProdutoViewModel>> ObterImagensPorProdutoIdAsync(long produtoId)
+        public async Task<IEnumerable<ImagemProdutoViewModel>> ObterImagensPorProdutoIdAsync(long produtoHandle)
         {
                var client = _clientFactory.CreateClient("CatalogoAPI");
 
-               using (var response = await client.GetAsync(_apiEndPoint + produtoId))
+               using (var response = await client.GetAsync(_apiEndPoint +"/"+ produtoHandle))
                {
                    if (response.IsSuccessStatusCode)
                    {
@@ -56,13 +57,13 @@ namespace LojaVirtual.Web.Services
                         throw new Exception("Formato de imagem inválido. Apenas arquivos .webp são permitidos.");
                     }
 
-                    var nomeArquivo = Guid.NewGuid() + Path.GetExtension(imagem.FileName);
-                    var caminhoarquivo = _webHostEnvironment.WebRootPath + "\\images\\produtos\\";
+                    var nomeArquivo = Guid.NewGuid() + imagem.FileName;
+                    var caminhoarquivo = $"{_webHostEnvironment.WebRootPath}{_caminhoImagens}";
                     if (!Directory.Exists(caminhoarquivo))
                     {
                         Directory.CreateDirectory(caminhoarquivo);
                     }
-                    using (FileStream fileStream = File.Create(caminhoarquivo + nomeArquivo))
+                    using (FileStream fileStream = File.Create($"{caminhoarquivo}{nomeArquivo}"))
                     {
                         await imagem.CopyToAsync(fileStream);
                         fileStream.Flush();
@@ -72,7 +73,7 @@ namespace LojaVirtual.Web.Services
                     {
                         var fileContent = new StreamContent(fileStream);
                         fileContent.Headers.ContentType = new MediaTypeHeaderValue("image/webp");
-                        content.Add(fileContent, "File", caminhoarquivo+nomeArquivo);
+                        content.Add(fileContent, "File", $"{_caminhoImagens}{nomeArquivo}");
 
                         var client = _clientFactory.CreateClient("CatalogoAPI");
 

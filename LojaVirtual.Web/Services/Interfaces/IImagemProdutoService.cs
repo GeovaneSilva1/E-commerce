@@ -4,7 +4,7 @@ using LojaVirtual.Web.Models;
 namespace LojaVirtual.Web.Services.Interfaces
 {
     public interface IImagemProdutoService
-    {   Task<IEnumerable<ImagemProdutoViewModel>> ObterImagensPorProdutoIdAsync(long produtoId);
+    {   Task<IEnumerable<ImagemProdutoViewModel>> ObterImagensPorProdutoIdAsync(long produtoHandle);
         //Task<ImagemProdutoViewModel> CriarImagemAsync(ImagemProdutoViewModel imagemProdutoViewModel);
         //Task<ImagemProdutoViewModel> AtualizarImagemAsync(ImagemProdutoViewModel imagemProdutoViewModel);
         //Task<bool> ExcluirImagemAsync(long imagemId);
