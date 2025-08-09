@@ -79,7 +79,7 @@ namespace LojaVirtual.Web.Services
                         var response = await client.PostAsync($"{_apiEndPoint}?produtoHandle={produtoId}", content);
                         if (!response.IsSuccessStatusCode)
                         {
-                            throw new Exception("Erro ao enviar imagem: " + response.ReasonPhrase);
+                            throw new Exception("Erro ao enviar imagem: " + response.Content.ReadAsStringAsync());
                         }
                     }
                 }

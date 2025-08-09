@@ -142,19 +142,27 @@ namespace LojaVirtual.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (produtoImagensViewModel.Files is null)
+                try
                 {
-                    TempData["MensagemErro"] = "Erro ao adicionar imagens.";
-                    return RedirectToAction(nameof(Index));
-                }
-                if (produtoImagensViewModel.HandleProduto <= 0)
-                {
-                    TempData["MensagemErro"] = "Erro ao adicionar imagens. Produto não encontrado";
-                    return RedirectToAction(nameof(Index));
-                }
+                    if (produtoImagensViewModel.Files is null)
+                    {
+                        TempData["MensagemErro"] = "Erro ao adicionar imagens.";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    if (produtoImagensViewModel.HandleProduto <= 0)
+                    {
+                        TempData["MensagemErro"] = "Erro ao adicionar imagens. Produto não encontrado";
+                        return RedirectToAction(nameof(Index));
+                    }
 
-                var imagensAdicionadas = await _ImagemProdutoService.UploadImagensAsync(produtoImagensViewModel.Files, produtoImagensViewModel.HandleProduto);
-                TempData["MensagemSucesso"] = "Imagens adicionadas com sucesso!";
+                    var imagensAdicionadas = await _ImagemProdutoService.UploadImagensAsync(produtoImagensViewModel.Files, produtoImagensViewModel.HandleProduto);
+                    TempData["MensagemSucesso"] = "Imagens adicionadas com sucesso!";
+                }
+                catch (Exception ex)
+                {
+                    TempData["MensagemErro"] = ex.Message;
+                    return RedirectToAction(nameof(Index));
+                }
             }
 
             return RedirectToAction(nameof(Index));
