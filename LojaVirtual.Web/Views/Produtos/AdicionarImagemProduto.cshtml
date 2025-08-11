@@ -1,35 +1,38 @@
 ﻿@model LojaVirtual.Web.Models.Compostas.ProdutoImagensViewModel
 
-<div class="modal fade" id="modalAdicao" tabindex="-1" aria-labelledby="ImagemprodutoModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalAdicao" tabindex="-1" aria-labelledby="ImagemProdutoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form asp-action="AdicionarImagemProduto" enctype="multipart/form-data" asp-route-Handle="@Model.HandleProduto" method="post">
-                <input type="hidden" asp-for="HandleProduto"/>
-                <input type="hidden" asp-for="ImagemProdutos"/>
+
+            <form id="formUploadImagem"
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="HandleProduto" value="@Model.HandleProduto" />
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ImagemprodutoModalLabel">Adicionando imagens dos produtos</h5>
+                    <h5 class="modal-title" id="ImagemProdutoModalLabel">
+                        Adicionando imagens do produto
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
 
-                <div class="panel panel-default">
-                    <div class="modal-header" style="padding-bottom: 5px; text-align: left; position: relative;">
-                        <div>
-                            <input asp-for="Files" type="file" class="form-control" multiple accept=".webp"/>
-                            <span asp-validation-for="Files" class="text-danger" style="padding-bottom"></span>
-                            <div>
-                                <button type="submit" class="btn btn-primary">Salvar</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input name="Files" type="file" class="form-control" multiple accept=".webp" />
+                        <span class="text-danger" id="fileError"></span>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="mb-3" id="listaImagens">
                         @if (Model.ImagemProdutos != null && Model.ImagemProdutos.Any())
                         {
                             foreach (var img in Model.ImagemProdutos)
                             {
-                                <img src="@img.Url.ToString()" class="img-thumbnail" alt="Imagem do Produto" style="max-width:125px; max-height:125px; object-fit:cover;"/>
+                                <img src="@img.Url"
+                                     class="img-thumbnail me-2 mb-2"
+                                     alt="Imagem do Produto"
+                                     style="max-width:125px; max-height:125px; object-fit:cover;" />
                             }
                         }
                         else
@@ -37,9 +40,42 @@
                             <p>Nenhuma imagem disponível para este produto.</p>
                         }
                     </div>
-                </Div>
-               
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("formUploadImagem").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let form = e.target;
+        let formData = new FormData(form);
+
+        fetch("@Url.Action("AdicionarImagemProduto", "Produtos")", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("listaImagens").innerHTML = data.html; 
+                document.getElementById("fileError").innerText = ""; 
+                form.reset();
+            } else {
+                document.getElementById("fileError").innerText = data.message;
+            }
+        })
+        .catch(data => {
+            document.getElementById("fileError").innerText = "Erro inesperado ao enviar imagem: " + data.message;
+            console.error(data);
+        });
+    });
+</script>

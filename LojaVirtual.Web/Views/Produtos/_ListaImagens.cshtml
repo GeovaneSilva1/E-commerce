@@ -1,0 +1,16 @@
+﻿@model IEnumerable<LojaVirtual.Web.Models.ImagemProdutoViewModel>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var img in Model)
+    {
+        <img src="@img.Url.ToString()"
+             class="img-thumbnail me-2 mb-2"
+             alt="Imagem do Produto"
+             style="max-width:125px; max-height:125px; object-fit:cover;" />
+    }
+}
+else
+{
+    <p>Nenhuma imagem disponível para este produto.</p>
+}
