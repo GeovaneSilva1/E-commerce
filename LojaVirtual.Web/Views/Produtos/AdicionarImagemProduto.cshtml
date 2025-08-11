@@ -20,8 +20,9 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
+                        <div id="fileError" class="alert alert-danger" style="display:none"></div>
                         <input name="Files" type="file" class="form-control" multiple accept=".webp" />
-                        <span class="text-danger" id="fileError"></span>
+                        <span class="text text-success" id="fileSucess"></span>
                     </div>
 
                     <div class="mb-3" id="listaImagens">
@@ -67,14 +68,19 @@
         .then(data => {
             if (data.success) {
                 document.getElementById("listaImagens").innerHTML = data.html; 
-                document.getElementById("fileError").innerText = ""; 
+                document.getElementById("fileError").innerText = "";
+                document.getElementById("fileError").style.display = "none";
+                document.getElementById("fileSucess").innerText = data.message;
                 form.reset();
             } else {
+                document.getElementById("fileSucess").innerText = "";
                 document.getElementById("fileError").innerText = data.message;
+                document.getElementById("fileError").style.display = "block";
             }
         })
         .catch(data => {
             document.getElementById("fileError").innerText = "Erro inesperado ao enviar imagem: " + data.message;
+            document.getElementById("fileError").style.display = "block";
             console.error(data);
         });
     });

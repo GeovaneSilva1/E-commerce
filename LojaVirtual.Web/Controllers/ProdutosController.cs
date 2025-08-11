@@ -155,7 +155,7 @@ namespace LojaVirtual.Web.Controllers
                 var imagensAdicionadas = await _ImagemProdutoService.UploadImagensAsync(produtoImagensViewModel.Files, produtoImagensViewModel.HandleProduto);
                 string htmlAtualizado = await RenderPartialViewToString("_ListaImagens", imagensAdicionadas);
 
-                return Json(new { success = true, html = htmlAtualizado, message = "Imagem enviada com sucesso!" });
+                return Json(new { success = true, html = htmlAtualizado, message = "Imagens enviadas com sucesso!" });
             }
             catch(Exception ex)
             {
