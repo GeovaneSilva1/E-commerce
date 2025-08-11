@@ -52,17 +52,25 @@ namespace LojaVirtual.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AtualizarCategoria(CategoriaViewModel categoriaViewModel)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                var categoriaAtualizada = await _categoriaService.AtualizarCategoriaAsync(categoriaViewModel);
-                if (categoriaAtualizada is not null)
+                if (!ModelState.IsValid)
                 {
-                    TempData["MensagemSucesso"] = "Categoria atualizada com sucesso!";
-                    return RedirectToAction(nameof(Index));
+                    throw new Exception("Dados inválidos!");
                 }
+
+                await _categoriaService.AtualizarCategoriaAsync(categoriaViewModel);
+                TempData["MensagemSucesso"] = "Categoria atualizada com sucesso!";
+                
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
             }
 
-            return View(categoriaViewModel);
+            return RedirectToAction(nameof(Index));
+            //return View(categoriaViewModel);
         }
 
         [HttpGet]
@@ -81,16 +89,18 @@ namespace LojaVirtual.Web.Controllers
         [HttpPost(), ActionName("DeletarCategoria")]
         public async Task<IActionResult> DeletarCategoriaConfirmada(long Handle)
         {
-            var categoriaExcluida = await _categoriaService.DeletarCategoriaAsync(Handle);
-            
-            if (categoriaExcluida)
+            try
             {
+                await _categoriaService.DeletarCategoriaAsync(Handle);
                 TempData["MensagemSucesso"] = "Categoria excluída com sucesso!";
+
                 return RedirectToAction(nameof(Index));
             }
-
-            TempData["MensagemErro"] = "Erro ao deletar categoria!";
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

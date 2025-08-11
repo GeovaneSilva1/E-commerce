@@ -91,7 +91,7 @@ namespace LojaVirtual.Web.Services
                 }
                 else
                 {
-                    throw new Exception("Erro ao atualizar categoria: " + response.ReasonPhrase);
+                    throw new Exception("Erro ao atualizar categoria: " + response.Content.ReadAsStringAsync().Result);
                 }
             }
 
@@ -103,14 +103,11 @@ namespace LojaVirtual.Web.Services
             var client = _clientFactory.CreateClient("CatalogoAPI");
             using (var response = await client.DeleteAsync(_apiEndPoint + handle))
             {
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    return await Task.FromResult(true);
+                    throw new Exception("Erro ao deletar categoria: " + response.Content.ReadAsStringAsync().Result);
                 }
-                else
-                {
-                    throw new Exception("Erro ao deletar categoria: " + response.ReasonPhrase);
-                }
+                return await Task.FromResult(true);
             }
         }
     }
