@@ -84,16 +84,15 @@ namespace LojaVirtual.Web.Services
             var client = _clientFactory.CreateClient("CatalogoAPI");
             using (var response = await client.PutAsJsonAsync(_apiEndPoint, marca))
             {
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    var apiResponse = await response.Content.ReadAsStreamAsync();
-                    _marcaVM = await JsonSerializer.DeserializeAsync<MarcaViewModel>(apiResponse, _jsonSerializerOptions);
+                    throw new Exception("Erro ao atualizar marca: " + response.Content.ReadAsStringAsync().Result);
                 }
-                else
-                {
-                    throw new Exception("Erro ao atualizar marca: " + response.ReasonPhrase);
-                }
+
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                _marcaVM = await JsonSerializer.DeserializeAsync<MarcaViewModel>(apiResponse, _jsonSerializerOptions);
             }
+
             return _marcaVM;
         }
 
@@ -102,14 +101,13 @@ namespace LojaVirtual.Web.Services
             var client = _clientFactory.CreateClient("CatalogoAPI");
             using (var response = await client.DeleteAsync(_apiEndPoint + handle))
             {
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    return await Task.FromResult(true);
+                    throw new Exception("Erro ao deletar marca: " + response.Content.ReadAsStringAsync().Result);
+                    
                 }
-                else
-                {
-                    throw new Exception("Erro ao deletar marca: " + response.ReasonPhrase);
-                }
+                
+                return await Task.FromResult(true);
             }
         }
     }

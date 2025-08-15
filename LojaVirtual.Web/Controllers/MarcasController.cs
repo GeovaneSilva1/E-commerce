@@ -58,16 +58,22 @@ namespace LojaVirtual.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AtualizarMarca(MarcaViewModel marcaViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var marcaAtualizada = await _marcaService.AtualizarMarcaAsync(marcaViewModel);
-                if (marcaAtualizada is not null)
+                if (!ModelState.IsValid)
                 {
-                    TempData["MensagemSucesso"] = "Marca atualizada com sucesso!";
-                    return RedirectToAction(nameof(Index));
+                    throw new Exception("Dados inválidos!");
                 }
+
+                await _marcaService.AtualizarMarcaAsync(marcaViewModel);
+                TempData["MensagemSucesso"] = "Marca atualizada com sucesso!";
             }
-            return View(marcaViewModel);
+            catch(Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -85,16 +91,18 @@ namespace LojaVirtual.Web.Controllers
         [HttpPost, ActionName("DeletarMarca")]
         public async Task<IActionResult> DeletarMarcaConfirmada(long Handle)
         {
-            var marcaExcluida = await _marcaService.DeletarMarcaAsync(Handle);
-
-            if (marcaExcluida)
+            try
             {
+                await _marcaService.DeletarMarcaAsync(Handle);
                 TempData["MensagemSucesso"] = "Marca excluída com sucesso!";
+
                 return RedirectToAction(nameof(Index));
             }
-
-            TempData["MensagemErro"] = "Erro ao deletar marca!";
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }
