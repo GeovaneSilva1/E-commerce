@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
 
-            <form id="formUploadImagem"
+            <form id="formUploadImagem" 
                   enctype="multipart/form-data">
 
                 @Html.AntiForgeryToken()
@@ -20,9 +20,13 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <div id="fileError" class="alert alert-danger" style="display:none"></div>
+                        <div id="fileErrorImages" class="alert alert-danger" style="display:none">
+                            <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="fileSucessImages" class="alert alert-success" style="display:none">
+                            <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                         <input name="Files" type="file" class="form-control" multiple accept=".webp" />
-                        <span class="text text-success" id="fileSucess"></span>
                     </div>
 
                     <div class="mb-3" id="listaImagens">
@@ -57,35 +61,13 @@
     </div>
 </div>
 
+<script src="~/js/formUploadHandler.js?v=@DateTime.Now.Ticks"></script>
 <script>
-    document.getElementById("formUploadImagem").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        let form = e.target;
-        let formData = new FormData(form);
-
-        fetch("@Url.Action("AdicionarImagemProduto", "Produtos")", {
-            method: "POST",
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById("listaImagens").innerHTML = data.html; 
-                document.getElementById("fileError").innerText = "";
-                document.getElementById("fileError").style.display = "none";
-                document.getElementById("fileSucess").innerText = data.message;
-                form.reset();
-            } else {
-                document.getElementById("fileSucess").innerText = "";
-                document.getElementById("fileError").innerText = data.message;
-                document.getElementById("fileError").style.display = "block";
-            }
-        })
-        .catch(data => {
-            document.getElementById("fileError").innerText = "Erro inesperado ao enviar imagem: " + data.message;
-            document.getElementById("fileError").style.display = "block";
-            console.error(data);
-        });
-    });
+    handleFormUpload(
+        "formUploadImagem",
+        "@Url.Action("AdicionarImagemProduto", "Produtos")",
+        "listaImagens",
+        "fileErrorImages",
+        "fileSucessImages"
+    );
 </script>

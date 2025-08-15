@@ -2,7 +2,14 @@
 
 <h2>Marcas</h2>
 <hr />
-
+<div id="fileError" class="alert alert-danger alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileErrorMessage"></span>
+</div>
+<div id="fileSucess" class="alert alert-success alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileSucessMessage"></span>
+</div>
 <div class="row">
     <div class="col-md-12">
         <div>
@@ -60,5 +67,5 @@
 </div>
 @section Scripts {
     <script src="~/js/modalMarcas.js"></script>
-    <script src="~/js/messages.js"></script>
+    <script src="~/js/messages.js?v@DateTime.Now.Ticks"></script>
 }
