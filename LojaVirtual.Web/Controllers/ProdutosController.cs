@@ -137,6 +137,7 @@ namespace LojaVirtual.Web.Controllers
             var imagensProduto = await _ImagemProdutoService.ObterImagensPorProdutoIdAsync(Handle);
             var produto = await _produtoService.ObterProdutoPorIdAsync(Handle);
             produtoImagensViewModel.HandleProduto = produto.Handle;
+            produtoImagensViewModel.NomeProduto = produto.Descricao;
             produtoImagensViewModel.ImagemProdutos = imagensProduto;
 
             return PartialView("AdicionarImagemProduto", produtoImagensViewModel);
