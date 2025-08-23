@@ -1,6 +1,12 @@
-﻿$(document).off("click", ".deletaImagem").on("click", ".deletaImagem", function () {
+﻿$(document).off("click", ".deletaImagem").on("click", ".deletaImagem", function (e) {
+    e.preventDefault();
+
     let handle = $(this).data("handle");
 
+    if (!confirm("Deseja realmente deletar esta imagem"))
+    {
+        return;
+    }
     $.ajax({
         url: "/Produtos/DeleteImages",
         type: "POST",
