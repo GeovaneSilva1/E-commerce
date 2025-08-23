@@ -88,9 +88,29 @@ namespace LojaVirtual.Web.Services
             return await ObterImagensPorProdutoIdAsync(produtoId);
         }
 
-        public Task<IEnumerable<ImagemProdutoViewModel>> DeletarImagemAsync(long imageHandle)
+        public async Task<IEnumerable<ImagemProdutoViewModel>> DeletarImagemAsync(long imageHandle)
         {
-            throw new NotImplementedException();
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            try
+            {
+                using (var response = await client.DeleteAsync(_apiEndPoint + "/" + imageHandle))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception(response.Content.ReadAsStringAsync().Result);
+                    }
+
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    _imagensProdutoVMs = await JsonSerializer.DeserializeAsync<IEnumerable<ImagemProdutoViewModel>>(apiResponse, _jsonSerializerOptions);
+
+                    return _imagensProdutoVMs;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao deletar imagem: " + ex.Message);
+
+            }
         }
     }
 }

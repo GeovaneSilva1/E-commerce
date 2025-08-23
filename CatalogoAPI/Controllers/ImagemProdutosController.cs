@@ -48,5 +48,29 @@ namespace LojaVirtual.CatalogoAPI.Controllers
 
             return Ok(imagens);
         }
+
+        [HttpDelete("{imagemHandle}")]
+        public async Task<IActionResult> DeleteImagemProduto(long imagemHandle)
+        {
+            if (imagemHandle <= 0)
+            {
+                return BadRequest("Handle inválido.");
+            }
+
+            var imagem = await _imagemProdutoService.DeleteImagemProduto(imagemHandle);
+            if (imagem is null)
+            {
+                return NotFound("Erro ao tentar deletar imagem");
+            }
+
+            var imagensRestantes = await _imagemProdutoService.GetImagensProdutoByProdutoHandle(imagem.ProdutoId);
+
+            if (imagensRestantes is null)
+            {
+                return NotFound("Não foi possível carregar as imagens novamente.");
+            }
+
+            return Ok(imagensRestantes);
+        }
     }
 }

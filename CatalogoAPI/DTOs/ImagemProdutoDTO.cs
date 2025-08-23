@@ -12,6 +12,6 @@ namespace LojaVirtual.CatalogoAPI.DTOs
         public string? NomeProduto { get; set; }
         [JsonIgnore]
         public Produto? Produto { get; set; }
-        public long? ProdutoId { get; set; }
+        public long ProdutoId { get; set; }
     }
 }
