@@ -1,16 +1,18 @@
 ﻿.img-container {
-    width: 150px;
-    height: 150px;
-    position: relative; /* necessário para posicionar o X */
-    overflow: hidden; /* corta qualquer parte da imagem que ultrapasse */
-    border-radius: 5px; /* opcional, borda arredondada da div */
+    width: 100%; /* ocupa toda largura da coluna */
+    padding-top: 100%; /* altura igual à largura → quadrado perfeito */
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px; /* opcional */
 }
 
     .img-container img {
+        position: absolute; /* para preencher o quadrado */
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         object-fit: cover; /* mantém proporção e corta excesso */
-        display: block;
     }
 
     /* Botão X */
@@ -20,7 +22,7 @@
         right: 5px;
         background-color: rgba(33, 37, 41, 0.9); /* escuro */
         border: none;
-        border-radius: 50%; /* completamente redondo */
+        border-radius: 50%;
         width: 24px;
         height: 24px;
         color: white;
@@ -33,11 +35,10 @@
         transition: opacity 0.2s ease, transform 0.2s ease;
     }
 
-    /* efeito hover do contêiner */
     .img-container:hover .deletaImagem {
         opacity: 1;
     }
 
     .img-container .deletaImagem:hover {
-        transform: scale(1.2); /* leve zoom ao passar o mouse */
+        transform: scale(1.2);
     }
