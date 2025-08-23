@@ -2,13 +2,24 @@
 
 @if (Model != null && Model.Any())
 {
-    foreach (var img in Model)
-    {
-        <img src="@img.Url.ToString()"
-             class="img-thumbnail me-2 mb-2"
-             alt="Imagem do Produto"
-             style="max-width:125px; max-height:125px; object-fit:cover;" />
-    }
+    <div class="row">
+        @foreach (var img in Model)
+        {
+            <div class="col-md-3 d-flex justify-content-center mb-4">
+                <div class="img-container position-relative">
+                    
+                    <img src="@img.Url"
+                         alt="Imagem do Produto" />
+
+                    <button type="button"
+                            class="deletaImagem"
+                            data-handle="@img.Handle">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
 }
 else
 {

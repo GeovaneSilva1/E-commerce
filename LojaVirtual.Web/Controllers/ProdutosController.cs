@@ -157,7 +157,23 @@ namespace LojaVirtual.Web.Controllers
 
                 return Json(new { success = true, html = htmlAtualizado, message = "Imagens enviadas com sucesso!" });
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost(), ActionName("DeleteImages")]
+        public async Task<IActionResult> DeleteImages(long imageHandle)
+        {
+            try
+            {
+                IEnumerable<ImagemProdutoViewModel> imagensRecarregadas = await _ImagemProdutoService.DeletarImagemAsync(imageHandle);
+                string htmlAtualizado = await RenderPartialViewToString("_ListaImagens", imagensRecarregadas);
+
+                return Json(new { success = true, html = htmlAtualizado, message = "Imagem deletada com sucesso!" });
+            }
+            catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }

@@ -32,13 +32,24 @@
                     <div class="mb-3" id="listaImagens">
                         @if (Model.ImagemProdutos != null && Model.ImagemProdutos.Any())
                         {
-                            foreach (var img in Model.ImagemProdutos)
-                            {
-                                <img src="@img.Url"
-                                     class="img-thumbnail me-2 mb-2"
-                                     alt="Imagem do Produto"
-                                     style="max-width:125px; max-height:125px; object-fit:cover;" />
-                            }
+                            <div class="row">
+                                @foreach (var img in Model.ImagemProdutos)
+                                {
+                                    <div class="col-md-3 d-flex justify-content-center mb-4">
+                                        <div class="img-container position-relative">
+                                            
+                                            <img src="@img.Url"
+                                                 alt="Imagem do Produto" />
+
+                                            <button type="button"
+                                                    class="deletaImagem"
+                                                    data-handle="@img.Handle">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
                         }
                         else
                         {
@@ -62,6 +73,7 @@
 </div>
 
 <script src="~/js/formUploadHandler.js?v=@DateTime.Now.Ticks"></script>
+<script src="~/js/deleteImagesAction.js"></script>
 <script>
     handleFormUpload(
         "formUploadImagem",

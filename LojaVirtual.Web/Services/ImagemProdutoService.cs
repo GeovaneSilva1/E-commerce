@@ -87,5 +87,10 @@ namespace LojaVirtual.Web.Services
             }
             return await ObterImagensPorProdutoIdAsync(produtoId);
         }
+
+        public Task<IEnumerable<ImagemProdutoViewModel>> DeletarImagemAsync(long imageHandle)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
