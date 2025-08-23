@@ -23,7 +23,10 @@
                         document.getElementById(errorId).innerText = "";
                         document.getElementById(errorId).style.display = "none";
                     }
-                    if (successId) document.getElementById(successId).innerText = data.message;
+                    if (successId) {
+                        document.getElementById(successId).innerText = data.message;
+                        document.getElementById(successId).style.display = "block";
+                    }
                     formElement.reset();
                 } else {
                     if (successId) document.getElementById(successId).innerText = "";
