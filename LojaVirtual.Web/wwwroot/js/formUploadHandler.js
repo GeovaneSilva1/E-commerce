@@ -31,6 +31,7 @@
                 } else {
                     if (successId) document.getElementById(successId).innerText = "";
                     if (errorId) {
+                        document.getElementById(successId).style.display = "none";
                         document.getElementById(errorId).innerText = data.message;
                         document.getElementById(errorId).style.display = "block";
                     }

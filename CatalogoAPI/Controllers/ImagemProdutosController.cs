@@ -37,7 +37,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok();
         }
 
-        [HttpGet("{produtoHandle}")]
+        [HttpGet("produto/{produtoHandle}")]
         public async Task<IActionResult> GetImagensPorProdutoId(long produtoHandle)
         {
             var imagens = await _imagemProdutoService.GetImagensProdutoByProdutoHandle(produtoHandle);
@@ -71,6 +71,21 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             }
 
             return Ok(imagensRestantes);
+        }
+
+        [HttpGet("imagem/{imagemHandle}")]
+        public async Task<IActionResult> GetImagemProduto(long imagemHandle)
+        {
+            if (imagemHandle <= 0)
+            {
+                return BadRequest("Handle inválido.");
+            }
+            var imagem = await _imagemProdutoService.GetImagemProduto(imagemHandle);
+            if (imagem is null)
+            {
+                return NotFound("Imagem não encontrada.");
+            }
+            return Ok(imagem);
         }
     }
 }

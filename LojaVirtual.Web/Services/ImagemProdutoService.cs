@@ -31,7 +31,7 @@ namespace LojaVirtual.Web.Services
         {
                var client = _clientFactory.CreateClient("CatalogoAPI");
 
-               using (var response = await client.GetAsync(_apiEndPoint +"/"+ produtoHandle))
+               using (var response = await client.GetAsync(_apiEndPoint + "/produto/" + produtoHandle))
                {
                    if (response.IsSuccessStatusCode)
                    {
@@ -88,12 +88,29 @@ namespace LojaVirtual.Web.Services
             return await ObterImagensPorProdutoIdAsync(produtoId);
         }
 
-        public async Task<IEnumerable<ImagemProdutoViewModel>> DeletarImagemAsync(long imageHandle)
+        public async Task<IEnumerable<ImagemProdutoViewModel>> DeletarImagemAsync(long imagemHandle)
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
             try
             {
-                using (var response = await client.DeleteAsync(_apiEndPoint + "/" + imageHandle))
+                using (var imagemDeletada = await client.GetAsync(_apiEndPoint + "/imagem/" + imagemHandle))
+                {
+                    if (!imagemDeletada.IsSuccessStatusCode)
+                    {
+                        throw new Exception(imagemDeletada.Content.ReadAsStringAsync().Result);
+                    }
+                    
+                    var apiResponse = await imagemDeletada.Content.ReadAsStreamAsync();
+
+                    _imagemProdutoVM = await JsonSerializer.DeserializeAsync<ImagemProdutoViewModel>(apiResponse, _jsonSerializerOptions);
+                    var caminhoarquivo = $"{_webHostEnvironment.WebRootPath}\\{_imagemProdutoVM.Url}";
+                    if (File.Exists(caminhoarquivo))
+                    {
+                        File.Delete(caminhoarquivo);
+                    }
+                }
+
+                using (var response = await client.DeleteAsync(_apiEndPoint + "/" + imagemHandle))
                 {
                     if (!response.IsSuccessStatusCode)
                     {
