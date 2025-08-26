@@ -1,0 +1,97 @@
+@model LojaVirtual.Web.Models.ProdutoViewModel
+
+<div class="container detalhes-container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="produto-imagens-container">
+                @if (ViewBag.Imagens != null && ViewBag.Imagens.Any())
+                {
+                    <div id="carouselProdutoImagens" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @{
+                                bool first = true;
+                            }
+                            @foreach (var imagem in ViewBag.Imagens)
+                            {
+                                <div class="carousel-item @(first ? "active" : "")">
+                                    <img src="@imagem.Url" class="d-block w-100 produto-detalhe-img" alt="@Model.Descricao">
+                                </div>
+                                first = false;
+                            }
+                        </div>
+                        @if (ViewBag.Imagens.Count() > 1)
+                        {
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselProdutoImagens" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselProdutoImagens" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Próximo</span>
+                            </button>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <img src="/images/no-image.jpg" class="img-fluid produto-detalhe-img" alt="@Model.Descricao">
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="produto-detalhes-info">
+                <h1 class="produto-detalhes-titulo">@Model.Descricao</h1>
+                
+                <div class="produto-detalhes-categoria-marca">
+                    <span class="badge bg-light text-dark me-2">@Model.NomeCategoria</span>
+                    <span class="badge bg-light text-dark">@Model.NomeMarca</span>
+                </div>
+                
+                <div class="produto-detalhes-preco mt-4">
+                    <h2 class="preco-normal">R$@Model.Preco.ToString("N2")</h2>
+                    <p class="preco-pix">R$@((Model.Preco * 0.95m).ToString("N2")) com Pix</p>
+                </div>
+                
+                <div class="produto-detalhes-estoque mt-3">
+                    <p class="@(Model.Estoque > 0 ? "text-success" : "text-danger")">
+                        @if (Model.Estoque > 0)
+                        {
+                            <i class="fas fa-check-circle"></i> <span>Em estoque</span>
+                        }
+                        else
+                        {
+                            <i class="fas fa-times-circle"></i> <span>Fora de estoque</span>
+                        }
+                    </p>
+                </div>
+                
+                <div class="produto-detalhes-acoes mt-4">
+                    <button class="btn btn-primary btn-lg me-2 comprar-btn" @(Model.Estoque <= 0 ? "disabled" : "")>
+                        <i class="fas fa-shopping-cart"></i> Comprar
+                    </button>
+                    <button class="btn btn-outline-dark btn-lg espiar-btn">
+                        <i class="fa-regular fa-heart me-1"></i>Favoritar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="mb-4">Produtos Relacionados</h3>
+            <div class="produtos-relacionados">
+                <!-- Aqui seriam exibidos produtos relacionados -->
+                <p>Funcionalidade de produtos relacionados em desenvolvimento.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <a href="@Url.Action("Index", "Catalogo")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar ao Catálogo
+            </a>
+        </div>
+    </div>
+</div>

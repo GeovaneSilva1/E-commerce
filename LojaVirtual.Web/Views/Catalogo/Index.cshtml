@@ -1,0 +1,101 @@
+@model IEnumerable<LojaVirtual.Web.Models.ProdutoViewModel>
+
+<div class="container catalogo-container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="catalogo-titulo">Catálogo de Produtos</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Coluna de filtros à esquerda -->
+        <div class="col-md-3 mb-4">
+            <div class="filtro-sidebar">
+                <h4 class="filtro-sidebar-titulo mb-3">Filtros</h4>
+                <form asp-action="Filtrar" asp-controller="Catalogo" method="get">
+                    <div class="mb-3">
+                        <label class="form-label">Categoria</label>
+                        <select name="categoriaId" class="form-select">
+                            <option value="">Todas as Categorias</option>
+                            @foreach (var categoria in ViewBag.Categorias)
+                            {
+                                <option value="@categoria.Handle" selected="@(ViewBag.CategoriaIdSelecionada != null && ViewBag.CategoriaIdSelecionada.ToString() == categoria.Handle.ToString())">@categoria.Nome</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Marca</label>
+                        <select name="marcaId" class="form-select">
+                            <option value="">Todas as Marcas</option>
+                            @foreach (var marca in ViewBag.Marcas)
+                            {
+                                <option value="@marca.Handle" selected="@(ViewBag.MarcaIdSelecionada != null && ViewBag.MarcaIdSelecionada.ToString() == marca.Handle.ToString())">@marca.Nome</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Aplicar Filtros</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Coluna de produtos à direita -->
+        <div class="col-md-9">
+            <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center py-5">
+                <h3>Nenhum produto encontrado</h3>
+            </div>
+        }
+        else
+        {
+            @foreach (var produto in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card produto-card h-100">
+                        <div class="produto-img-container">
+                            @await Component.InvokeAsync("ImagensProduto", new { produtoId = produto.Handle })
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title produto-titulo">@produto.Descricao</h5>
+                            <div class="produto-info">
+                                <p class="produto-categoria">@produto.NomeCategoria</p>
+                                <p class="produto-marca">@produto.NomeMarca</p>
+                            </div>
+                            <div class="produto-preco mt-auto">
+                                <p class="preco-normal">R$@produto.Preco.ToString("N2")</p>
+                                <p class="preco-pix">R$@((produto.Preco * 0.95m).ToString("N2")) com Pix</p>
+                            </div>
+                            <div class="d-flex gap-2 mt-2">
+                                <a href="@Url.Action("Detalhes", "Catalogo", new { handle = produto.Handle })" class="btn btn-outline-dark espiar-btn"><i class="fa-regular fa-eye me-1"></i>Espiar</a>
+                                <a href="@Url.Action("Detalhes", "Catalogo", new { handle = produto.Handle })" class="btn btn-primary comprar-btn">Comprar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    @if (ViewBag.TotalPaginas > 1)
+    {
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="Navegação de página">
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.PaginaAtual ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Index", "Catalogo", new { pagina = i, itensPorPagina = ViewBag.ItensPorPagina })">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+            </div>
+        </div>
+</div>

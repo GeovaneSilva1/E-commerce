@@ -42,6 +42,9 @@ builder.Services.AddTransient<IMarcaService, MarcaService>();
 builder.Services.AddTransient<IImagemProdutoService, ImagemProdutoService>();
 
 
+// Configuração explícita das URLs para evitar conflito de portas
+builder.WebHost.UseUrls("https://localhost:7024");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,10 @@
+@model LojaVirtual.Web.Models.ImagemProdutoViewModel
+
+@if (Model != null && !string.IsNullOrEmpty(Model.Url))
+{
+    <img src="@Model.Url.Replace("\\","/")" class="card-img-top produto-img" alt="Imagem do Produto">
+}
+else
+{
+    <img src="/images/no-image.jpg" class="card-img-top produto-img" alt="Sem imagem">
+}
