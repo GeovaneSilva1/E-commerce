@@ -45,6 +45,7 @@ namespace LojaVirtual.CatalogoAPI.Migrations
                     Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     SKU = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Preco = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: false),
+                    PercentualDescontoAvista = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: true),
                     Estoque = table.Column<long>(type: "bigint", nullable: false),
                     CategoriaId = table.Column<long>(type: "bigint", nullable: false),
                     MarcaId = table.Column<long>(type: "bigint", nullable: false)

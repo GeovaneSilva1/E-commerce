@@ -30,6 +30,10 @@ namespace LojaVirtual.CatalogoAPI.Context
             modelBuilder.Entity<Produto>()
                 .Property(p => p.Preco)
                 .HasPrecision(12, 2);
+            
+            modelBuilder.Entity<Produto>()
+                .Property(p => p.PercentualDescontoAvista)
+                .HasPrecision(12, 2);
 
             modelBuilder.Entity<Produto>()
                 .Property(p => p.Estoque)

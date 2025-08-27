@@ -42,6 +42,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Preco)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrecoPromocional)
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -63,6 +66,9 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Preco)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrecoPromocional)
                     </td>
                     <td class="text-end">
                         <a href="javascript:void(0);"

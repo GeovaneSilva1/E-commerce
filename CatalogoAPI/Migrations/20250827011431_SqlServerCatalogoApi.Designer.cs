@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LojaVirtual.CatalogoAPI.Migrations
 {
     [DbContext(typeof(AppDbContextCatalogoApi))]
-    [Migration("20250724232925_SqlServerCatalogoApi")]
+    [Migration("20250827011431_SqlServerCatalogoApi")]
     partial class SqlServerCatalogoApi
     {
         /// <inheritdoc />
@@ -108,6 +108,10 @@ namespace LojaVirtual.CatalogoAPI.Migrations
                     b.Property<long?>("MarcaId")
                         .IsRequired()
                         .HasColumnType("bigint");
+
+                    b.Property<decimal?>("PercentualDescontoAvista")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
 
                     b.Property<decimal>("Preco")
                         .HasPrecision(12, 2)

@@ -99,3 +99,44 @@
             </div>
         </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carouselContainers = document.querySelectorAll('.produto-carousel-container');
+        
+        carouselContainers.forEach(container => {
+            const images = container.querySelectorAll('.produto-img-carousel');
+            let currentIndex = 0;
+            let carouselInterval = null;
+            
+            if (images.length <= 1) return; // Não inicia carrossel se há apenas uma imagem
+            
+            const productCard = container.closest('.produto-card');
+            
+            function showNextImage() {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add('active');
+            }
+            
+            function startCarousel() {
+                if (carouselInterval) return; // Evita múltiplos intervalos
+                carouselInterval = setInterval(showNextImage, 2000);
+            }
+            
+            function stopCarousel() {
+                if (carouselInterval) {
+                    clearInterval(carouselInterval);
+                    carouselInterval = null;
+                }
+                // Volta para a primeira imagem
+                images[currentIndex].classList.remove('active');
+                currentIndex = 0;
+                images[currentIndex].classList.add('active');
+            }
+            
+            productCard.addEventListener('mouseenter', startCarousel);
+            productCard.addEventListener('mouseleave', stopCarousel);
+        });
+    });
+</script>

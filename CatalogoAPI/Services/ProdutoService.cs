@@ -28,8 +28,9 @@ namespace LojaVirtual.CatalogoAPI.Services
             produtoDTO.Handle = produto.Handle;
             produtoDTO.NomeCategoria = produto.Categoria.Nome;
             produtoDTO.NomeMarca = produto.Marca.Nome;
+            produtoDTO.PrecoPromocional = await ApplyDescontoAvistaAsync(produto);
         }
-        
+
         public async Task UpdateProduto(ProdutoDTO produtoDTO, CategoriaDTO categoriaDTO, MarcaDTO marcaDTO)
         {
             Produto produto = _mapper.Map<Produto>(produtoDTO);
@@ -60,13 +61,39 @@ namespace LojaVirtual.CatalogoAPI.Services
         public async Task<ProdutoDTO> GetProduto(long handle)
         {
             Produto produto = await _produtoRepository.Get(handle);
-            return _mapper.Map<ProdutoDTO>(produto);
+            var produtoDTO = _mapper.Map<ProdutoDTO>(produto);
+            if (produtoDTO is not null)
+                produtoDTO.PrecoPromocional = await ApplyDescontoAvistaAsync(produto);
+
+            return produtoDTO;
         }
 
         public async Task<IEnumerable<ProdutoDTO>> GetProdutos()
         {
-            var produto = await _produtoRepository.GetMany();
-            return _mapper.Map<IEnumerable<ProdutoDTO>>(produto);
+            var produtos = await _produtoRepository.GetMany();
+            var produtoDtos = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
+            foreach (var produtoDto in produtoDtos.Where(pdt => pdt is not null))
+            {
+                var produtoAtual = produtos.FirstOrDefault(p => p.Handle == produtoDto.Handle);
+                if (produtoAtual is null)
+                    continue;
+
+                produtoDto.PrecoPromocional = await ApplyDescontoAvistaAsync(produtoAtual);
+            }
+
+            return produtoDtos;
+        }
+
+        private static Task<decimal> ApplyDescontoAvistaAsync(Produto produto)
+        {
+            decimal precoPromocional = produto.Preco;
+
+            if (produto.PercentualDescontoAvista.GetValueOrDefault() > 0)
+            {
+                precoPromocional -= produto.Preco * (produto.PercentualDescontoAvista.GetValueOrDefault() / 100);
+            }
+
+            return Task.FromResult(precoPromocional);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace LojaVirtual.Web.ViewComponents
             
             if (imagens != null && imagens.Any())
             {
-                return View("Default",imagens.FirstOrDefault());
+                return View("Default", imagens);
             }
             
             return Content("");

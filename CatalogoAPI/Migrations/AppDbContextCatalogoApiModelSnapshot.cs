@@ -106,6 +106,10 @@ namespace LojaVirtual.CatalogoAPI.Migrations
                         .IsRequired()
                         .HasColumnType("bigint");
 
+                    b.Property<decimal?>("PercentualDescontoAvista")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("decimal(12,2)");
+
                     b.Property<decimal>("Preco")
                         .HasPrecision(12, 2)
                         .HasColumnType("decimal(12,2)");

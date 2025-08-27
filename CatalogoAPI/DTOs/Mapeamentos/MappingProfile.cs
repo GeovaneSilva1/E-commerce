@@ -12,8 +12,7 @@ namespace LojaVirtual.CatalogoAPI.DTOs.Mapeamentos
             CreateMap<ProdutoDTO, Produto>();
             CreateMap<Produto, ProdutoDTO>()
                 .ForMember(pdt => pdt.NomeMarca, p => p.MapFrom(src => src.Marca.Nome))
-                .ForMember(pdt => pdt.NomeCategoria, p => p.MapFrom(src => src.Categoria.Nome))
-                .ForMember(pdt => pdt.PrecoPromocional, p => p.MapFrom(src => src.Preco * 0.95M));
+                .ForMember(pdt => pdt.NomeCategoria, p => p.MapFrom(src => src.Categoria.Nome));
 
             CreateMap<ImagemProdutoDTO, ImagemProduto>();
             CreateMap<ImagemProduto, ImagemProdutoDTO>()

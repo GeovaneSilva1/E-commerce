@@ -15,6 +15,7 @@ namespace LojaVirtual.Web.Models
         [Required(ErrorMessage = "O preço é obrigatório!")]
         public decimal Preco { get; set; }
         public decimal PrecoPromocional { get; set; }
+        public decimal? PercentualDescontoAvista { get; set; }
         [Required(ErrorMessage = "O Estoque é obrigatório!")]
         public long Estoque { get; set; }
         [DisplayName("Categoria")]

@@ -10,7 +10,7 @@ namespace LojaVirtual.Web.Services
     public class ImagemProdutoService : IImagemProdutoService
     {
         private readonly IHttpClientFactory _clientFactory;
-        private const string _apiEndPoint = "api/ImagemProdutos"; // URL base da API de imagens de produtos
+        private const string _apiEndPoint = "api/ImagemProdutos"; 
         private const string _caminhoImagens = "\\images\\produtos\\";
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private IEnumerable<ImagemProdutoViewModel> _imagensProdutoVMs;

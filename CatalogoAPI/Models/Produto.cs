@@ -9,6 +9,7 @@ namespace LojaVirtual.CatalogoAPI.Models
         public string? Descricao { get; set; }
         public string? SKU { get; set; }
         public decimal Preco { get; set; }
+        public decimal? PercentualDescontoAvista { get; set; }
         public long Estoque { get; set; }
         public Categoria? Categoria { get; set; }
         public long? CategoriaId { get; set; }
