@@ -10,6 +10,7 @@ namespace LojaVirtual.CatalogoAPI.DTOs
         public string? SKU { get; set; }
         public string? Descricao { get; set; }
         public decimal Preco { get; set; }
+        public decimal PrecoPromocional { get; set; }
         public long Estoque { get; set; }
         public string? NomeCategoria { get; set; }
         public string? NomeMarca { get; set; }

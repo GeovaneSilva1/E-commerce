@@ -14,6 +14,7 @@ namespace LojaVirtual.Web.Models
         public string? Descricao { get; set; }
         [Required(ErrorMessage = "O preço é obrigatório!")]
         public decimal Preco { get; set; }
+        public decimal PrecoPromocional { get; set; }
         [Required(ErrorMessage = "O Estoque é obrigatório!")]
         public long Estoque { get; set; }
         [DisplayName("Categoria")]
