@@ -62,19 +62,19 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             }
             var categoriaDTO = await _categoriaService.GetCategoria(produtoDTO.CategoriaId);
             var marcaDTO = await _marcaService.GetMarca(produtoDTO.MarcaId);
-            
+
             if (categoriaDTO is null)
             {
                 return NotFound($"Categoria com id {produtoDTO.CategoriaId} não encontrada.");
             }
-            
+
             if (marcaDTO is null)
             {
                 return NotFound($"Marca com id {produtoDTO.MarcaId} não encontrada.");
             }
- 
+
             await _produtoService.UpdateProduto(produtoDTO, categoriaDTO, marcaDTO);
-            
+
             return Ok(produtoDTO);
         }
 
@@ -82,7 +82,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
         public async Task<ActionResult<ProdutoDTO>> DeleteProduto(long handle)
         {
             var produtoDTO = await _produtoService.GetProduto(handle);
-            
+
             if (produtoDTO is null)
             {
                 return NotFound($"Produto com id {handle} não encontrado.");
@@ -122,5 +122,17 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(produtoDTO);
         }
 
+        [HttpGet("categoria/{categoriaHandle}")]
+        public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutosByCategoria(long categoriaHandle)
+        {
+            var produtosDTO = await _produtoService.GetProdutosByCategoriaId(categoriaHandle);
+            
+            if (produtosDTO is null || !produtosDTO.Any())
+            {
+                return NotFound($"Nenhum produto encontrado para a categoria com id {categoriaHandle}.");
+            }
+
+            return Ok(produtosDTO);
+        }
     }
 }

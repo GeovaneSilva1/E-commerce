@@ -23,38 +23,9 @@ namespace LojaVirtual.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int pagina = 1, int itensPorPagina = 9)
-        {
-            var produtos = await _produtoService.ObterProdutosAsync();
-            
-            // Aplicar paginação
-            var produtosPaginados = produtos
-                .Skip((pagina - 1) * itensPorPagina)
-                .Take(itensPorPagina)
-                .ToList();
-
-            // Obter categorias para filtro
-            ViewBag.Categorias = await _categoriaService.ObterCategoriasAsync();
-            ViewBag.Marcas = await _marcaService.ObterMarcasAsync();
-            
-            // Configurar paginação
-            ViewBag.PaginaAtual = pagina;
-            ViewBag.ItensPorPagina = itensPorPagina;
-            ViewBag.TotalItens = produtos.Count();
-            ViewBag.TotalPaginas = (int)Math.Ceiling((double)produtos.Count() / itensPorPagina);
-
-            return View(produtosPaginados);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Filtrar(long? categoriaId, long? marcaId, int pagina = 1, int itensPorPagina = 9)
         {
-            var produtos = await _produtoService.ObterProdutosAsync();
-
-            if (categoriaId.HasValue)
-            {
-                produtos = produtos.Where(p => p.CategoriaId == categoriaId.Value).ToList();
-            }
+            var produtos = await _produtoService.ObterProdutosByCategoriaIdAsync(categoriaId);
 
             if (marcaId.HasValue)
             {

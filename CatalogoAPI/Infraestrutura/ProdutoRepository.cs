@@ -63,6 +63,12 @@ namespace LojaVirtual.CatalogoAPI.Infraestrutura
                 .ToListAsync();
         }
 
-        
+        public async Task<IEnumerable<Produto>> GetByCategoriaId(long categoriaHandle)
+        {
+            return await _contextCatalogo.Produtos
+                .Include(p => p.Categoria)
+                .Include(p => p.Marca)
+                .Where(p => p.CategoriaId == categoriaHandle).ToListAsync();
+        }
     }
 }

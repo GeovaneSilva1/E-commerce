@@ -3,6 +3,7 @@ using LojaVirtual.CatalogoAPI.DTOs;
 using LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces;
 using LojaVirtual.CatalogoAPI.Models;
 using LojaVirtual.CatalogoAPI.Services.Interfaces;
+using System.Collections.Generic;
 
 namespace LojaVirtual.CatalogoAPI.Services
 {
@@ -94,6 +95,23 @@ namespace LojaVirtual.CatalogoAPI.Services
             }
 
             return Task.FromResult(precoPromocional);
+        }
+
+        public async Task<IEnumerable<ProdutoDTO>> GetProdutosByCategoriaId(long categoriaHandle)
+        {
+            IEnumerable<Produto> produtos = await _produtoRepository.GetByCategoriaId(categoriaHandle);
+            var produtoDtos = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
+            
+            foreach (var produtoDto in produtoDtos.Where(pdt => pdt is not null))
+            {
+                var produtoAtual = produtos.FirstOrDefault(p => p.Handle == produtoDto.Handle);
+                if (produtoAtual is null)
+                    continue;
+
+                produtoDto.PrecoPromocional = await ApplyDescontoAvistaAsync(produtoAtual);
+            }
+
+            return produtoDtos;
         }
     }
 }

@@ -9,6 +9,6 @@ namespace LojaVirtual.Web.Services.Interfaces
         Task<ProdutoViewModel> CriarProdutoAsync(ProdutoViewModel produtoVM);
         Task<ProdutoViewModel> AtualizarProdutoAsync(ProdutoViewModel produtoVM);
         Task<bool> DeletarProdutoAsync(long handle);
-
+        Task<IEnumerable<ProdutoViewModel>> ObterProdutosByCategoriaIdAsync(long? categoriaHandle);
     }
 }

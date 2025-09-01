@@ -11,5 +11,6 @@ namespace LojaVirtual.CatalogoAPI.Services.Interfaces
         Task<IEnumerable<ProdutoDTO>> GetProdutos();
         Task<ProdutoDTO> GetBySKU(string SKU);
         Task<bool> ExistProduto(long handle);
+        Task<IEnumerable<ProdutoDTO>> GetProdutosByCategoriaId(long categoriaHandle);
     }
 }

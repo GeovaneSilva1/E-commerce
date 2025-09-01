@@ -42,7 +42,7 @@
         }
         else
         {
-            @foreach (var produto in Model.Where(pdt => pdt.CategoriaId == ViewBag.CategoriaIdSelecionada))
+            @foreach (var produto in Model)
             {
                 <div class="col-md-4 mb-4">
                     <div class="card produto-card h-100">
@@ -82,7 +82,7 @@
                         @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
                         {
                             <li class="page-item @(i == ViewBag.PaginaAtual ? "active" : "")">
-                                <a class="page-link" href="@Url.Action("Index", "Catalogo", new { pagina = i, itensPorPagina = ViewBag.ItensPorPagina })">@i</a>
+                                <a class="page-link" href="@Url.Action("Filtrar", "Catalogo", new { pagina = i, itensPorPagina = ViewBag.ItensPorPagina, categoriaId = ViewBag.CategoriaIdSelecionada, marcaId = ViewBag.MarcaIdSelecionada })">@i</a>
                             </li>
                         }
                     </ul>

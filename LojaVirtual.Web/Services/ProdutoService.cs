@@ -118,5 +118,23 @@ namespace LojaVirtual.Web.Services
             }
             return _produtosVM;
         }
+
+        public async Task<IEnumerable<ProdutoViewModel>> ObterProdutosByCategoriaIdAsync(long? categoriaHandle)
+        {
+            var client = _clientFactory.CreateClient("CatalogoAPI");
+            using (var response = await client.GetAsync(_apiEndPoint + $"categoria/{categoriaHandle}" ))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var apiResponse = await response.Content.ReadAsStreamAsync();
+                    _produtosVM = await JsonSerializer.DeserializeAsync<IEnumerable<ProdutoViewModel>>(apiResponse, _jsonSerializerOptions);
+                }
+                else
+                {
+                    return Enumerable.Empty<ProdutoViewModel>();
+                }
+            }
+            return _produtosVM;
+        }
     }
 }

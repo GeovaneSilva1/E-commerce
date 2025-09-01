@@ -11,7 +11,6 @@ namespace LojaVirtual.CatalogoAPI.Infraestrutura.Interfaces
         Task<Produto> Get(long handle);
         Task<Produto> GetBySKU(string SKU);
         Task<bool> Exists(long handle);
-        
-        
+        Task<IEnumerable<Produto>> GetByCategoriaId(long categoriaHandle);
     }
 }
