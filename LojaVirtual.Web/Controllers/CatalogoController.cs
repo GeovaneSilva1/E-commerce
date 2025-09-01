@@ -97,5 +97,21 @@ namespace LojaVirtual.Web.Controllers
 
             return View(produto);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AdicionarCarrinho(long handle)
+        {
+            var produto = await _produtoService.ObterProdutoPorIdAsync(handle);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            // Obter imagens do produto
+            var imagens = await _imagemProdutoService.ObterImagensPorProdutoIdAsync(handle);
+            ViewBag.Imagens = imagens;
+
+            return View(produto);
+        }
     }
 }
