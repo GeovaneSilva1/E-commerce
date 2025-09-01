@@ -34,15 +34,17 @@ body {
 }
 
 .dropdown-menu {
-  border-radius: 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border: none;
-  padding: 0.5rem 0;
-  display: block;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-  margin-top: 0;
+    border-radius: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 0.5rem 0;
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    margin-top: 0;
+    left: 30% !important;
+    transform: translateX(-50%);
 }
 
 .dropdown:hover .dropdown-menu {
@@ -71,6 +73,25 @@ body {
 .navbar-nav.mx-auto .dropdown-toggle {
   padding: 0.5rem 1rem;
 }
+
+.mega-menu {
+    left: 40% !important; /* move até o centro */
+    transform: translateX(-50%); /* centraliza */
+    width: 99vw; /* ocupa largura total */
+    padding: 1rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+    .mega-menu li {
+        list-style: none;
+    }
+
+    .mega-menu .dropdown-item {
+        white-space: nowrap;
+    }
 
 /* Remover a necessidade de clicar para abrir o dropdown */
 .dropdown-toggle[aria-expanded="false"]:hover + .dropdown-menu,
