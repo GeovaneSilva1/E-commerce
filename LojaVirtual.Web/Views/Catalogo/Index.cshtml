@@ -3,7 +3,7 @@
 <div class="container catalogo-container">
     <div class="row mb-4">
         <div class="col-12">
-            <h2 class="catalogo-titulo">Catálogo de Produtos</h2>
+            <h2 class="catalogo-titulo">Catálogo de @ViewBag.CategoriaNomeSelecionado</h2>
         </div>
     </div>
 
@@ -13,16 +13,7 @@
             <div class="filtro-sidebar">
                 <h4 class="filtro-sidebar-titulo mb-3">Filtros</h4>
                 <form asp-action="Filtrar" asp-controller="Catalogo" method="get">
-                    <div class="mb-3">
-                        <label class="form-label">Categoria</label>
-                        <select name="categoriaId" class="form-select">
-                            <option value="">Todas as Categorias</option>
-                            @foreach (var categoria in ViewBag.Categorias)
-                            {
-                                <option value="@categoria.Handle" selected="@(ViewBag.CategoriaIdSelecionada != null && ViewBag.CategoriaIdSelecionada.ToString() == categoria.Handle.ToString())">@categoria.Nome</option>
-                            }
-                        </select>
-                    </div>
+                    <input type="hidden" name="categoriaId" value="@ViewBag.CategoriaIdSelecionada" />
                     <div class="mb-3">
                         <label class="form-label">Marca</label>
                         <select name="marcaId" class="form-select">
@@ -51,7 +42,7 @@
         }
         else
         {
-            @foreach (var produto in Model)
+            @foreach (var produto in Model.Where(pdt => pdt.CategoriaId == ViewBag.CategoriaIdSelecionada))
             {
                 <div class="col-md-4 mb-4">
                     <div class="card produto-card h-100">

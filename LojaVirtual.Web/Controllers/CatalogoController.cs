@@ -51,7 +51,6 @@ namespace LojaVirtual.Web.Controllers
         {
             var produtos = await _produtoService.ObterProdutosAsync();
 
-            // Aplicar filtros
             if (categoriaId.HasValue)
             {
                 produtos = produtos.Where(p => p.CategoriaId == categoriaId.Value).ToList();
@@ -62,19 +61,19 @@ namespace LojaVirtual.Web.Controllers
                 produtos = produtos.Where(p => p.MarcaId == marcaId.Value).ToList();
             }
 
-            // Aplicar paginação
             var produtosPaginados = produtos
                 .Skip((pagina - 1) * itensPorPagina)
                 .Take(itensPorPagina)
                 .ToList();
 
-            // Obter categorias para filtro
-            ViewBag.Categorias = await _categoriaService.ObterCategoriasAsync();
-            ViewBag.Marcas = await _marcaService.ObterMarcasAsync();
+            var categorias = await _categoriaService.ObterCategoriasAsync();
+            ViewBag.Categorias = categorias;
+            ViewBag.CategoriaNomeSelecionado = categorias.FirstOrDefault(c => c.Handle == categoriaId)?.Nome;
             ViewBag.CategoriaIdSelecionada = categoriaId;
+            
+            ViewBag.Marcas = await _marcaService.ObterMarcasAsync();
             ViewBag.MarcaIdSelecionada = marcaId;
             
-            // Configurar paginação
             ViewBag.PaginaAtual = pagina;
             ViewBag.ItensPorPagina = itensPorPagina;
             ViewBag.TotalItens = produtos.Count();
