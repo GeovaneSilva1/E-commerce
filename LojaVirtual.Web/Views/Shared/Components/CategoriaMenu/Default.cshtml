@@ -1,0 +1,13 @@
+@model IEnumerable<LojaVirtual.Web.Models.CategoriaViewModel>
+
+<div class="dropdown">
+    <a class="nav-link text-dark dropdown-toggle" href="#" id="shopDropdown" role="button" aria-expanded="false">
+        SHOP
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="shopDropdown">
+        @foreach (var categoria in Model)
+        {
+            <li><a class="dropdown-item" href="@Url.Action("Filtrar", "Catalogo", new { categoriaId = categoria.Handle })">@categoria.Nome</a></li>
+        }
+    </ul>
+</div>
