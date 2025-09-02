@@ -17,13 +17,13 @@ namespace LojaVirtual.Web.Controllers
                                  IImagemProdutoService imagemProdutoService)
         {
             _produtoService = produtoService;
-            _categoriaService = categoriaService;
+            _categoriaService = categoriaService; 
             _marcaService = marcaService;
             _imagemProdutoService = imagemProdutoService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Filtrar(long? categoriaId, long? marcaId, int pagina = 1, int itensPorPagina = 9)
+        public async Task<IActionResult> Filtrar(long? categoriaId, long? marcaId, int pagina = 1, int itensPorPagina = 12)
         {
             var produtos = await _produtoService.ObterProdutosByCategoriaIdAsync(categoriaId);
 
