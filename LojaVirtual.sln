@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.ProductApi", "LojaVirtual.ProductApi\LojaVirtual.ProductApi.csproj", "{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.CatalogoAPI", "CatalogoAPI\LojaVirtual.CatalogoAPI.csproj", "{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.Web", "LojaVirtual.Web\LojaVirtual.Web.csproj", "{055FD271-6020-4D09-92A2-6AC88798C34E}"
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
