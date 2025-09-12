@@ -24,6 +24,8 @@ var mysqlServerConnection = "";
 
 if (Environment.MachineName.Equals("DESKTOP-5CHSN2N"))
     mysqlServerConnection = builder.Configuration.GetConnectionString("duda");
+else if (Environment.MachineName.Equals("BNU-NT005742"))
+    mysqlServerConnection = builder.Configuration.GetConnectionString("emp");
 else
     mysqlServerConnection = builder.Configuration.GetConnectionString("localhost");
 
