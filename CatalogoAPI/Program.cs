@@ -20,14 +20,13 @@ builder.Services.AddSwaggerGen(c =>
     c.EnableAnnotations();
 });
 
-var mysqlServerConnection = "";
+var mysqlServerConnection = builder.Configuration.GetConnectionString("localhost");
 
 if (Environment.MachineName.Equals("DESKTOP-5CHSN2N"))
     mysqlServerConnection = builder.Configuration.GetConnectionString("duda");
-else if (Environment.MachineName.Equals("BNU-NT005742"))
+
+if (Environment.MachineName.Equals("BNU-NT005742"))
     mysqlServerConnection = builder.Configuration.GetConnectionString("emp");
-else
-    mysqlServerConnection = builder.Configuration.GetConnectionString("localhost");
 
 builder.Services.AddDbContext<AppDbContextCatalogoApi>(options => options.UseSqlServer(mysqlServerConnection));
 
