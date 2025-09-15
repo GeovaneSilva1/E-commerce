@@ -2,9 +2,9 @@
 
 namespace LojaVirtual.Web.ViewComponents
 {
-    public class CadastrosMenuViewComponent : ViewComponent
+    public class ConfiguracoesMenuViewComponent : ViewComponent
     {
-        public CadastrosMenuViewComponent()
+        public ConfiguracoesMenuViewComponent()
         {
         }
         public IViewComponentResult Invoke()

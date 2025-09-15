@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Cadastros";
+
+    // exemplo de lista dinâmica de menus (pode vir do banco ou de um array)
+    var menus = new List<(string Nome, string Controller)>
+    {
+        ("Produtos", "Produtos"),
+        ("Categorias", "Categorias"),
+        ("Marcas", "Marcas"),
+        ("Fornecedores", "Fornecedores"),
+        ("Clientes", "Clientes"),
+        ("Usuários", "Usuarios"),
+        ("Perfis", "Perfis"),
+        ("Pedidos", "Pedidos"),
+        ("Transportadoras", "Transportadoras"),
+        ("Endereços", "Enderecos"),
+        ("Notas Fiscais", "NotasFiscais"),
+        ("Pagamentos", "Pagamentos"),
+        ("Cupons", "Cupons"),
+        ("Relatórios", "Relatorios"),
+        ("Logs", "Logs"),
+        ("Configurações", "Configuracoes")
+    };
+
+    int itensPorColuna = 14;
+    int totalColunas = (int)Math.Ceiling((double)menus.Count / itensPorColuna);
+}
+
+<div class="row mt-3">
+    <h6 class="mb-2">Cadastros</h6>
+    @for (int col = 0; col < totalColunas; col++)
+    {
+        <div class="col-md-2">
+            <ul class="list-unstyled small">
+                @foreach (var item in menus.Skip(col * itensPorColuna).Take(itensPorColuna))
+                {
+                    <li class="mb-1">
+                        <a class="text-dark text-decoration-underline d-inline-flex align-items-center"
+                           asp-area="" asp-controller="@item.Controller" asp-action="Index">
+                            <i class="bi bi-pin-angle-fill me-1 text-primary"></i> @item.Nome
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
