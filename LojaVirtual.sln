@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{02
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{87CE5ED5-3B24-4D1B-ABD3-FF1DFF708553}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.Identity", "LojaVirtual.Identity\LojaVirtual.Identity.csproj", "{FC7CE6CD-6BB6-4606-9649-1DF7698A6D3D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,10 +25,6 @@ Global
 		{055FD271-6020-4D09-92A2-6AC88798C34E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{055FD271-6020-4D09-92A2-6AC88798C34E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{055FD271-6020-4D09-92A2-6AC88798C34E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC7CE6CD-6BB6-4606-9649-1DF7698A6D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC7CE6CD-6BB6-4606-9649-1DF7698A6D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC7CE6CD-6BB6-4606-9649-1DF7698A6D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC7CE6CD-6BB6-4606-9649-1DF7698A6D3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,7 +32,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD} = {87CE5ED5-3B24-4D1B-ABD3-FF1DFF708553}
 		{055FD271-6020-4D09-92A2-6AC88798C34E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{FC7CE6CD-6BB6-4606-9649-1DF7698A6D3D} = {87CE5ED5-3B24-4D1B-ABD3-FF1DFF708553}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7F16686-212C-479A-9BFF-36819E48DCBF}

@@ -1,7 +1,6 @@
 ﻿using LojaVirtual.Web.Models;
 using LojaVirtual.Web.Models.Compostas;
 using LojaVirtual.Web.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Endpoints.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -41,7 +40,6 @@ namespace LojaVirtual.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> CriarProduto()
         {
             ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
@@ -50,7 +48,6 @@ namespace LojaVirtual.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CriarProduto(ProdutoViewModel produtoViewModel)
         {
             if (ModelState.IsValid)

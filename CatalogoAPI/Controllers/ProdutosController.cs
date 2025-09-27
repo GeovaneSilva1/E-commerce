@@ -1,6 +1,5 @@
 ﻿using LojaVirtual.CatalogoAPI.DTOs;
 using LojaVirtual.CatalogoAPI.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +21,6 @@ namespace LojaVirtual.CatalogoAPI.Controllers
         }
 
         [HttpPost]
-        
         public async Task<ActionResult<ProdutoDTO>> AddProduto([FromBody] ProdutoDTO produtoDTO)
         {
             var produtoExistente = await _produtoService.GetProduto(produtoDTO.Handle);
