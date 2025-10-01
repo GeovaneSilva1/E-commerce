@@ -6,5 +6,5 @@
         public string? PassWord { get; set; }
         //configurar o lembrar me futuramente no bakend
         public bool LembrarMe { get; set; }
-        }
+    }
 }
