@@ -11,10 +11,17 @@ builder.Services.AddHttpClient("CatalogoAPI", c =>
     c.BaseAddress = new Uri(builder.Configuration["ServiceUri:CatalogoAPI"]);
 });
 
+builder.Services.AddHttpClient("IdentityAPI", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUri:Identity"]);
+});
+
 builder.Services.AddTransient<IProdutoService, ProdutoService>();
 builder.Services.AddTransient<ICategoriaService, CategoriaService>();
 builder.Services.AddTransient<IMarcaService, MarcaService>();
 builder.Services.AddTransient<IImagemProdutoService, ImagemProdutoService>();
+builder.Services.AddTransient<IJwtService, JwtService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 
 var app = builder.Build();
 

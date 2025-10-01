@@ -4,9 +4,15 @@ namespace LojaVirtual.Web.Services
 {
     public class JwtService : IJwtService
     {
-        public Task SalveJwt(string token)
+        public async Task SalveJwt(HttpResponse response, string token, long horasValidas = 1)
         {
-            throw new NotImplementedException();
+            response.Cookies.Append("jwt", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTimeOffset.Now.AddHours(horasValidas)
+            });
         }
     }
 }

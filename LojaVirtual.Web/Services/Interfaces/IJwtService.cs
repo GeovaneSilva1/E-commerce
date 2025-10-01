@@ -2,6 +2,6 @@
 {
     public interface IJwtService
     {
-        Task SalveJwt(string token);
+        Task SalveJwt(HttpResponse response, string token, long horasValidas = 1);
     }
 }
