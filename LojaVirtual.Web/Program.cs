@@ -16,6 +16,8 @@ builder.Services.AddHttpClient("IdentityAPI", c =>
     c.BaseAddress = new Uri(builder.Configuration["ServiceUri:Identity"]);
 });
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddTransient<IProdutoService, ProdutoService>();
 builder.Services.AddTransient<ICategoriaService, CategoriaService>();
 builder.Services.AddTransient<IMarcaService, MarcaService>();

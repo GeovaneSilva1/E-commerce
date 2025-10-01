@@ -41,7 +41,6 @@ namespace LojaVirtual.Web.Controllers.Auth
 
             await _authService.RegisterAsync(model);
 
-            // Após o registro, redirecionar para a página de login ou outra página apropriada
             return RedirectToAction("Login");
         }
         public IActionResult Register()

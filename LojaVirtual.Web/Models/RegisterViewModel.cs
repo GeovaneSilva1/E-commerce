@@ -12,5 +12,8 @@ namespace LojaVirtual.Web.Models
         public string? Email { get; set; }
         [Required]
         public string? Password { get; set; }
+        [Required]
+        [Compare("Password", ErrorMessage = "As senhas não coincidem.")]
+        public string? ConfirmPassword { get; set; }
     }
 }
