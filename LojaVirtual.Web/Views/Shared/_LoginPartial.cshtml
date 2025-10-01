@@ -1,0 +1,21 @@
+﻿@if (ViewBag.UserName != null)
+{
+    <ul class="nav-item">
+        <form method="post" asp-controller="auth" asp-action="logout">
+            <label class="nav-link text-dark">Bem vindo, @ViewBag.PrimeiroNome</label>
+            <button type="submit" style="width: auto" class="nav-link btn btn-link py-0">
+                Logout
+            </button>
+        </form>
+    </ul>
+}
+else
+{
+    <ul class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="auth" asp-action="login">Login</a>
+    </ul>
+
+    <ul class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="auth" asp-action="register">Registrar</a>
+    </ul>
+}

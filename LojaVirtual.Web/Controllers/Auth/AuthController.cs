@@ -48,5 +48,10 @@ namespace LojaVirtual.Web.Controllers.Auth
         {
             return View();
         }
+        public async Task<IActionResult> Logout()
+        {
+            await _jwtService.RemoveJwt(Response);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
