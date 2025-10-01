@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.Web.Models;
 using LojaVirtual.Web.Services.Interfaces;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -102,6 +103,9 @@ namespace LojaVirtual.Web.Services
         public async Task<IEnumerable<ProdutoViewModel>> ObterProdutosAsync()
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
+            var token = "seu_token_aqui"; 
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             using (var response = await client.GetAsync(_apiEndPoint))
             {
                 if (response.IsSuccessStatusCode)
