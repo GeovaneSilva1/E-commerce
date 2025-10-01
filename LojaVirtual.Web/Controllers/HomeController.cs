@@ -1,4 +1,6 @@
+using LojaVirtual.Web.DTOs;
 using LojaVirtual.Web.Models;
+using LojaVirtual.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

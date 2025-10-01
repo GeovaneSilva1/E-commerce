@@ -99,7 +99,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(produtoDTO);
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutos()
         {
@@ -113,6 +113,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(produtosDTO);
         }
 
+        [AllowAnonymous]
         [HttpGet("{handle}")]
         public async Task<ActionResult<ProdutoDTO>> GetProduto(long handle)
         {
@@ -124,6 +125,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(produtoDTO);
         }
 
+        [AllowAnonymous]
         [HttpGet("categoria/{categoriaHandle}")]
         public async Task<ActionResult<IEnumerable<ProdutoDTO>>> GetProdutosByCategoria(long categoriaHandle)
         {

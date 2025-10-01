@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.IdentityAPI.Context;
 using LojaVirtual.IdentityAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -73,6 +74,31 @@ namespace LojaVirtual.IdentityAPI.Controllers
             string token = GenerateJwtToken(user);
 
             return Ok(new { token });
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            //var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null)
+                return Unauthorized();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null)
+                return NotFound("Usuário não encontrado.");
+            
+            var userProfile = new UserProfileDTO
+            {
+                Id = user.Id,
+                Email = user.Email,
+                PrimeiroNome = user.PrimeiroNome,
+                UltimoNome = user.UltimoNome
+            };
+
+            return Ok(userProfile);
         }
 
         /// <summary>

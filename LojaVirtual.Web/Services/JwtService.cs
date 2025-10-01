@@ -4,9 +4,9 @@ namespace LojaVirtual.Web.Services
 {
     public class JwtService : IJwtService
     {
-        public Task RemoveJwt(HttpResponse response)
+        public async Task RemoveJwt(HttpResponse response)
         {
-            throw new NotImplementedException();
+            response.Cookies.Delete("jwt");
         }
 
         public async Task SalveJwt(HttpResponse response, string token, long horasValidas = 1)

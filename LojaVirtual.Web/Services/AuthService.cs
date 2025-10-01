@@ -1,6 +1,7 @@
 ﻿using LojaVirtual.Web.DTOs;
 using LojaVirtual.Web.Models;
 using LojaVirtual.Web.Services.Interfaces;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 
@@ -57,6 +58,29 @@ namespace LojaVirtual.Web.Services
 
                 var apiResponse = await response.Content.ReadAsStreamAsync();
                 return await JsonSerializer.DeserializeAsync<RegisterViewModel>(apiResponse, _jsonSerializerOptions);
+            }
+        }
+
+        public async Task<UserDTO> UsuarioValido()
+        {
+            var client = _clientFactory.CreateClient("IdentityAPI");
+            var token = _httpContextAccessor.HttpContext.Request.Cookies["jwt"];
+            if (token == null)
+                return null;
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            using (var response = await client.GetAsync(_apiEndPoint + "me"))
+            {
+                if (!response.IsSuccessStatusCode)
+                {                     
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    return null;
+                }
+
+                var user = await response.Content.ReadFromJsonAsync<UserDTO>();
+
+                return user;
             }
         }
     }

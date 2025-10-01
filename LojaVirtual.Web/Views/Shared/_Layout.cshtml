@@ -27,7 +27,9 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        <partial name="_LoginPartial.cshtml" />
+                        <li class="nav-item">
+                            @await Component.InvokeAsync("ValidaUsuario")
+                        </li>
 
                         <li class="nav-item">
                             @await Component.InvokeAsync("ConfiguracoesMenu")
