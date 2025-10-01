@@ -75,6 +75,11 @@ namespace LojaVirtual.IdentityAPI.Controllers
             return Ok(new { token });
         }
 
+        /// <summary>
+        /// Remover esse método daqui e fazer com que gere uma assinatura JWT válida
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private string GenerateJwtToken(User user)
         {
             var claims = new[]
