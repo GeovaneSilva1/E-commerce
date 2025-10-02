@@ -2,7 +2,7 @@
 {
     <ul class="nav-item">
         <form method="post" asp-controller="auth" asp-action="logout">
-            <label class="nav-link text-dark">Bem vindo, @ViewBag.PrimeiroNome</label>
+            <label class="nav-link text-dark">Bem vindo(a), @ViewBag.PrimeiroNome</label>
             <button type="submit" style="width: auto" class="nav-link btn btn-link py-0">
                 Logout
             </button>
@@ -11,11 +11,19 @@
 }
 else
 {
-    <ul class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="auth" asp-action="login">Login</a>
-    </ul>
+    <div class="d-flex flex-column align-items-start me-4">
+        <label class="nav-link text-dark mb-0" style="line-height: 0;">Boas vindas :)</label>
 
-    <ul class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="auth" asp-action="register">Registrar</a>
-    </ul>
+        <div class="d-flex align-items-start justify-content-start">
+            <a class="text-dark text-decoration-underline d-inline-flex align-items-start me-0"
+               asp-area="" asp-controller="auth" asp-action="login">
+                <i class="bi bi-pin-angle-fill me-2 text-primary"></i>Entre
+            </a>
+            <span class="text-dark mx-lg-1">ou</span>
+            <a class="text-dark text-decoration-underline d-inline-flex align-items-start"
+               asp-area="" asp-controller="auth" asp-action="register">
+                <i class="bi bi-pin-angle-fill me-0 text-primary"></i>Cadastre-se
+            </a>
+        </div>
+    </div>
 }
