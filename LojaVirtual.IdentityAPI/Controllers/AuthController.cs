@@ -1,12 +1,9 @@
 ﻿using LojaVirtual.IdentityAPI.Context;
 using LojaVirtual.IdentityAPI.DTOs;
+using LojaVirtual.IdentityAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace LojaVirtual.IdentityAPI.Controllers
 {
@@ -14,17 +11,11 @@ namespace LojaVirtual.IdentityAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IConfiguration _configuration;
+        private readonly IAuthService _AuthService;
 
-        public AuthController(UserManager<User> userManager, 
-                              SignInManager<User> signInManager, 
-                              IConfiguration configuration)
+        public AuthController(IAuthService authService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _configuration = configuration;
+            _AuthService = authService;
         }
 
         [HttpPost("register")]
@@ -35,43 +26,33 @@ namespace LojaVirtual.IdentityAPI.Controllers
                 return BadRequest("Dados do usuário inválidos.");
             }
 
-            var user = new User
-            {
-                UserName = userDTO.Email,
-                Email = userDTO.Email,
-                PrimeiroNome = userDTO.PrimeiroNome,
-                UltimoNome = userDTO.UltimoNome
-            };
+            var user = await _AuthService.CreateUserAsync(userDTO);
 
-            var result = await _userManager.CreateAsync(user, userDTO.Password);
-
-            if (!result.Succeeded)
+            if (!user.Succeeded)
             {
-                var errors = result.Errors.Select(e => e.Description);
+                var errors = user.Errors.Select(e => e.Description);
                 return BadRequest(new { Errors = errors });
             }
 
-            return Ok(result);
+            return Ok(user);
         }
 
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginUserDTO userDTO)
         {
             if (userDTO is null)
-            {
                 return BadRequest("Dados do usuário inválidos.");
-            }
 
-            var user = await _userManager.FindByEmailAsync(userDTO.Email);
+            User user = await _AuthService.ExistsByEmailAsync(userDTO.Email!);
+
             if (user is null)
-                return Unauthorized("Usuário ou senha inválidos");
+                return Unauthorized("Usuário não cadastrado");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, userDTO.Password, false);
-            
+            var result = await _AuthService.ValidaUserByPasswordAsync(user, userDTO.Password!);
             if (!result.Succeeded)
-                return Unauthorized("Usuário ou senha inválidos");
+                return Unauthorized("Senha inválida");
 
-            string token = GenerateJwtToken(user);
+            string token = await _AuthService.GenerateJwtTokenAsync(user);
 
             return Ok(new { token });
         }
@@ -80,61 +61,25 @@ namespace LojaVirtual.IdentityAPI.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
         {
-            //var userId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId is null)
                 return Unauthorized();
 
-            var user = await _userManager.FindByIdAsync(userId);
+            User user = await _AuthService.ExistsByIdAsync(userId);
+
             if (user is null)
                 return NotFound("Usuário não encontrado.");
-            
-            var userProfile = new UserProfileDTO
-            {
-                Id = user.Id,
-                Email = user.Email,
-                PrimeiroNome = user.PrimeiroNome,
-                UltimoNome = user.UltimoNome
-            };
+
+            UserProfileDTO userProfile = _AuthService.RetornaProfileUserDTO(user);
 
             return Ok(userProfile);
-        }
-
-        /// <summary>
-        /// Remover esse método daqui e fazer com que gere uma assinatura JWT válida
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        private string GenerateJwtToken(User user)
-        {
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
-
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _AuthService.RemoveUserTokenAsync();
             return Ok();
         }
     }

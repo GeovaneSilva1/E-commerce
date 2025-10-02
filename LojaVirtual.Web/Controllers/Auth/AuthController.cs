@@ -22,7 +22,7 @@ namespace LojaVirtual.Web.Controllers.Auth
         {
             var token = await _authService.LoginAsync(model);
 
-            await _jwtService.SalveJwt(Response, token, 1);
+            await _jwtService.SalveJwt(Response, token);
 
             return RedirectToAction("Index", "Home");
         }

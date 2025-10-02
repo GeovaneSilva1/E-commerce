@@ -1,4 +1,7 @@
 using LojaVirtual.IdentityAPI.Context;
+using LojaVirtual.IdentityAPI.DTOs;
+using LojaVirtual.IdentityAPI.Services;
+using LojaVirtual.IdentityAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +22,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
-
-//builder.Services.AddIdentityApiEndpoints<User>()
-//    .AddEntityFrameworkStores<AppDbContext>()
-//    .AddDefaultTokenProviders();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
@@ -47,6 +46,10 @@ builder.Services.AddAuthentication(options =>
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
+builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddScoped<User>();
+builder.Services.AddScoped<UserProfileDTO>();
 
 var app = builder.Build();
 
