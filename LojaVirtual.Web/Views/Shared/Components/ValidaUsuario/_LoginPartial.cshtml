@@ -1,13 +1,12 @@
 ﻿@if (ViewBag.Id != null)
 {
-    <ul class="nav-item">
-        <form method="post" asp-controller="auth" asp-action="logout">
-            <label class="nav-link text-dark">Bem vindo(a), @ViewBag.PrimeiroNome</label>
-            <button type="submit" style="width: auto" class="nav-link btn btn-link py-0">
-                Logout
-            </button>
-        </form>
-    </ul>
+    <div class="d-flex flex-column align-items-start me-4">
+        <label class="nav-link text-dark mb-0" style="line-height: 0;">Bem vindo(a), @ViewBag.PrimeiroNome</label>
+        <a class="text-dark text-decoration-underline d-inline-flex align-items-start me-0"
+           asp-area="" asp-controller="auth" asp-action="logout">
+            <i class="bi bi-pin-angle-fill me-2 text-primary"></i>Sair
+        </a>
+    </div>
 }
 else
 {

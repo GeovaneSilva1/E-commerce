@@ -71,13 +71,13 @@ body {
 }
 
 .navbar-nav.mx-auto .dropdown-toggle {
-  padding: 0.5rem 1rem;
+  padding: 0rem 0rem;
 }
 
 .mega-menu {
-    left: 40% !important; /* move até o centro */
+    left: 70% !important; /* move até o centro */
     transform: translateX(-50%); /* centraliza */
-    width: 99vw; /* ocupa largura total */
+    width: 98vw; /* ocupa largura total */
     padding: 1rem 2rem;
     display: flex;
     flex-wrap: wrap;
