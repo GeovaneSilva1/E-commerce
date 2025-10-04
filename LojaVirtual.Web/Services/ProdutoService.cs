@@ -35,16 +35,15 @@ namespace LojaVirtual.Web.Services
 
             using (var response = await client.PutAsJsonAsync(_apiEndPoint, produtoVM))
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    var apiResponse = await response.Content.ReadAsStreamAsync();
-                    produtoVMUpdate = await JsonSerializer.DeserializeAsync<ProdutoViewModel>(apiResponse, _jsonSerializerOptions);
-                }
-                else
+                if (!response.IsSuccessStatusCode)
                 {
                     var errorMessage = await response.Content.ReadAsStringAsync();
-                    throw new Exception("Erro ao atualizar produto: " + errorMessage);
+                    var statusCode = response.StatusCode;
+                    throw new Exception("Erro ao atualizar produto: " + errorMessage + statusCode);
                 }
+
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                produtoVMUpdate = await JsonSerializer.DeserializeAsync<ProdutoViewModel>(apiResponse, _jsonSerializerOptions);
             }
             return produtoVMUpdate;
         }
@@ -59,16 +58,14 @@ namespace LojaVirtual.Web.Services
             
             using (var response = await client.PostAsync(_apiEndPoint, content))
             {
-                if (response.IsSuccessStatusCode)
-                {
-                    var apiResponse = await response.Content.ReadAsStreamAsync();
-                    _ProdutoVM = await JsonSerializer.DeserializeAsync<ProdutoViewModel>(apiResponse, _jsonSerializerOptions);
-                }
-                else
+                if (!response.IsSuccessStatusCode)
                 {
                     var errorMessage = await response.Content.ReadAsStringAsync();
-                    throw new Exception("Erro ao criar produto: " + errorMessage);
+                    var statusCode = response.StatusCode;
+                    throw new Exception($"Erro ao criar produto: {errorMessage} {statusCode}");
                 }
+                var apiResponse = await response.Content.ReadAsStreamAsync();
+                _ProdutoVM = await JsonSerializer.DeserializeAsync<ProdutoViewModel>(apiResponse, _jsonSerializerOptions);
             }
             return _ProdutoVM;
         }
@@ -84,7 +81,8 @@ namespace LojaVirtual.Web.Services
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorMessage = await response.Content.ReadAsStringAsync();
-                    throw new Exception("Erro na exclusão: " + errorMessage);
+                    var statusCode = response.StatusCode;
+                    throw new Exception("Erro na exclusão: " + errorMessage + statusCode);
                 }
             }
             return true;

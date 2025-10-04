@@ -2,24 +2,12 @@
     ViewData["Title"] = "Cadastros";
 
     // exemplo de lista dinâmica de menus (pode vir do banco ou de um array)
+    //encontrar outra forma de carregar esse menu
     var menus = new List<(string Nome, string Controller)>
     {
         ("Produtos", "Produtos"),
         ("Categorias", "Categorias"),
-        ("Marcas", "Marcas"),
-        ("Fornecedores", "Fornecedores"),
-        ("Clientes", "Clientes"),
-        ("Usuários", "Usuarios"),
-        ("Perfis", "Perfis"),
-        ("Pedidos", "Pedidos"),
-        ("Transportadoras", "Transportadoras"),
-        ("Endereços", "Enderecos"),
-        ("Notas Fiscais", "NotasFiscais"),
-        ("Pagamentos", "Pagamentos"),
-        ("Cupons", "Cupons"),
-        ("Relatórios", "Relatorios"),
-        ("Logs", "Logs"),
-        ("Configurações", "Configuracoes")
+        ("Marcas", "Marcas")
     };
 
     int itensPorColuna = 14;

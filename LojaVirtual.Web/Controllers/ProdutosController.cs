@@ -50,8 +50,13 @@ namespace LojaVirtual.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CriarProduto(ProdutoViewModel produtoViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception("Elementos obrigatórios não preenchidos");
+                }
+
                 var produtoCriado = await _produtoService.CriarProdutoAsync(produtoViewModel);
                 if (produtoCriado is not null)
                 {
@@ -59,9 +64,14 @@ namespace LojaVirtual.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+            }
 
             ViewBag.CategoriaId = new SelectList(await _categoriaService.ObterCategoriasAsync(), "Handle", "Nome");
             ViewBag.MarcaId = new SelectList(await _marcaService.ObterMarcasAsync(), "Handle", "Nome");
+
             return View(produtoViewModel);
         }
 
