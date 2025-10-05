@@ -12,7 +12,7 @@ namespace LojaVirtual.Web.Controllers
         private readonly IImagemProdutoService _imagemProdutoService;
 
         public CatalogoController(IProdutoService produtoService,
-                                 ICategoriaService categoriaService,
+                                 ICategoriaService categoriaService,  
                                  IMarcaService marcaService,
                                  IImagemProdutoService imagemProdutoService)
         {

@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.CatalogoAPI.DTOs;
 using LojaVirtual.CatalogoAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             _produtoService = produtoService;
         }
 
+        [Authorize]
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> AddImagemProdutos([FromForm] FileUploadDTO fileUploadDTO, [FromQuery] long produtoHandle)
@@ -37,6 +39,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("produto/{produtoHandle}")]
         public async Task<IActionResult> GetImagensPorProdutoId(long produtoHandle)
         {
@@ -49,6 +52,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(imagens);
         }
 
+        [Authorize]
         [HttpDelete("{imagemHandle}")]
         public async Task<IActionResult> DeleteImagemProduto(long imagemHandle)
         {
@@ -73,6 +77,7 @@ namespace LojaVirtual.CatalogoAPI.Controllers
             return Ok(imagensRestantes);
         }
 
+        [AllowAnonymous]
         [HttpGet("imagem/{imagemHandle}")]
         public async Task<IActionResult> GetImagemProduto(long imagemHandle)
         {

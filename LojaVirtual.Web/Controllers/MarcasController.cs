@@ -30,8 +30,12 @@ namespace LojaVirtual.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CriarMarca(MarcaViewModel marcaViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception("Elementos obrigatórios não preenchidos");
+                }
                 var marcaCriada = await _marcaService.AdicionarMarcaAsync(marcaViewModel);
                 if (marcaCriada is not null)
                 {
@@ -39,6 +43,11 @@ namespace LojaVirtual.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+            }
+
             return View(marcaViewModel);
         }
 
@@ -68,7 +77,7 @@ namespace LojaVirtual.Web.Controllers
                 await _marcaService.AtualizarMarcaAsync(marcaViewModel);
                 TempData["MensagemSucesso"] = "Marca atualizada com sucesso!";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["MensagemErro"] = ex.Message;
             }

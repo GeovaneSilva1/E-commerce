@@ -14,8 +14,9 @@ namespace LojaVirtual.Web.Services
         private ProdutoViewModel _ProdutoVM;
         private IEnumerable<ProdutoViewModel> _produtosVM;
         private IHttpContextAccessor _httpContextAccessor;
+        private readonly IJwtService _jwtService;
 
-        public ProdutoService(IHttpClientFactory clientFactory, IHttpContextAccessor httpContextAccessor)
+        public ProdutoService(IHttpClientFactory clientFactory, IHttpContextAccessor httpContextAccessor, IJwtService jwtService)
         {
             _clientFactory = clientFactory;
             _jsonSerializerOptions = new JsonSerializerOptions
@@ -23,13 +24,13 @@ namespace LojaVirtual.Web.Services
                 PropertyNameCaseInsensitive = true
             };
             _httpContextAccessor = httpContextAccessor;
+            _jwtService = jwtService;
         }
 
         public async Task<ProdutoViewModel> AtualizarProdutoAsync(ProdutoViewModel produtoVM)
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
-            var token = _httpContextAccessor.HttpContext.Request.Cookies["jwt"];
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization = await _jwtService.GetJwtAuthorizationHeader();
 
             ProdutoViewModel produtoVMUpdate = new ProdutoViewModel();
 
@@ -51,8 +52,7 @@ namespace LojaVirtual.Web.Services
         public async Task<ProdutoViewModel> CriarProdutoAsync(ProdutoViewModel produtoVM)
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
-            var token = _httpContextAccessor.HttpContext.Request.Cookies["jwt"];
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization = await _jwtService.GetJwtAuthorizationHeader();
 
             var content = new StringContent(JsonSerializer.Serialize(produtoVM), Encoding.UTF8, "application/json");
             
@@ -73,8 +73,7 @@ namespace LojaVirtual.Web.Services
         public async Task<bool> DeletarProdutoAsync(long handle)
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
-            var token = _httpContextAccessor.HttpContext.Request.Cookies["jwt"];
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            client.DefaultRequestHeaders.Authorization = await _jwtService.GetJwtAuthorizationHeader();
 
             using (var response = await client.DeleteAsync(_apiEndPoint + handle))
             {
@@ -112,7 +111,6 @@ namespace LojaVirtual.Web.Services
         public async Task<IEnumerable<ProdutoViewModel>> ObterProdutosAsync()
         {
             var client = _clientFactory.CreateClient("CatalogoAPI");
-            
 
             using (var response = await client.GetAsync(_apiEndPoint))
             {

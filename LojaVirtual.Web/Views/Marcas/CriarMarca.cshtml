@@ -1,7 +1,14 @@
 ﻿@model LojaVirtual.Web.Models.MarcaViewModel
 
 <h2>Criar uma nova marca</h2>
-
+<div id="fileError" class="alert alert-danger alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileErrorMessage"></span>
+</div>
+<div id="fileSucess" class="alert alert-success alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileSucessMessage"></span>
+</div>
 <form asp-action="CriarMarca">
     <div class="form-horizontal">
         <hr />
@@ -22,3 +29,15 @@
         </div>
     </div>
 </form>
+<div id="modalContainer"></div>
+@if (TempData["MensagemErro"] != null)
+{
+    <input type="hidden" id="mensagem-erro" value="@TempData["MensagemErro"]" />
+}
+@if (TempData["MensagemSucesso"] != null)
+{
+    <input type="hidden" id="mensagem-sucesso" value="@TempData["MensagemSucesso"]" />
+}
+@section Scripts {
+    <script src="~/js/messages.js?v@DateTime.Now.Ticks"></script>
+}

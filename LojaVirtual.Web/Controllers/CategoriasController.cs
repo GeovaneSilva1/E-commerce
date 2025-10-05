@@ -30,8 +30,13 @@ namespace LojaVirtual.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CriarCategoria(CategoriaViewModel categoriaViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception("Elementos obrigatórios não preenchidos");
+                }
+
                 var categoriaCriada = await _categoriaService.AdicionarCategoriaAsync(categoriaViewModel);
                 if (categoriaCriada is not null)
                 {
@@ -39,7 +44,10 @@ namespace LojaVirtual.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+            }
             return View(categoriaViewModel);
         }
 
@@ -62,7 +70,7 @@ namespace LojaVirtual.Web.Controllers
 
                 await _categoriaService.AtualizarCategoriaAsync(categoriaViewModel);
                 TempData["MensagemSucesso"] = "Categoria atualizada com sucesso!";
-                
+
             }
             catch (Exception ex)
             {
