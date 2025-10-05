@@ -11,9 +11,12 @@ namespace LojaVirtual.Web.Models
         [JsonIgnore]
         public string? SKU { get; set; }
         [Required(ErrorMessage = "A descrição do produto é obrigatória!")]
+        [DisplayName("Descrição")]
         public string? Descricao { get; set; }
         [Required(ErrorMessage = "O preço é obrigatório!")]
+        [DisplayName("Preço")]
         public decimal? Preco { get; set; }
+        [DisplayName("Preço promocional")]
         public decimal PrecoPromocional { get; set; }
         public decimal? PercentualDescontoAvista { get; set; }
         [Required(ErrorMessage = "O Estoque é obrigatório!")]

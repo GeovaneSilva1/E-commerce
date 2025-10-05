@@ -35,7 +35,6 @@ namespace LojaVirtual.Web.Services
                 {
                     var errorMessage = await response.Content.ReadAsStringAsync();
                     throw new Exception("Erro ao autenticar usuário: " + errorMessage);
-
                 }
 
                 var apiResponse = await response.Content.ReadFromJsonAsync<TokenResponseDTO>();
@@ -52,7 +51,7 @@ namespace LojaVirtual.Web.Services
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorMessage = response.Content.ReadAsStringAsync().Result;
+                    var errorMessage = await response.Content.ReadAsStringAsync();
                     throw new Exception("Erro ao registrar usuário: " + errorMessage);
                 }
 

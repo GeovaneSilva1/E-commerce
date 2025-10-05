@@ -20,11 +20,24 @@ namespace LojaVirtual.Web.Controllers.Auth
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var token = await _authService.LoginAsync(model);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-            await _jwtService.SalveJwt(Response, token);
+            try
+            {
+                var token = await _authService.LoginAsync(model);
 
-            return RedirectToAction("Index", "Home");
+                await _jwtService.SalveJwt(Response, token);
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+                return View(model);
+            }
         }
         public IActionResult Login()
         {
@@ -39,9 +52,17 @@ namespace LojaVirtual.Web.Controllers.Auth
                 return View(model);
             }
 
-            await _authService.RegisterAsync(model);
+            try
+            {
+                await _authService.RegisterAsync(model);
 
-            return RedirectToAction("Login");
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = ex.Message;
+                return View(model);
+            }
         }
         public IActionResult Register()
         {

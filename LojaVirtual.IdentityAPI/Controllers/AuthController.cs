@@ -30,6 +30,11 @@ namespace LojaVirtual.IdentityAPI.Controllers
 
             if (!user.Succeeded)
             {
+                if (user.Errors.First().Code.Equals("DuplicateUserName"))
+                {
+                    return BadRequest("Usuário já cadastrado!");
+                }
+
                 var errors = user.Errors.Select(e => e.Description);
                 return BadRequest(new { Errors = errors });
             }
