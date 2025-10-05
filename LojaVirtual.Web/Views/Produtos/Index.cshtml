@@ -1,0 +1,108 @@
+﻿@model IEnumerable<LojaVirtual.Web.Models.ProdutoViewModel>
+
+
+<h2>Produtos</h2>
+<hr />
+<div id="fileError" class="alert alert-danger alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileErrorMessage"></span>
+</div>
+<div id="fileSucess" class="alert alert-success alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileSucessMessage"></span>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div class="pull-left">
+                <a asp-action="CriarProduto" class="btn btn-primary">
+                    <span title="Create New" class="fas fa-plus"></span> Novo Produto
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descricao)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeCategoria)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NomeMarca)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estoque)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Preco)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PrecoPromocional)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomeCategoria)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomeMarca)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estoque)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Preco)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PrecoPromocional)
+                    </td>
+                    <td class="text-end">
+                        <a href="javascript:void(0);"
+                           class="btn btn-info abrir-modal-AdicaoImagens"
+                           style="margin-right: 5px;"
+                           data-url="@Url.Action("AdicionarImagemProduto", "Produtos", new { handle = item.Handle })">
+                            <span class="fas fa-plus"></span> <span class="fas fa-image"></span>
+                        </a>
+                        <a href="javascript:void(0);"
+                           class="btn btn-warning abrir-modal-edicao margin-right: 5px;"
+                           data-url="@Url.Action("AtualizarProduto", "Produtos", new { handle = item.Handle })">
+                            <span class="fas fa-edit"></span>
+                        </a>
+                        <a href="javascript:void(0);"
+                           class="btn btn-danger abrir-modal-exclusao margin-right: 5px;"
+                           data-url="@Url.Action("DeletarProduto", "Produtos", new { handle = item.Handle })">
+                            <span class="fas fa-trash-alt"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+ <div id="modalContainer"></div>
+    @if (TempData["MensagemErro"] != null)
+    {
+        <input type="hidden" id="mensagem-erro" value="@TempData["MensagemErro"]" />
+    }
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <input type="hidden" id="mensagem-sucesso" value="@TempData["MensagemSucesso"]" />
+    }
+</div>
+@section Scripts {
+    <script src="~/js/modalProdutos.js"></script>
+    <script src="~/js/messages.js?v@DateTime.Now.Ticks"></script>
+}

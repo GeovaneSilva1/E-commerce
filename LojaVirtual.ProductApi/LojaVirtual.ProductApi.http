@@ -1,6 +1,0 @@
-@LojaVirtual.ProductApi_HostAddress = http://localhost:5073
-
-GET {{LojaVirtual.ProductApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

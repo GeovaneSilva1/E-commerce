@@ -1,0 +1,28 @@
+﻿@if (ViewBag.Id != null)
+{
+    <div class="d-flex flex-column align-items-start me-4">
+        <label class="nav-link text-dark mb-0" style="line-height: 0;">Bem vindo(a), @ViewBag.PrimeiroNome</label>
+        <a class="text-dark text-decoration-underline d-inline-flex align-items-start me-0"
+           asp-area="" asp-controller="auth" asp-action="logout">
+            <i class="bi bi-pin-angle-fill me-2 text-primary"></i>Sair
+        </a>
+    </div>
+}
+else
+{
+    <div class="d-flex flex-column align-items-start me-4">
+        <label class="nav-link text-dark mb-0" style="line-height: 0;">Boas vindas :)</label>
+
+        <div class="d-flex align-items-start justify-content-start">
+            <a class="text-dark text-decoration-underline d-inline-flex align-items-start me-0"
+               asp-area="" asp-controller="auth" asp-action="login">
+                <i class="bi bi-pin-angle-fill me-2 text-primary"></i>Entre
+            </a>
+            <span class="text-dark mx-lg-1">ou</span>
+            <a class="text-dark text-decoration-underline d-inline-flex align-items-start"
+               asp-area="" asp-controller="auth" asp-action="register">
+                <i class="bi bi-pin-angle-fill me-0 text-primary"></i>Cadastre-se
+            </a>
+        </div>
+    </div>
+}

@@ -1,0 +1,88 @@
+using LojaVirtual.Web.Models;
+using LojaVirtual.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace LojaVirtual.Web.Controllers
+{
+    public class CatalogoController : Controller
+    {
+        private readonly IProdutoService _produtoService;
+        private readonly ICategoriaService _categoriaService;
+        private readonly IMarcaService _marcaService;
+        private readonly IImagemProdutoService _imagemProdutoService;
+
+        public CatalogoController(IProdutoService produtoService,
+                                 ICategoriaService categoriaService,  
+                                 IMarcaService marcaService,
+                                 IImagemProdutoService imagemProdutoService)
+        {
+            _produtoService = produtoService;
+            _categoriaService = categoriaService; 
+            _marcaService = marcaService;
+            _imagemProdutoService = imagemProdutoService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Filtrar(long? categoriaId, long? marcaId, int pagina = 1, int itensPorPagina = 12)
+        {
+            var produtos = await _produtoService.ObterProdutosByCategoriaIdAsync(categoriaId);
+
+            if (marcaId.HasValue)
+            {
+                produtos = produtos.Where(p => p.MarcaId == marcaId.Value).ToList();
+            }
+
+            var produtosPaginados = produtos
+                .Skip((pagina - 1) * itensPorPagina)
+                .Take(itensPorPagina)
+                .ToList();
+
+            var categorias = await _categoriaService.ObterCategoriasAsync();
+            ViewBag.Categorias = categorias;
+            ViewBag.CategoriaNomeSelecionado = categorias.FirstOrDefault(c => c.Handle == categoriaId)?.Nome;
+            ViewBag.CategoriaIdSelecionada = categoriaId;
+            
+            ViewBag.Marcas = await _marcaService.ObterMarcasAsync();
+            ViewBag.MarcaIdSelecionada = marcaId;
+            
+            ViewBag.PaginaAtual = pagina;
+            ViewBag.ItensPorPagina = itensPorPagina;
+            ViewBag.TotalItens = produtos.Count();
+            ViewBag.TotalPaginas = (int)Math.Ceiling((double)produtos.Count() / itensPorPagina);
+
+            return View("Index", produtosPaginados);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Detalhes(long handle)
+        {
+            var produto = await _produtoService.ObterProdutoPorIdAsync(handle);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            // Obter imagens do produto
+            var imagens = await _imagemProdutoService.ObterImagensPorProdutoIdAsync(handle);
+            ViewBag.Imagens = imagens;
+
+            return View(produto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdicionarCarrinho(long handle)
+        {
+            var produto = await _produtoService.ObterProdutoPorIdAsync(handle);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            // Obter imagens do produto
+            var imagens = await _imagemProdutoService.ObterImagensPorProdutoIdAsync(handle);
+            ViewBag.Imagens = imagens;
+
+            return View(produto);
+        }
+    }
+}

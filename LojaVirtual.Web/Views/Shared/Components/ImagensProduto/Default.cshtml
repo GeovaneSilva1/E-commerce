@@ -1,0 +1,15 @@
+@model IEnumerable<LojaVirtual.Web.Models.ImagemProdutoViewModel>
+
+@if (Model != null && Model.Any())
+{
+    <div class="produto-carousel-container" data-produto-id="@Model.First().Handle">
+        @foreach (var imagem in Model)
+        {
+            <img src="@imagem.Url.Replace("\\", "/")" class="card-img-top produto-img-carousel @(Model.First() == imagem ? "active" : "")" alt="Imagem do Produto">
+        }
+    </div>
+}
+else
+{
+    <img src="/images/no-image.jpg" class="card-img-top produto-img-container" alt="Sem imagem">
+}

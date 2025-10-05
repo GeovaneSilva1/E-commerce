@@ -1,0 +1,85 @@
+﻿@model LojaVirtual.Web.Models.Compostas.ProdutoImagensViewModel
+
+<div class="modal fade" id="modalAdicao" tabindex="-1" aria-labelledby="ImagemProdutoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <form id="formUploadImagem" 
+                  enctype="multipart/form-data">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" name="HandleProduto" value="@Model.HandleProduto" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ImagemProdutoModalLabel">
+                        Adicionando Imagens do Produto: @Model.NomeProduto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div id="fileErrorImages" class="alert alert-danger" style="display:none">
+                            <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="fileSucessImages" class="alert alert-success" style="display:none">
+                            <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <input name="Files" type="file" class="form-control" multiple accept=".webp" />
+                    </div>
+
+                    <div class="mb-3" id="listaImagens">
+                        @if (Model.ImagemProdutos != null && Model.ImagemProdutos.Any())
+                        {
+                            <div class="row">
+                                @foreach (var img in Model.ImagemProdutos)
+                                {
+                                    <div class="col-6 col-sm-4 col-md-3 d-flex justify-content-center mb-4">
+                                        <div class="img-container position-relative" id="img-@img.Handle">
+                                            
+                                            <img src="@img.Url"
+                                                 alt="Imagem do Produto" />
+
+                                            <button type="button"
+                                                    class="deletaImagem"
+                                                    data-handle="@img.Handle">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p>Nenhuma imagem disponível para este produto.</p>
+                        }
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="fas fa-save"></span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <span class="fas fa-cancel"></span>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/formUploadHandler.js?v=@DateTime.Now.Ticks"></script>
+<script src="~/js/deleteImagesAction.js"></script>
+<script>
+    handleFormUpload(
+        "formUploadImagem",
+        "@Url.Action("AdicionarImagemProduto", "Produtos")",
+        "listaImagens",
+        "fileErrorImages",
+        "fileSucessImages"
+    );
+</script>

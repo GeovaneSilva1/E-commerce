@@ -1,0 +1,27 @@
+﻿@model IEnumerable<LojaVirtual.Web.Models.ImagemProdutoViewModel>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var img in Model)
+        {
+            <div class="col-6 col-sm-4 col-md-3 d-flex justify-content-center mb-4">
+                <div class="img-container position-relative" id="img-@img.Handle">
+
+                    <img src="@img.Url"
+                         alt="Imagem do Produto" />
+
+                    <button type="button"
+                            class="deletaImagem"
+                            data-handle="@img.Handle">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Nenhuma imagem disponível para este produto.</p>
+}

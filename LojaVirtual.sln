@@ -1,9 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.ProductApi", "LojaVirtual.ProductApi\LojaVirtual.ProductApi.csproj", "{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.CatalogoAPI", "CatalogoAPI\LojaVirtual.CatalogoAPI.csproj", "{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.Web", "LojaVirtual.Web\LojaVirtual.Web.csproj", "{055FD271-6020-4D09-92A2-6AC88798C34E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{87CE5ED5-3B24-4D1B-ABD3-FF1DFF708553}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LojaVirtual.IdentityAPI", "LojaVirtual.IdentityAPI\LojaVirtual.IdentityAPI.csproj", "{3D9CDEAC-F1F4-4D21-8F28-2454CCC86A73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +19,28 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5AC6F6AA-81BC-4CE4-977A-3AF7449EE48C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{055FD271-6020-4D09-92A2-6AC88798C34E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{055FD271-6020-4D09-92A2-6AC88798C34E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{055FD271-6020-4D09-92A2-6AC88798C34E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{055FD271-6020-4D09-92A2-6AC88798C34E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D9CDEAC-F1F4-4D21-8F28-2454CCC86A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D9CDEAC-F1F4-4D21-8F28-2454CCC86A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D9CDEAC-F1F4-4D21-8F28-2454CCC86A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D9CDEAC-F1F4-4D21-8F28-2454CCC86A73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E34EBDD-BF06-43A6-8E0E-78C8DF4D4CCD} = {87CE5ED5-3B24-4D1B-ABD3-FF1DFF708553}
+		{055FD271-6020-4D09-92A2-6AC88798C34E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{3D9CDEAC-F1F4-4D21-8F28-2454CCC86A73} = {87CE5ED5-3B24-4D1B-ABD3-FF1DFF708553}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7F16686-212C-479A-9BFF-36819E48DCBF}
 	EndGlobalSection
 EndGlobal

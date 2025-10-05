@@ -1,0 +1,71 @@
+﻿@model IEnumerable<LojaVirtual.Web.Models.CategoriaViewModel>
+
+<h2>Categorias</h2>
+<hr />
+<div id="fileError" class="alert alert-danger alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileErrorMessage"></span>
+</div>
+<div id="fileSucess" class="alert alert-success alert-dismissible fade show" style="display:none">
+    <button type="button" class="btn-close small-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <span id="fileSucessMessage"></span>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <div class="pull-left">
+                <a asp-action="CriarCategoria" class="btn btn-primary">
+                    <span title="Create New" class="fas fa-plus"></span> Nova Categoria
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+             @foreach (var item in Model)
+            {
+                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td class="text-end">
+                        <a href="javascript:void(0);"
+                           class="btn btn-warning abrir-modal-edicao margin-right: 5px;"
+                           data-url="@Url.Action("AtualizarCategoria", "Categorias", new { handle = item.Handle })">
+                            <span class="fas fa-edit"></span>
+                        </a>
+                        <a href="javascript:void(0);"
+                           class="btn btn-danger abrir-modal-exclusao margin-right: 5px;"
+                           data-url="@Url.Action("DeletarCategoria", "Categorias", new { handle = item.Handle })">
+                            <span class="fas fa-trash-alt"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+<div id="modalContainer"></div>
+    @if (TempData["MensagemErro"] != null)
+    {
+        <input type="hidden" id="mensagem-erro" value="@TempData["MensagemErro"]" />
+    }
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <input type="hidden" id="mensagem-sucesso" value="@TempData["MensagemSucesso"]" />
+    }
+</div>
+@section Scripts {
+    <script src="~/js/modalCategorias.js"></script>
+    <script src="~/js/messages.js?v@DateTime.Now.Ticks"></script>
+}
